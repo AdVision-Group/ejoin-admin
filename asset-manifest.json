@@ -1,0 +1,27 @@
+{
+  "files": {
+    "static/js/0.cba64cf5.chunk.js": "/ejoin-admin/static/js/0.cba64cf5.chunk.js",
+    "static/js/0.cba64cf5.chunk.js.map": "/ejoin-admin/static/js/0.cba64cf5.chunk.js.map",
+    "main.js": "/ejoin-admin/static/js/main.58f929b9.chunk.js",
+    "main.js.map": "/ejoin-admin/static/js/main.58f929b9.chunk.js.map",
+    "runtime-main.js": "/ejoin-admin/static/js/runtime-main.9e73f717.js",
+    "runtime-main.js.map": "/ejoin-admin/static/js/runtime-main.9e73f717.js.map",
+    "static/js/3.5670b93e.chunk.js": "/ejoin-admin/static/js/3.5670b93e.chunk.js",
+    "static/js/3.5670b93e.chunk.js.map": "/ejoin-admin/static/js/3.5670b93e.chunk.js.map",
+    "static/js/4.75e830c9.chunk.js": "/ejoin-admin/static/js/4.75e830c9.chunk.js",
+    "static/js/4.75e830c9.chunk.js.map": "/ejoin-admin/static/js/4.75e830c9.chunk.js.map",
+    "static/js/5.beb37dce.chunk.js": "/ejoin-admin/static/js/5.beb37dce.chunk.js",
+    "static/js/5.beb37dce.chunk.js.map": "/ejoin-admin/static/js/5.beb37dce.chunk.js.map",
+    "static/js/6.f3b1abcd.chunk.js": "/ejoin-admin/static/js/6.f3b1abcd.chunk.js",
+    "static/js/6.f3b1abcd.chunk.js.map": "/ejoin-admin/static/js/6.f3b1abcd.chunk.js.map",
+    "index.html": "/ejoin-admin/index.html",
+    "static/js/3.5670b93e.chunk.js.LICENSE.txt": "/ejoin-admin/static/js/3.5670b93e.chunk.js.LICENSE.txt",
+    "static/media/ejoin-go-logo.a1cbfb79.png": "/ejoin-admin/static/media/ejoin-go-logo.a1cbfb79.png",
+    "static/media/product-logo.fc82bad8.png": "/ejoin-admin/static/media/product-logo.fc82bad8.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9e73f717.js",
+    "static/js/3.5670b93e.chunk.js",
+    "static/js/main.58f929b9.chunk.js"
+  ]
+}
