@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from 'styled-components'
+import styled, { createGlobalStyle, css } from 'styled-components'
 
 export const theme = {
   primary: "#BFD600",
@@ -11,6 +11,7 @@ export const theme = {
   selectButton: "#232323",
   selectButtonFont: "#fff",
   white: "#fff",
+  black: "#000",
   ctaButtonColor: "#fff",
   ctaButtonBackground: "#BFD600",
 }
@@ -114,4 +115,16 @@ export const WhiteButton = css`
       max-width: ${({ fullWidth }) => fullWidth ? "unset" : "20rem"};
       font-size: 1.6rem
     }
+`
+
+export const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
