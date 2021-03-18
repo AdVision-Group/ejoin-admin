@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {Suspense, lazy} from 'react'
+import {HashRouter, Switch, Route, Redirect} from 'react-router-dom'
 
-function App() {
+const SignInPage  = lazy(() => import("./pages/sign-in/sign-in.page"))
+const DashboardPage = lazy(() => import("./pages/dashboard/dashboard.page"))
+
+const App = () => {
+  const currentUser = true
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <HashRouter basename='/'>
+        <Switch>
+          <Route path='/sign-in' render={() => <SignInPage/>}/>
+          <Route path='/dashboard' render={() => <DashboardPage/>}/>
+          {currentUser ? <Redirect to='/dashboard' /> : <Redirect to='/sign-in' />}
+        </Switch>
+      </HashRouter>
+
+    </Suspense>
   );
 }
 
