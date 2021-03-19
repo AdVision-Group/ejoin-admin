@@ -37,6 +37,8 @@ export const OperatorContainer = styled.div`
     grid-area: o;
     background-color: ${({ theme }) => theme.backgroundSecondary};
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 
     ${ContentContainer} {
         width: 100%;

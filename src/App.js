@@ -1,25 +1,26 @@
 import React, {Suspense, lazy} from 'react'
-import {HashRouter, Switch, Route, Redirect} from 'react-router-dom'
+import {HashRouter, Switch, Route} from 'react-router-dom'
 import {ModalBackground} from './global.styles'
+import ProtectedRoute from './components/protected-route/protected-route.component'
 
 import Spinner from './components/spinner/spinner.component'
 
 const SignInPage  = lazy(() => import("./pages/sign-in/sign-in.page"))
 const DashboardPage = lazy(() => import("./pages/dashboard/dashboard.page"))
+const FourOhFourPage = lazy(() => import('./pages/four-ou-four/four-ou-four.page'))
+const EjoinGoPage = lazy(() => import('./pages/ejoin-go/ejoin-go.page'))
 
 const App = () => {
-  const currentUser = true
-
   return (
     <Suspense fallback={<ModalBackground><Spinner/></ModalBackground>}>
       <HashRouter basename='/'>
         <Switch>
-          <Route path='/sign-in' render={() => <SignInPage/>}/>
-          <Route path='/dashboard' render={() => <DashboardPage/>}/>
-          {currentUser ? <Redirect to='/dashboard' /> : <Redirect to='/sign-in' />}
+          <Route exact path='/' render={() => <SignInPage/>}/>
+          <ProtectedRoute exact path='/dashboard' component={DashboardPage}/>
+          <ProtectedRoute exact path='/dashboard/ejoin-go' component={EjoinGoPage}/>
+          <Route path='*' render={() => <FourOhFourPage/>} />
         </Switch>
       </HashRouter>
-
     </Suspense>
   );
 }
