@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import ArticleOverview from '../article-overview/article-overview.component'
 import CustomButton from '../custom-button/custom-button.component'
@@ -9,20 +10,23 @@ import {
 
 } from './posts-container.styles'
 
-const PostsContainer = ({ posts, }) => {
+const PostsContainer = ({ posts, createRoute }) => {
     return (
         <React.Fragment>
             <Container>
-                <EmptyContainer
-                    whileHover={{
-                        scale: 1.05
-                    }}
-                    whileTap={{
-                        scale: .95
-                    }}
-                >
-                    <p>+</p>
-                </EmptyContainer>
+                <Link to={createRoute}>
+                    <EmptyContainer
+                        whileHover={{
+                            scale: 1.05,
+                            color: "#BFD600"
+                        }}
+                        whileTap={{
+                            scale: .95
+                        }}
+                    >
+                        <p>+</p>
+                    </EmptyContainer>
+                </Link>
                 {posts.map(({ title, content, image, slug }, idx) => (
                     <ArticleOverview
                         key={idx}

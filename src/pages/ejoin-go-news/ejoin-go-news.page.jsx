@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouteMatch } from 'react-router-dom'
 
 import PostsContainer from '../../components/posts-container/posts-container.compontent'
 
@@ -8,6 +9,8 @@ import News3 from '../../images/news/new3.png'
 
 
 const EjoinGoNewPage = () => {
+    const match = useRouteMatch()
+
     const [posts] = useState([
         {
             image: {
@@ -17,7 +20,7 @@ const EjoinGoNewPage = () => {
                 height: 542,
             },
             title: "Nové nabijacie stanice nájdete už aj v Sygic",
-            slug: 'nove-nabijacie-stanice-najdete-uz-aj-v-sygic',
+            slug: `${match.path}/nove-nabijacie-stanice-najdete-uz-aj-v-sygic`,
             content: "Už v máji 2020 predstavila navigácia Sygic svoj EV mode, ktorý si môžete aktivovať priamo v aplikácii.Je určený....."
         },
         {
@@ -28,7 +31,7 @@ const EjoinGoNewPage = () => {
                 height: 542,
             },
             title: "ejoin osádza nové verejné DC stanice. Ako s nimi pracovať?",
-            slug: 'ejoin-osadza-nove-verejne-dc-stanice-ako-s-nimi-pracovat',
+            slug: `${match.path}/ejoin-osadza-nove-verejne-dc-stanice-ako-s-nimi-pracovat`,
             content: "Popri slovenských cestách sa začali objavovať naše nové DC stanice. Funkcionalitou sa veľmi líšia od našich AC staníc..."
         },
         {
@@ -39,7 +42,7 @@ const EjoinGoNewPage = () => {
                 height: 542,
             },
             title: "Osadili sme štyri nové DC stanice v Bratislave!",
-            slug: 'osadili-sme-styri-nove-dc-stanice-v-bratislave',
+            slug: `${match.path}/osadili-sme-styri-nove-dc-stanice-v-bratislave`,
             content: "Koncom roka 2020 sme začali osádzať naše nové DC stanice. V Bratislave, ako našom hlavnom meste, sme zatiaľ...."
         },
     ])
@@ -47,7 +50,7 @@ const EjoinGoNewPage = () => {
 
     return (
         <div>
-            <PostsContainer posts={posts} />
+            <PostsContainer posts={posts} createRoute={`${match.path}/new-post`} />
 
         </div>
     )

@@ -15,13 +15,13 @@ import {
 
 const EjoinGoNewPage = lazy(() => import('../ejoin-go-news/ejoin-go-news.page'))
 const EjoinGoRealisationsPage = lazy(() => import('../ejoin-go-realisations/ejoin-go-realisations.page'))
+const EjoinGoNewPost = lazy(() => import('../ejoin-go-new-post/ejoin-go-new-post.page'))
+const EjoinGoNewRealisation = lazy(() => import('../ejoin-go-new-realisation/ejoin-go-new-realisation.page'))
 
 
 
 const EjoinGoPage = () => {
     const match = useRouteMatch()
-
-    console.log(match)
 
     const navItems = [
         {
@@ -36,7 +36,6 @@ const EjoinGoPage = () => {
         },
     ]
 
-
     return (
         <MainContainer>
             <AsideNavbar navItems={navItems} />
@@ -44,7 +43,9 @@ const EjoinGoPage = () => {
                 <Suspense fallback={<LoadingFallback />}>
                     <Switch>
                         <ProtectedRoute exact path={`${match.path}/news`} component={EjoinGoNewPage} />
+                        <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} />
                         <ProtectedRoute exact path={`${match.path}/realisations`} component={EjoinGoRealisationsPage} />
+                        <ProtectedRoute exact path={`${match.path}/realisations/new-realisation`} component={EjoinGoNewRealisation} />
                     </Switch>
 
                 </Suspense>

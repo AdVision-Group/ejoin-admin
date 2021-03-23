@@ -16,11 +16,13 @@ export const EmptyContainer = styled(motion.div)`
     width: 32rem;
     min-width: 32rem;
     border-radius: 2.5rem;
+    color: #fff;
     background-color: #272727;
     box-shadow: 1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16);
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
 
     p {
         font-size: 35rem;
