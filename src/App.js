@@ -1,9 +1,8 @@
 import React, {Suspense, lazy} from 'react'
 import {HashRouter, Switch, Route} from 'react-router-dom'
-import {ModalBackground} from './global.styles'
 import ProtectedRoute from './components/protected-route/protected-route.component'
 
-import Spinner from './components/spinner/spinner.component'
+import LoadingFallback from './components/loading-fallback/loading-fallback.component'
 
 const SignInPage  = lazy(() => import("./pages/sign-in/sign-in.page"))
 const DashboardPage = lazy(() => import("./pages/dashboard/dashboard.page"))
@@ -13,12 +12,12 @@ const UnderConstructionPage = lazy(() => import('./pages/under-construction/unde
 
 const App = () => {
   return (
-    <Suspense fallback={<ModalBackground><Spinner/></ModalBackground>}>
+    <Suspense fallback={<LoadingFallback/>}>
       <HashRouter basename='/'>
         <Switch>
           <Route exact path='/' render={() => <SignInPage/>}/>
           <ProtectedRoute exact path='/dashboard' component={DashboardPage}/>
-          <ProtectedRoute exact path='/dashboard/ejoin-go' component={EjoinGoPage}/>
+          <ProtectedRoute path='/dashboard/ejoin-go' component={EjoinGoPage}/>
           <ProtectedRoute exact path='/dashboard/product' component={UnderConstructionPage}/>
           <Route path='*' render={() => <FourOhFourPage/>} />
         </Switch>
