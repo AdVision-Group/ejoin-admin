@@ -14,6 +14,8 @@ export const DashboardContainer = styled.div`
 
 export const ContentContainer = styled(motion.div)`
     cursor: pointer;
+    width: 100%;
+    height: 100%;
 `
 
 export const HeaderContainer = styled.header`
@@ -61,6 +63,8 @@ export const ProductContainer = styled.div`
     background-color: ${({ theme }) => theme.white};
     color: ${({ theme }) => theme.black};
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 
     ${ContentContainer} {
         width: 100%;
@@ -79,7 +83,9 @@ export const ProductContainer = styled.div`
         img {
             width: 100%;
             height: 100%;
+            /* bottom: 0; */
             object-fit: cover;
+            /* object-position:bottom; */
         }
     }
 `

@@ -9,6 +9,7 @@ const SignInPage  = lazy(() => import("./pages/sign-in/sign-in.page"))
 const DashboardPage = lazy(() => import("./pages/dashboard/dashboard.page"))
 const FourOhFourPage = lazy(() => import('./pages/four-ou-four/four-ou-four.page'))
 const EjoinGoPage = lazy(() => import('./pages/ejoin-go/ejoin-go.page'))
+const UnderConstructionPage = lazy(() => import('./pages/under-construction/under-construction.page'))
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route exact path='/' render={() => <SignInPage/>}/>
           <ProtectedRoute exact path='/dashboard' component={DashboardPage}/>
           <ProtectedRoute exact path='/dashboard/ejoin-go' component={EjoinGoPage}/>
+          <ProtectedRoute exact path='/dashboard/product' component={UnderConstructionPage}/>
           <Route path='*' render={() => <FourOhFourPage/>} />
         </Switch>
       </HashRouter>
