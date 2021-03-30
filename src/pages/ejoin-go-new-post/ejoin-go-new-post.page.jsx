@@ -15,6 +15,10 @@ import {
 const EjoinGoNewPost = () => {
     const [content, setContent] = useState('')
 
+    const handleSubmit = e => {
+        e.preventDefault()
+    }
+
     return (
         <FormContainer>
             <Header>
@@ -32,6 +36,8 @@ const EjoinGoNewPost = () => {
                         </label>
                         <input id="file-upload" type="file" />
                     </CustomImageButton>
+
+                    <button onClick={handleSubmit}>ASDSA</button>
                 </ColContainer>
                 <ColContainer>
                     <QuillToolbar />

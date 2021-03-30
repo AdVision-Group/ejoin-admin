@@ -18,7 +18,6 @@ const SignInPage = (props) => {
         e.preventDefault()
 
         login((user) => {
-            console.log(user)
             if (user) {
                 history.push("/dashboard")
             }

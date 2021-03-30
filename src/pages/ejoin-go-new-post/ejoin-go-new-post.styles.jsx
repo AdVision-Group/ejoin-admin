@@ -57,6 +57,7 @@ export const CustomImageButton = styled.div`
 
 export const ContentTextare = styled(ReactQuill)`
     height: 50rem;
+    color: #fff;
     background-color: ${({ theme }) => theme.backgroundSecondary};
     /* color: var(--input-color); */
     
