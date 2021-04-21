@@ -23,7 +23,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "docker-build": "docker build -t darken141/ejoin-admin:latest . && docker-push darken141/ejoin-admin:latest"
   },
   "eslintConfig": {
     "extends": [

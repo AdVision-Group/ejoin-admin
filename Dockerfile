@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:14 as BUILDER
 
 WORKDIR /app
 
@@ -7,6 +7,17 @@ RUN npm install
 
 ADD . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD ["npm", "start"]
+# EXPOSE 3000
+# CMD ["npm", "start"]
+
+FROM nginx:stable-alpine
+
+WORKDIR /app
+
+COPY --from=BUILDER /app/build /usr/share/nginx/html
+# VOLUME [ "/build" ]
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
