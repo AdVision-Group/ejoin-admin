@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import {useAuthContext} from '../../context/auth/auth.context'
+import {useHistory} from 'react-router-dom'
 
 
 import EjoinLogo from '../../images/logo/ejoin-logo.png'
@@ -17,11 +19,19 @@ import {
 } from './aside-navbar.styles'
 
 const AsideNavbar = ({ navItems }) => {
+    const history = useHistory()
+    const {logout} = useAuthContext()
     const { pathname } = useLocation()
 
     const checkIfIsActive = slug => {
         if (pathname === slug) return true
         return false
+    }
+
+    const handleLogout = () => {
+        logout(() => {
+            history.push('/')
+        })
     }
 
     return (
@@ -48,15 +58,15 @@ const AsideNavbar = ({ navItems }) => {
                     </Link>
                 ))}
             </Navbar>
-            <LogoutContainer>
-                <Link to='/'>
+            <LogoutContainer onClick={handleLogout}>
+                {/* <Link to='/'> */}
                     <MenuItem>
                         <RiLogoutCircleLine />
                         <p>
                             Odhlásiť
                         </p>
                     </MenuItem>
-                </Link>
+                {/* </Link> */}
             </LogoutContainer>
         </AsideContainer>
     )

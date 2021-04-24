@@ -59,3 +59,9 @@ export const BackgroundImage = styled.img`
     width: 100%;
     /* z-index: -1; */
 `
+
+export const LoadingContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`

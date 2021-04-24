@@ -1,35 +1,46 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react'
+
 
 export const AuthContext = createContext({
+    token: null,
     currentUser: null,
     isAuthenticated: false,
-    login: () => { },
+    isAdmin: false,
+    isEditor: false,
+    getToken: () => { },
     logout: () => { }
 })
 
-const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null)
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+export const useAuthContext = () => useContext(AuthContext)
 
-    const login = (callback) => {
-        const user = { name: "Richard" }
-        setCurrentUser(user)
+const AuthProvider = ({ children }) => {
+    const [token, setToken] = useState(localStorage.getItem("accessToken") || null)
+    const [currentUser, setCurrentUser] = useState(null)
+    const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("accessToken") ? true : false)
+
+    const getToken = (token) => {
+        setToken(token)
+        localStorage.setItem("accessToken", token)
         setIsAuthenticated(true)
-        callback(user)
     }
 
-    const logout = (callback) => {
+    const logout = (callback = () => {}) => {
+        localStorage.removeItem("accessToken")
         setCurrentUser(null)
-        setIsAuthenticated(true)
+        setIsAuthenticated(false)
         callback()
     }
+
+    console.log(token)
+    console.log(isAuthenticated)
 
     return (
         <AuthContext.Provider
             value={{
+                token,
                 currentUser,
                 isAuthenticated,
-                login,
+                getToken,
                 logout
             }}
         >
