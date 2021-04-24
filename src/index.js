@@ -7,6 +7,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
+console.log(process.env.REACT_APP_BACKEND_ENDPOINT)
+
 const client = new ApolloClient({
   // uri: process.env.REACT_APP_BACKEND_ENDPOINT,
   uri: process.env.REACT_APP_BACKEND_ENDPOINT || "http://localhost:4000/",
