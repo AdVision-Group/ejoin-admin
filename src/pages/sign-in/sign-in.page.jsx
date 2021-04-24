@@ -37,7 +37,7 @@ const SignInPage = (props) => {
                         label="Heslo"
                         type='text'
                     />
-                    <CustomButton pill>Prihlasit sa</CustomButton>
+                    <CustomButton>Prihlasit sa</CustomButton>
                 </form>
             </SectionContainer>
         </MainContainer>

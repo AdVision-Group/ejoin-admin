@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 
+import {useMutation} from '@apollo/client'
+import {CREATE_POST} from '../../utils/mutations'
+import {GET_POSTS} from '../../utils/queries'
+
 import CustomInput from '../../components/custom-input/custom-input.component'
 import { Quill } from 'react-quill'
 
@@ -13,22 +17,65 @@ import {
 } from './ejoin-go-new-post.styles'
 
 const EjoinGoNewPost = () => {
-    const [content, setContent] = useState('')
+    const [postData, setPostData] = useState({
+        name: "",
+        type: "news",
+        description: "",
+        html: "",
+        draft: true
+    })
+
+    const [createPost, { data }] = useMutation(CREATE_POST)
+
+    const handleInputChange = e => {
+        const {name, value} = e.target
+
+        console.log(name)
+        console.log(value)
+
+        setPostData(prevValue => ({
+            ...prevValue,
+            [name]: value
+        }))
+
+    }
 
     const handleSubmit = e => {
         e.preventDefault()
+
+        createPost({
+            variables: postData,
+            refetchQueries: [
+                {
+                    query: GET_POSTS
+                }
+            ]
+        })
     }
 
     return (
-        <FormContainer>
+        <FormContainer onSubmit={handleSubmit}>
             <Header>
                 <h1>Novinky</h1>
+                <button>Pridať</button>
             </Header>
             <RowContainer>
                 <ColContainer>
                     <CustomInput
                         label="Nadpis"
                         type='text'
+                        name="name"
+                        value={postData.name}
+                        handleChange={handleInputChange}
+
+                    />
+                    <CustomInput
+                        label="Popis"
+                        type='text'
+                        name="description"
+                        value={postData.description}
+                        handleChange={handleInputChange}
+
                     />
                     <CustomImageButton>
                         <label for="file-upload" class="custom-file-upload">
@@ -36,14 +83,17 @@ const EjoinGoNewPost = () => {
                         </label>
                         <input id="file-upload" type="file" />
                     </CustomImageButton>
-
-                    <button onClick={handleSubmit}>ASDSA</button>
                 </ColContainer>
                 <ColContainer>
                     <QuillToolbar />
                     <ContentTextare
-                        value={content}
-                        onChange={setContent}
+                        value={postData.html}
+                        onChange={(v) => handleInputChange({
+                            target: {
+                                name: "html",
+                                value: v
+                            }
+                        })}
                         modules={modules}
                         formats={formats}
                     />

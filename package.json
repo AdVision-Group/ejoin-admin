@@ -1,13 +1,16 @@
 {
   "name": "admin",
-  "homepage": "https://advision-group.github.io/ejoin-admin/",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.3.15",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
     "framer-motion": "^3.10.5",
+    "graphql": "^15.5.0",
+    "lodash": "^4.17.21",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
@@ -24,7 +27,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "docker-build": "docker build -t darken141/ejoin-admin:latest . && docker-push darken141/ejoin-admin:latest"
+    "docker-build": "docker build -t darken141/ejoin-admin:latest . && docker push darken141/ejoin-admin:latest"
   },
   "eslintConfig": {
     "extends": [

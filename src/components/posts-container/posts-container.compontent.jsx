@@ -2,7 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import ArticleOverview from '../article-overview/article-overview.component'
-import CustomButton from '../custom-button/custom-button.component'
+// import CustomButton from '../custom-button/custom-button.component'
+import {useMutation} from '@apollo/client'
+import {DELETE_POST} from '../../utils/mutations'
+import {GET_POSTS} from '../../utils/queries'
+
+
+import News1 from '../../images/news/new1.png'
+
 
 import {
     Container,
@@ -11,6 +18,19 @@ import {
 } from './posts-container.styles'
 
 const PostsContainer = ({ posts, createRoute }) => {
+    const [deletePost, { data}] = useMutation(DELETE_POST)
+
+    const handleDeletePost = (id) => {
+        deletePost({
+            variables: {id},
+            refetchQueries: [
+                {
+                    query: GET_POSTS
+                }
+            ]
+        })
+    }
+
     return (
         <React.Fragment>
             <Container>
@@ -27,12 +47,20 @@ const PostsContainer = ({ posts, createRoute }) => {
                         <p>+</p>
                     </EmptyContainer>
                 </Link>
-                {posts.map(({ title, content, image, slug }, idx) => (
+                {posts && posts.map(({ id, name, description, html, slug, }, idx) => (
                     <ArticleOverview
-                        key={idx}
-                        title={title}
-                        content={content}
-                        image={image}
+                        key={id}
+                        id={id}
+                        title={name}
+                        description={description}
+                        content={html}
+                        deletePost={handleDeletePost}
+                        image={{
+                            src: News1,
+                            alt: "Ejoin blog image",
+                            width: 846,
+                            height: 542,
+                        }}
                         path={`/novinky/${slug}`}
                         isLast={posts.length === idx}
                         exit={{
@@ -43,7 +71,7 @@ const PostsContainer = ({ posts, createRoute }) => {
                 ))}
             </Container>
 
-            <CustomButton center pill>Načítať viac</CustomButton>
+            {/* <CustomButton center pill>Načítať viac</CustomButton> */}
         </React.Fragment>
     )
 }

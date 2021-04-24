@@ -12,11 +12,11 @@ import {
     ShowMoreButton
 } from './article-overview.styles'
 
-const ArticleOverview = ({ title, content, image, path, ...otherProps }) => {
+const ArticleOverview = ({ id, title, description, content, image, path, deletePost, ...otherProps }) => {
     return (
         <AnimatePresence initial={false} exitBeforeEnter>
             <ArticleContainer
-                key={title}
+                key={id}
 
                 initial={{
                     // opacity: 0,
@@ -69,7 +69,10 @@ const ArticleOverview = ({ title, content, image, path, ...otherProps }) => {
                     </HeaderContainer>
                 </ArticleHeader>
                 <ArticleBody>
-                    <p>{content}</p>
+                    <p>{description}</p>
+                    <button onClick={() => deletePost(id)}>
+                        Odstrániť
+                    </button>
                     <Link href={path}>
                         <ShowMoreButton>Zisti viac {"->"}</ShowMoreButton>
                     </Link>

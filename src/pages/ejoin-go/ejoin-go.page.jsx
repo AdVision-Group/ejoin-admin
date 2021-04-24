@@ -1,6 +1,8 @@
 import React, { lazy, Suspense } from 'react'
 import { Switch, useRouteMatch } from 'react-router-dom'
 
+import NewsProvider from '../../context/news/news.context'
+
 import AsideNavbar from '../../components/aside-navbar/aside-navbar.component'
 import ProtectedRoute from '../../components/protected-route/protected-route.component'
 import LoadingFallback from '../../components/loading-fallback/loading-fallback.component'
@@ -42,8 +44,10 @@ const EjoinGoPage = () => {
             <SectionContainer>
                 <Suspense fallback={<LoadingFallback />}>
                     <Switch>
-                        <ProtectedRoute exact path={`${match.path}/news`} component={EjoinGoNewPage} />
-                        <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} />
+                        <NewsProvider>
+                            <ProtectedRoute exact path={`${match.path}/news`} component={EjoinGoNewPage} />
+                            <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} />
+                        </NewsProvider>
                         <ProtectedRoute exact path={`${match.path}/realisations`} component={EjoinGoRealisationsPage} />
                         <ProtectedRoute exact path={`${match.path}/realisations/new-realisation`} component={EjoinGoNewRealisation} />
                     </Switch>
