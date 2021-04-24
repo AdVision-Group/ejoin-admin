@@ -14,6 +14,13 @@ export const theme = {
   black: "#000",
   ctaButtonColor: "#fff",
   ctaButtonBackground: "#BFD600",
+
+  signInBackgroundColor: "#fff",
+  signInForm: "#F8F8F8",
+  signInInputBackgroundColor: "#EEEEEE",
+  signInInputLabelColor: "#000", 
+  signInInputColor: "#000"
+
 }
 
 export const CustomScrollbarStyles = css`

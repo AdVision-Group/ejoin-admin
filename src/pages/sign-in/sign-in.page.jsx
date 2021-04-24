@@ -1,18 +1,37 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../context/auth/auth.context'
 import { useHistory } from 'react-router-dom'
 
-import CustomInput from '../../components/custom-input/custom-input.component'
-import CustomButton from '../../components/custom-button/custom-button.component'
+import SignInInput from '../../components/sign-in-input/sign-in-input.component'
+import SignInButton from '../../components/sign-in-button/sign-in-button.component'
+
+import {ReactComponent as EjoinLogo} from '../../images/logo/ejoin-logo.svg';
+import BgImage from '../../images/sign-in/bg.png'
 
 import {
     MainContainer,
-    SectionContainer
+    SectionContainer,
+    LogoContainer,
+    BackgroundImage
 } from './sign-in.styles'
 
 const SignInPage = (props) => {
     const { login } = useContext(AuthContext)
     const history = useHistory()
+
+    const [authData, setAuthData] = useState({
+        username: "",
+        password: ""
+    })
+
+    const handleChange = e => {
+        const {name, value} = e.target
+
+        setAuthData(prevValue => ({
+            ...prevValue,
+            [name]: value
+        }))
+    }    
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -27,19 +46,31 @@ const SignInPage = (props) => {
     return (
         <MainContainer>
             <SectionContainer>
-                <h1>Sign in</h1>
+                <LogoContainer>
+                    <EjoinLogo/>
+                </LogoContainer>
                 <form onSubmit={handleSubmit}>
-                    <CustomInput
+                    <SignInInput
                         label='Meno'
                         type='text'
+                        name="username"
+                        value={authData.username}
+                        handleChange={handleChange}
                     />
-                    <CustomInput
+                    <SignInInput
                         label="Heslo"
-                        type='text'
+                        type='password'
+                        name="password"
+                        value={authData.password}
+                        handleChange={handleChange}
                     />
-                    <CustomButton>Prihlasit sa</CustomButton>
+                    <SignInButton fullWidth>Prihlásiť sa</SignInButton>
                 </form>
             </SectionContainer>
+            <BackgroundImage
+                src={BgImage}
+                alt="background mountains"
+            />
         </MainContainer>
     )
 }
