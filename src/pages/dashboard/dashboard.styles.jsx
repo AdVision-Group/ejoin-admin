@@ -72,16 +72,18 @@ export const ProductContainer = styled.div`
     ${ContentContainer} {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         h2 {
             font-size: 3rem;
             font-weight: 800;
-            margin-bottom: 6rem;
+            margin-bottom: 8rem;
 
 
             @media only screen and (min-width: ${({theme}) => theme['dashboard-m']}) { 
-                font-size: 4.5rem;
-                margin-bottom: 6rem;
+                font-size: 3.5rem;
+                margin-bottom: 8rem;
             }
         }
 
