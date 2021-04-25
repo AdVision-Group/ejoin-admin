@@ -19,8 +19,17 @@ export const theme = {
   signInForm: "#F8F8F8",
   signInInputBackgroundColor: "#EEEEEE",
   signInInputLabelColor: "#000", 
-  signInInputColor: "#000"
+  signInInputColor: "#000",
 
+  dashboardHeaderBackgroundColor: '#fff',
+  dashboardHeaderColor: '#000',
+  dashboardOperatorBackgroundColor: "#171717",
+  dashboardOperatorColor: "#fff",
+  dashboardProductBackgroundColor: "#fff",
+  dashboardProductColor: "#000",
+
+  "dashboard-sm": "40.063em",
+  "dashboard-m": "64.063em"
 }
 
 export const CustomScrollbarStyles = css`

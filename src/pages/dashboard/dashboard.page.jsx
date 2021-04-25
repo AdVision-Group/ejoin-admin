@@ -1,16 +1,25 @@
 import React from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
 
-import EjoinLogo from '../../images/logo/ejoin-logo.png'
+import {ReactComponent as EjoinLogo} from '../../images/logo/ejoin-logo.svg';
+
+import OperatorBg from '../../images/dashboard/operator_bg.png'
 import OperatorLogo from '../../images/logo/ejoin-go-logo.png'
-import ProductLogo from '../../images/logo/product-logo.png'
+import ProductBg from '../../images/dashboard/product_bg.png'
+import ProductLogo from '../../images/dashboard/product_logo.png'
 
 import {
     DashboardContainer,
     HeaderContainer,
     OperatorContainer,
     ProductContainer,
-    ContentContainer
+    ContentContainer,
+    LogoContainer,
+    Title,
+    OperatorLogoContainer,
+    OperatorBackgroundImage,
+    ProductBackgroundImage,
+    ProductLogoContainer
 } from './dashboard.styles'
 
 const DashboardPage = () => {
@@ -20,20 +29,21 @@ const DashboardPage = () => {
     return (
         <DashboardContainer>
             <HeaderContainer>
-                <div>
-                    <img
-                        src={EjoinLogo}
-                        alt="ejoin logo"
-                    />
-                </div>
-                <h1>Admin</h1>
+                <LogoContainer>
+                    <EjoinLogo/>
+                </LogoContainer>
+                <Title>Admin</Title>
             </HeaderContainer>
             <Link to={`${path}/ejoin-go`}>
                 <OperatorContainer>
                     <ContentContainer
                         whileHover={{ scale: 1.2 }}
                     >
-                        <img
+                        <OperatorBackgroundImage
+                            src={OperatorBg}
+                            alt="operator bg image"
+                        />
+                        <OperatorLogoContainer
                             src={OperatorLogo}
                             alt="operator"
                         />
@@ -45,11 +55,15 @@ const DashboardPage = () => {
                     <ContentContainer
                         whileHover={{ scale: 1.2 }}
                     >
-                        <h2>Produkt</h2>
-                        <img
-                            src={ProductLogo}
-                            alt='product'
+                        <ProductBackgroundImage
+                            src={ProductBg}
+                            alt="product bg image"
                         />
+                        <ProductLogoContainer
+                            src={ProductLogo}
+                            alt="operator"
+                        />
+                        <h2>Produkt</h2>
                     </ContentContainer>
                 </ProductContainer>
             </Link>
