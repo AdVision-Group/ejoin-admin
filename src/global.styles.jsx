@@ -29,7 +29,9 @@ export const theme = {
   dashboardProductColor: "#000",
 
   "dashboard-sm": "40.063em",
-  "dashboard-m": "64.063em"
+  "dashboard-m": "64.063em",
+  "blog-sm": "40.063em",
+  "blog-m": "64.063em",
 }
 
 export const CustomScrollbarStyles = css`

@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react'
-import { Switch, useRouteMatch } from 'react-router-dom'
+import React, { lazy, Suspense, useState } from 'react'
+import { Switch, useRouteMatch, Redirect } from 'react-router-dom'
 
 import NewsProvider from '../../context/news/news.context'
 
@@ -13,6 +13,9 @@ import { ReactComponent as RealisationIcon } from '../../images/icons/realisatio
 import {
     MainContainer,
     SectionContainer,
+    AsideContainer,
+    HamButton,
+    Ham
 } from './ejoin-go.styles'
 
 const EjoinGoNewPage = lazy(() => import('../ejoin-go-news/ejoin-go-news.page'))
@@ -24,6 +27,7 @@ const EjoinGoNewRealisation = lazy(() => import('../ejoin-go-new-realisation/ejo
 
 const EjoinGoPage = () => {
     const match = useRouteMatch()
+    const [showAside, setShowAside] = useState(false)
 
     const navItems = [
         {
@@ -40,11 +44,24 @@ const EjoinGoPage = () => {
 
     return (
         <MainContainer>
-            <AsideNavbar navItems={navItems} />
+            <AsideContainer
+                isOpen={showAside}
+            >
+                <AsideNavbar navItems={navItems} />
+                <HamButton isOpen={showAside} onClick={() => setShowAside(!showAside)}>
+                    <Ham>
+                        <div/>
+                        <div/>
+                        <div/>
+                    </Ham>
+                    <label>menu</label>
+                </HamButton>
+            </AsideContainer>
             <SectionContainer>
                 <Suspense fallback={<LoadingFallback />}>
                     <Switch>
                         <NewsProvider>
+                            <ProtectedRoute exact path={`${match.path}/`} component={() => <Redirect to={`${match.path}/news`}/>} />
                             <ProtectedRoute exact path={`${match.path}/news`} component={EjoinGoNewPage} />
                             <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} />
                         </NewsProvider>

@@ -4,27 +4,11 @@ import { motion } from 'framer-motion'
 
 
 export const ArticleContainer = styled(motion.article)`
-    /* scroll-snap-align: start;
-    display: inline-flex;
-    flex-direction: column; */
-    width: 32rem;
-    min-width: 32rem;
+    width: 28rem;
     border-radius: 2.5rem;
     background-color: #272727;
     box-shadow: 1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16);
-
-    @media all and (max-width: 1000px) {
-        width: 30rem;
-        min-width: 30rem;
-        /* height: 47rem;*/
-
-
-        @media all and (max-width: 500px) {
-            width: 28rem;
-            min-width: 28rem;
-
-        }
-    }
+    margin-bottom: 3rem;
 `
 
 export const ArticleHeader = styled.header`
@@ -49,13 +33,6 @@ export const HeaderContainer = styled.div`
         -webkit-box-orient: vertical;
         text-overflow: ellipsis;
         overflow: hidden;
-
-        /* text-align: center; */
-
-        @media all and (max-width: 500px) {
-            font-size: 1.2rem;
-
-        }
     }
 `
 
@@ -95,20 +72,6 @@ export const ArticleBody = styled.div`
         margin-bottom: 4rem;
     }
 
-    /* @media all and (max-width: 1000px) {
-        font-size: 1rem;
-        height: 15rem;
-
-        @media all and (max-width: 500px) {
-            height: 12rem;
-            padding: 1rem 2rem;
-
-            p {
-                margin-bottom: 1rem;
-
-            }
-        }
-    } */
 `
 
 export const ShowMoreButton = styled.a`

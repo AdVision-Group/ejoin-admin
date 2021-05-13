@@ -2,19 +2,26 @@ import styled from 'styled-components'
 import { motion } from 'framer-motion'
 
 export const Container = styled.div`
+    width: 100%;
     max-width: 105rem;
+    padding-top: 5rem;
     display: flex;
-    gap: 3rem;
-    justify-content: space-between;
     flex-wrap: wrap;
-    padding: 0 1rem; 
-    margin: 0 auto 4rem;
+    --gap: 3rem;
+    display: inline-flex;
+    /* flex-wrap: wrap; */
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
+
+    & > * {
+        margin: var(--gap) 0 0 var(--gap);
+    }
 `
 
 export const EmptyContainer = styled(motion.div)`
     cursor: pointer;
-    width: 32rem;
-    min-width: 32rem;
+    width: 28rem;
+    min-width: 25rem;
     border-radius: 2.5rem;
     color: #fff;
     background-color: #272727;
@@ -25,17 +32,7 @@ export const EmptyContainer = styled(motion.div)`
     height: 100%;
 
     p {
-        font-size: 35rem;
+        font-size: 30rem;
         line-height: 1
-    }
-
-    @media all and (max-width: 1000px) {
-        width: 30rem;
-        min-width: 30rem;
-
-        @media all and (max-width: 500px) {
-            width: 28rem;
-            min-width: 28rem;
-        }
     }
 `

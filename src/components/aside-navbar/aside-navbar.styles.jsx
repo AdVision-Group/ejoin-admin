@@ -2,10 +2,11 @@ import styled from 'styled-components'
 import { motion } from 'framer-motion'
 
 export const AsideContainer = styled(motion.aside)`
-    position: fixed;
-    width: 40rem;
+    /* position: fixed; */
+    width: 100%;
+    height: 100%;
     background-color: #000000;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     padding: 4rem 0;
 `
 
@@ -19,7 +20,7 @@ export const Header = styled.div`
 
 export const LoginContainer = styled.div`
     text-align: center;
-    margin-bottom: 7rem;
+    margin-bottom: 4rem;
 
     p {
         display: flex;
@@ -57,7 +58,7 @@ export const MenuItem = styled.li`
     font-size: 1.8rem;
     font-weight: bolder;
     width: 100%;
-    padding: 3rem 6rem;
+    padding: 1rem 3rem;
     transition: all .2s ease-in-out;
     color: #fff;
     background-color: ${({ theme, isActive }) => isActive ? theme.primary : "unset"};

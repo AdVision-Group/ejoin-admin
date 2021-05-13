@@ -34,19 +34,7 @@ const PostsContainer = ({ posts, createRoute }) => {
     return (
         <React.Fragment>
             <Container>
-                <Link to={createRoute}>
-                    <EmptyContainer
-                        whileHover={{
-                            scale: 1.05,
-                            color: "#BFD600"
-                        }}
-                        whileTap={{
-                            scale: .95
-                        }}
-                    >
-                        <p>+</p>
-                    </EmptyContainer>
-                </Link>
+
                 {posts && posts.map(({ id, name, description, html, slug, }, idx) => (
                     <ArticleOverview
                         key={id}
@@ -69,6 +57,19 @@ const PostsContainer = ({ posts, createRoute }) => {
                         }}
                     />
                 ))}
+                <Link to={createRoute}>
+                    <EmptyContainer
+                        whileHover={{
+                            scale: 1.05,
+                            color: "#BFD600"
+                        }}
+                        whileTap={{
+                            scale: .95
+                        }}
+                    >
+                        <p>+</p>
+                    </EmptyContainer>
+                </Link>
             </Container>
 
             {/* <CustomButton center pill>Načítať viac</CustomButton> */}
