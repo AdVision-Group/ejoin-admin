@@ -26,6 +26,7 @@ export const EmptyContainer = styled(motion.div)`
     color: #fff;
     background-color: #272727;
     box-shadow: 1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16);
+    align-self: start;
     display: flex;
     justify-content: center;
     align-items: center;

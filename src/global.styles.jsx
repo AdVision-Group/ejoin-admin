@@ -11,6 +11,7 @@ export const theme = {
   selectButton: "#232323",
   selectButtonFont: "#fff",
   white: "#fff",
+  red: "#ED4C67",
   black: "#000",
   ctaButtonColor: "#fff",
   ctaButtonBackground: "#BFD600",
@@ -32,6 +33,8 @@ export const theme = {
   "dashboard-m": "64.063em",
   "blog-sm": "40.063em",
   "blog-m": "64.063em",
+  "new-blog-sm": "40.063em",
+  "new-blog-m": "64.063em",
 }
 
 export const CustomScrollbarStyles = css`

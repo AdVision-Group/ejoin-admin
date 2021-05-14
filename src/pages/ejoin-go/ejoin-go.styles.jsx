@@ -36,7 +36,7 @@ export const HamButton = styled.button`
     background-color: #000000;
     padding: 1rem;
     top: ${({isOpen}) => isOpen ? "0" : "1rem"};
-    right: ${({isOpen}) => isOpen ? "-2rem" : "-8rem"};
+    right: ${({isOpen}) => isOpen ? "-2rem" : "-6.5rem"};
     transition: right 0.2s ease-in-out,
                 top .2s ease-in-out;
     border-radius: .5rem;

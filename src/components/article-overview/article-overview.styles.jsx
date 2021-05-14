@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 // import CustomLink from '../custom-link/custom-link.component'
 import { motion } from 'framer-motion'
+import CustomButton from '../custom-button/custom-button.component'
 
 
 export const ArticleContainer = styled(motion.article)`
@@ -74,8 +75,30 @@ export const ArticleBody = styled.div`
 
 `
 
-export const ShowMoreButton = styled.a`
-    display: block;
-    color: ${({ theme }) => theme.white};
+export const OptionsContainer = styled.a`
+    width: 100%;
+    --gap: 4rem;
+    display: inline-flex;
+    /* flex-wrap: wrap; */
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
 
+    & > * {
+        margin: var(--gap) 0 0 var(--gap);
+    }
+
+`
+
+export const DeleteButton = styled(CustomButton)`
+    background-color: transparent;
+    border: 1px solid ${({theme}) => theme.red};
+    color: ${({theme}) => theme.red};
+    font-size: 1.6rem;
+`
+
+export const OpenButton = styled(CustomButton)`
+    /* background-color: transparent;
+    border: 1px solid ${({theme}) => theme.red};
+    color: ${({theme}) => theme.red}; */
+    font-size: 1.6rem;
 `

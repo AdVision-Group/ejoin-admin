@@ -1,7 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-
 
 import {
     ArticleContainer,
@@ -9,7 +7,9 @@ import {
     HeaderContainer,
     ImageContainer,
     ArticleBody,
-    ShowMoreButton
+    OptionsContainer,
+    DeleteButton,
+    OpenButton
 } from './article-overview.styles'
 
 const ArticleOverview = ({ id, title, description, content, image, path, deletePost, ...otherProps }) => {
@@ -70,12 +70,14 @@ const ArticleOverview = ({ id, title, description, content, image, path, deleteP
                 </ArticleHeader>
                 <ArticleBody>
                     <p>{description}</p>
-                    <button onClick={() => deletePost(id)}>
-                        Odstrániť
-                    </button>
-                    <Link href={path}>
-                        <ShowMoreButton>Zisti viac {"->"}</ShowMoreButton>
-                    </Link>
+                    <OptionsContainer>
+                        <OpenButton pill>
+                            Zobraziť
+                        </OpenButton>
+                        <DeleteButton pill onClick={() => deletePost(id)}>
+                            Odstrániť
+                        </DeleteButton>
+                    </OptionsContainer>
                 </ArticleBody>
             </ArticleContainer>
         </AnimatePresence>

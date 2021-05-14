@@ -1,12 +1,18 @@
 import styled from 'styled-components'
 import ReactQuill from 'react-quill';
 
+import CustomButton from '../../components/custom-button/custom-button.component'
+
 export const FormContainer = styled.form`
-    padding: 0 3rem;
+    padding: 5rem 0 0;
 `
 
 export const Header = styled.div`
     margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
 `
 
 
@@ -18,12 +24,19 @@ export const ColContainer = styled.div`
 
 export const RowContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 3rem;
+    grid-template-columns: 1fr;
+    /* grid-gap: 3rem; */
+
+    @media only screen and (min-width: ${({theme}) => theme['new-blog-m']}) { 
+        grid-template-columns: 1fr 1fr;
+    }
 
     ${ColContainer} {
         &:nth-of-type(2) {
             margin-top: 2rem;
+            @media only screen and (min-width: ${({theme}) => theme['new-blog-m']}) { 
+                margin-left: 2rem;
+            }
         }
     }
 `
@@ -63,5 +76,18 @@ export const ContentTextare = styled(ReactQuill)`
     
     .ql-container, .ql-toolbar {
         border: none;
+    }
+`
+
+export const AddButton = styled(CustomButton)`
+    position: fixed;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.6rem;
+    width: 15rem;
+    z-index: 99;
+
+    @media only screen and (min-width: ${({theme}) => theme['blog-sm']}) { 
+        position: relative;    
     }
 `

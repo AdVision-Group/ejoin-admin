@@ -16,6 +16,11 @@ export const Header = styled.div`
     border-bottom: 1px solid #707070;
     display: flex;
     justify-content: center;
+
+    img {
+        width: 40%;
+        object-fit: contain;
+    }
 `
 
 export const LoginContainer = styled.div`
@@ -27,10 +32,10 @@ export const LoginContainer = styled.div`
         justify-content: center;
         align-items: center;
         font-weight: bolder;
-        font-size: 1.8rem;
+        font-size: 1.6rem;
 
         svg {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-right: 1rem;
         }
 
@@ -58,7 +63,7 @@ export const MenuItem = styled.li`
     font-size: 1.8rem;
     font-weight: bolder;
     width: 100%;
-    padding: 1rem 3rem;
+    padding: 1.5rem 3rem;
     transition: all .2s ease-in-out;
     color: #fff;
     background-color: ${({ theme, isActive }) => isActive ? theme.primary : "unset"};

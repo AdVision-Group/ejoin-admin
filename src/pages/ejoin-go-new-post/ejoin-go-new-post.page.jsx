@@ -5,6 +5,7 @@ import {CREATE_POST} from '../../utils/mutations'
 import {GET_POSTS} from '../../utils/queries'
 
 import CustomInput from '../../components/custom-input/custom-input.component'
+import CustomButton from '../../components/custom-button/custom-button.component'
 import { Quill } from 'react-quill'
 
 import {
@@ -13,7 +14,8 @@ import {
     RowContainer,
     ColContainer,
     ContentTextare,
-    CustomImageButton
+    CustomImageButton,
+    AddButton
 } from './ejoin-go-new-post.styles'
 
 const EjoinGoNewPost = () => {
@@ -57,7 +59,7 @@ const EjoinGoNewPost = () => {
         <FormContainer onSubmit={handleSubmit}>
             <Header>
                 <h1>Novinky</h1>
-                <button>Pridať</button>
+                <AddButton pill>Pridať</AddButton>
             </Header>
             <RowContainer>
                 <ColContainer>
