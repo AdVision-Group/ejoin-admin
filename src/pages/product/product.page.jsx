@@ -17,6 +17,7 @@ import {
 } from './product.styles'
 
 const ProductBlogPage = lazy(() => import('../product-blog/product-blog.page'))
+const ProductOrdersPage = lazy(() => import('../product-orders/product-orders.page'))
 
 
 
@@ -27,7 +28,7 @@ const ProductPage = () => {
     const navItems = [
         {
             Icon: NewIcon,
-            slug: `${match.path}/zakazky`,
+            slug: `${match.path}/orders`,
             name: "Zákazky"
         },
         {
@@ -57,10 +58,10 @@ const ProductPage = () => {
                     <Switch>
                         <ProtectedRoute exact path={`${match.path}/`} component={() => <Redirect to={`${match.path}/blog`}/>} />
                         <ProtectedRoute exact path={`${match.path}/blog`} component={ProductBlogPage} />
-                        {/* <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} />
+                        {/* <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} /> */}
 
-                        <ProtectedRoute exact path={`${match.path}/realisations`} component={EjoinGoRealisationsPage} />
-                        <ProtectedRoute exact path={`${match.path}/realisations/new-realisation`} component={EjoinGoNewRealisation} /> */}
+                        <ProtectedRoute exact path={`${match.path}/orders`} component={ProductOrdersPage} />
+                        {/* <ProtectedRoute exact path={`${match.path}/realisations/new-realisation`} component={EjoinGoNewRealisation} /> */}
                     </Switch>
 
                 </Suspense>

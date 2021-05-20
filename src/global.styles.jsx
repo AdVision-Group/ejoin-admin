@@ -29,6 +29,10 @@ export const theme = {
   dashboardProductBackgroundColor: "#fff",
   dashboardProductColor: "#000",
 
+  productPageFontColor: "#000",
+  productPageContainerBackgroundColor: "#F8F8F8",
+  productContainerBackgroundColor: "#ECECEC",
+
   "dashboard-sm": "40.063em",
   "dashboard-m": "64.063em",
   "blog-sm": "40.063em",
