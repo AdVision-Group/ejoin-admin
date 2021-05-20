@@ -43,8 +43,8 @@ const ProductPage = () => {
                 isOpen={showAside}
             >
                 <AsideNavbar navItems={navItems} light={true} />
-                <HamButton isOpen={showAside} onClick={() => setShowAside(!showAside)}>
-                    <Ham>
+                <HamButton isLight={true} isOpen={showAside} onClick={() => setShowAside(!showAside)}>
+                    <Ham isLight={true} isOpen={showAside}>
                         <div/>
                         <div/>
                         <div/>

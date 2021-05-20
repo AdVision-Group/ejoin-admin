@@ -36,6 +36,7 @@ export const SectionContainer = styled(motion.section)`
 export const HamButton = styled.button`
     position: absolute;
     background-color: #000000;
+    background-color: ${({isLight, theme}) => isLight ? theme.primary : "#000"};
     padding: 1rem;
     top: ${({isOpen}) => isOpen ? "0" : "1rem"};
     right: ${({isOpen}) => isOpen ? "-2rem" : "-6.5rem"};
@@ -62,22 +63,30 @@ export const Ham = styled.div`
     height: 2.6rem;
 
     div {
-        background-color: ${({theme}) => theme.primary};
+        /* background-color: ${({theme}) => theme.primary}; */
+        background-color: ${({isLight, theme}) => isLight ? "#fff" : theme.primary};
         position: absolute;
         width: 100%;
         height: 2px;
+        transition: all 0.2s ease-out;
 
         :nth-of-type(1) {
-
+            /* transform: rotateX('angle'); */
+            top: ${({isOpen}) => isOpen ? "50%" : "unset"};
+            transform: ${({isOpen}) => isOpen ? "rotateZ(45deg)" : "unset"};
         }
 
         :nth-of-type(2) {
             top: 50%;
             transform: translateY(-50%);
+            display: ${({isOpen}) => isOpen ? "none" : "block"};
         }
 
         :nth-of-type(3) {
             bottom: 0;
+            top: ${({isOpen}) => isOpen ? "50%" : "unset"};
+            transform: ${({isOpen}) => isOpen ? "rotateZ(-45deg)" : "unset"};
+
         }
 
     }
