@@ -23,9 +23,12 @@ export const EmptyContainer = styled(motion.div)`
     width: 28rem;
     min-width: 25rem;
     border-radius: 2.5rem;
-    color: #fff;
-    background-color: #272727;
-    box-shadow: 1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16);
+    /* color: #fff; */
+    color: ${({isLight}) => isLight ? "#C5C5C5" : "#fff"};
+    /* background-color: #272727; */
+    background-color: ${({isLight}) => isLight ? "#F8F8F8" : "#272727"};
+    /* box-shadow: 1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16); */
+    box-shadow: ${({isLight}) => isLight ? "0 .5rem .3rem 0 rgba(0,0,0, 0.06)" : "1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16)"};
     align-self: start;
     display: flex;
     justify-content: center;

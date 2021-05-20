@@ -5,7 +5,9 @@ export const AsideContainer = styled(motion.aside)`
     /* position: fixed; */
     width: 100%;
     height: 100%;
-    background-color: #000000;
+    /* background-color: #000000; */
+    background-color: ${({theme, isLight}) => isLight ? theme.primary : "#000"};
+
     /* min-height: 100vh; */
     padding: 4rem 0;
 `
@@ -13,7 +15,8 @@ export const AsideContainer = styled(motion.aside)`
 export const Header = styled.div`
     padding-bottom: 4rem;
     margin-bottom: 4rem;
-    border-bottom: 1px solid #707070;
+    /* border-bottom: 1px solid #707070; */
+    border-bottom: 1px solid ${({isLight}) => isLight ? "#fff" : "#707070"};
     display: flex;
     justify-content: center;
 

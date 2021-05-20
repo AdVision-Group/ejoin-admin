@@ -18,7 +18,7 @@ import {
     LogoutContainer
 } from './aside-navbar.styles'
 
-const AsideNavbar = ({ navItems }) => {
+const AsideNavbar = ({ navItems, light }) => {
     const history = useHistory()
     const {logout} = useAuthContext()
     const { pathname } = useLocation()
@@ -35,8 +35,8 @@ const AsideNavbar = ({ navItems }) => {
     }
 
     return (
-        <AsideContainer>
-            <Header>
+        <AsideContainer isLight={light}>
+            <Header isLight={light}>
                 <img
                     src={EjoinLogo}
                     alt="ejoin logo"

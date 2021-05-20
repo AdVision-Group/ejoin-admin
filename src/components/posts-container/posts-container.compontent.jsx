@@ -17,7 +17,7 @@ import {
 
 } from './posts-container.styles'
 
-const PostsContainer = ({ posts, createRoute }) => {
+const PostsContainer = ({ posts, createRoute, isLight }) => {
     const [deletePost, { data}] = useMutation(DELETE_POST)
 
     const handleDeletePost = (id) => {
@@ -66,6 +66,7 @@ const PostsContainer = ({ posts, createRoute }) => {
                         whileTap={{
                             scale: .95
                         }}
+                        isLight={isLight}
                     >
                         <p>+</p>
                     </EmptyContainer>
