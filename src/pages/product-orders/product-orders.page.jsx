@@ -21,7 +21,8 @@ import {
     ProductOverviewContainer,
     CenterSpinner,
     TabsUl,
-    Header
+    Header,
+    TabButton
     // TabLi
 } from './product-orders.styles'
 
@@ -93,7 +94,7 @@ const ProductOrderPage = () => {
             <TabsUl>
                 {tabs && tabs.map((tab, idx) => (
                     <li key={idx}>
-                        <button onClick={() => handleTabChange(idx)}>{tab.name}</button>
+                        <TabButton isActive={activeTabIndex === idx} onClick={() => handleTabChange(idx)}>{tab.name}</TabButton>
                     </li>
                 ))}
             </TabsUl>

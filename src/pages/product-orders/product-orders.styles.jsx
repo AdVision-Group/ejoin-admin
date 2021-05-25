@@ -122,3 +122,11 @@ export const TabsUl = styled.ul`
         margin-right: 2rem;
     }
 `
+
+export const TabButton = styled.button`
+    cursor: pointer;
+    background-color: transparent;
+    font-weight: bolder;
+    color: ${({theme}) => theme.primary};
+    border-bottom: ${({isActive, theme}) => isActive ? `3px solid ${theme.primary}`: "3px solid transparent"};
+`
