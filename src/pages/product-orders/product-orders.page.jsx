@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react'
 import {useQuery} from '@apollo/client'
 import {GET_ORDERS} from '../../utils/queries'
 
+import Spinner from '../../components/spinner/spinner.component'
+
 import {
     ProductOrdersContainer,
     ProductsContainer,
@@ -30,24 +32,27 @@ const ProductOrderPage = () => {
     return (
         <ProductOrdersContainer>
             <ProductsContainer>
-                <EmptyContainer>
+                {/* <EmptyContainer>
                     {"+"}
-                </EmptyContainer>
+                </EmptyContainer> */}
+                {loading && <Spinner/>}
 
                 {orders && orders.map(order => {
-                    console.log(order.orderData.product)
+                    // console.log(order.orderData.product)
                     const productObj = order.orderData.product
                     // delete productObj["__typename"]
 
                     const items = Object.keys(productObj).map(val => {
-                        return Object.keys(productObj[val]).filter(v => {
-                            console.log(productObj[val][v])
+                        return Object.keys(productObj[val]).map(v => {
+                            // console.log(productObj[val][v])
                             return productObj[val][v].value
                         }) 
                     })
+                    // console.log(items)
 
-                    const filteredItems = items.filter(val => val.length > 0)
-                    console.log(filteredItems)
+                    const filteredAllItems = items.map(val => val.filter(v => typeof v === "string"))
+                    const filteredItems = filteredAllItems.filter(val => val.length > 0)
+                    // console.log(filteredItems)
 
                     return (
                         <ProductOverviewContainer key={order.id}>
@@ -60,14 +65,20 @@ const ProductOrderPage = () => {
                                 <ul>
                                     {
                                         filteredItems.map((item, idx) => (
-                                            <li>{item[0]}</li>
+                                            <li key={idx}>{item[0]}</li>
                                         ))
                                     }
                                 </ul>
                             </ContentContainer>
                             <OptionsContainer>
-                                <DeligateButton>Spracovat</DeligateButton>
-                                <UpdateButton>Upravit</UpdateButton>
+                                <UpdateButton
+                                    whileHover={{scale: 1.02}}
+                                    whileTap={{scale: .95}}
+                                >Zobrazit</UpdateButton>
+                                <DeligateButton
+                                    whileHover={{scale: 1.02}}
+                                    whileTap={{scale: .95}}
+                                >Spracovat</DeligateButton>
                             </OptionsContainer>
                         </ProductOverviewContainer>
                     )

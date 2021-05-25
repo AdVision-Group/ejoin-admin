@@ -31,7 +31,7 @@ export const theme = {
 
   productPageFontColor: "#000",
   productPageContainerBackgroundColor: "#F8F8F8",
-  productContainerBackgroundColor: "#ECECEC",
+  productContainerBackgroundColor: "#fff",
 
   "dashboard-sm": "40.063em",
   "dashboard-m": "64.063em",

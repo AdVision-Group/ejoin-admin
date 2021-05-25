@@ -9,7 +9,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
   // uri: process.env.REACT_APP_BACKEND_ENDPOINT,
-  uri: process.env.NODE_ENV === 'production' ? "https://ejoin-gateway-jbuievsjdq-ew.a.run.app/" : "http://localhost:4000/",
+  uri: process.env.NODE_ENV !== 'production' ? "https://ejoin-gateway-jbuievsjdq-ew.a.run.app/" : "http://localhost:4000/",
   cache: new InMemoryCache()
 });
 
