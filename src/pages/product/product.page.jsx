@@ -18,6 +18,7 @@ import {
 
 const ProductBlogPage = lazy(() => import('../product-blog/product-blog.page'))
 const ProductOrdersPage = lazy(() => import('../product-orders/product-orders.page'))
+const ProductSingleOrderPage = lazy(() => import("../product-single-order/product-single-order.page"))
 
 
 
@@ -61,6 +62,7 @@ const ProductPage = () => {
                         {/* <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} /> */}
 
                         <ProtectedRoute exact path={`${match.path}/orders`} component={ProductOrdersPage} />
+                        <ProtectedRoute exact path={`${match.path}/orders/:id`} component={ProductSingleOrderPage} />
                         {/* <ProtectedRoute exact path={`${match.path}/realisations/new-realisation`} component={EjoinGoNewRealisation} /> */}
                     </Switch>
 

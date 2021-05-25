@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {useQuery, useMutation} from '@apollo/client'
 import {GET_ORDERS} from '../../utils/queries'
@@ -27,6 +28,7 @@ import {
 } from './product-orders.styles'
 
 const ProductOrderPage = () => {
+    const history = useHistory()
     const [showDeligateModal, setShowDeligateModal] = useState(false)
     const [selectedOrderID, setselectedOrderID] = useState(null)
 
@@ -149,6 +151,7 @@ const ProductOrderPage = () => {
                                 bottom={2}
                                 leftLabel="Zobrazit"
                                 rightLabel="Spracovat"
+                                handleLeftClick={() => history.push(`/dashboard/product/orders/${order.id}`)}
                                 handleRightClick={() => handleToggleDeligateModal(true, order.id)}
                             />
                         </ProductOverviewContainer>
