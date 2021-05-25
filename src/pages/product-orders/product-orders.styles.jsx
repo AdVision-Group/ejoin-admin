@@ -1,9 +1,15 @@
 import styled, {css} from 'styled-components'
 import {motion} from 'framer-motion'
 
+import {CustomScrollbarWhiteStyles} from '../../global.styles'
+
 export const ProductOrdersContainer = styled.div`
     padding-top: 2rem;
     color: ${({theme}) => theme.productPageFontColor};
+
+    h1 {
+        margin-bottom: 2rem;
+    }
 `
 
 export const ProductsContainer = styled.div`
@@ -83,35 +89,36 @@ export const ContentContainer = styled.div`
     }
 `
 
-export const OptionsContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin: 0 2rem 2rem;
-    align-self: end;
-
-
+export const CenterSpinner = styled.div`
+    padding: 4rem;
+    display: flex;
+    justify-content: center;
 `
 
-const buttonStyles = css`
-    display: block;
-    background-color: transparent;
-    padding: 1rem;
+export const Header = styled.div`
+    max-width: 97rem;
+    margin: 0 auto;
+`
+
+export const TabsUl = styled.ul`
+    background-color: ${({theme}) => theme.productPageContainerBackgroundColor};
+    /* border: 1px solid red; */
     border-radius: .5rem;
-`
+    display: flex;
+    overflow: hidden;
+    overflow-x: auto;
+    padding: 1rem;
+    max-width: 97rem;
+    margin: 0 auto 2rem;
 
-export const DeligateButton = styled(motion.button)`
-    ${buttonStyles};
-    margin-left: .5rem;
-    border: 3px solid ${({theme}) => theme.primary};
-    color: ${({theme}) => theme.primary};
-    font-weight: bolder;
-`
+    ${CustomScrollbarWhiteStyles};
+    ::-webkit-scrollbar {
+        width: 10px;
+        display: initial;
+    }
 
-export const UpdateButton = styled(motion.button)`
-    ${buttonStyles};
-    margin-right: .5rem;
-    border: 3px solid transparent;
-    background-color: ${({theme}) => theme.primary};
-    color: #fff;
-    font-weight: bolder;
+
+    li {
+        margin-right: 2rem;
+    }
 `

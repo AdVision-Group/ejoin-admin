@@ -48,3 +48,20 @@ export const DELETE_POST = gql`
         }
     }
 `
+
+export const DELIGATE_ORDER = gql`
+    mutation DeligateOrder($id: ID!, $status: STATUSCODES! ){
+        deligateOrder (id: $id status: $status) {
+            status
+            isOk
+            message
+            data {
+                status
+                productID
+                orderData{
+                    name
+                }
+            }
+        }
+    }
+`

@@ -1,43 +1,115 @@
 import React, {useState, useEffect} from 'react'
 
-import {useQuery} from '@apollo/client'
+import {useQuery, useMutation} from '@apollo/client'
 import {GET_ORDERS} from '../../utils/queries'
+import {
+    DELIGATE_ORDER
+} from '../../utils/mutations'
+import {tabsArr} from '../../utils/orders.utils'
 
 import Spinner from '../../components/spinner/spinner.component'
+import DeligateOrderModal from '../../components/modal-deligate-order/modal-deligate-order.component'
+import ButtonOptions from '../../components/button-options/button-options.component'
 
 import {
     ProductOrdersContainer,
     ProductsContainer,
     EmptyContainer,
     ImageContainer,
-    OptionsContainer,
     ContentContainer,
-    DeligateButton,
-    UpdateButton,
-    ProductOverviewContainer
+
+    ProductOverviewContainer,
+    CenterSpinner,
+    TabsUl,
+    Header
+    // TabLi
 } from './product-orders.styles'
 
 const ProductOrderPage = () => {
-    const [orders, setOrders] = useState(null)
-    const [formItems, setFormItems] = useState(null)
+    const [showDeligateModal, setShowDeligateModal] = useState(false)
+    const [selectedOrderID, setselectedOrderID] = useState(null)
 
-    const {loading, error, data} = useQuery(GET_ORDERS)
+    const [activeTabIndex, setActiveTabIndex] = useState(0)
+    const [activeStatus, setActiveStatus] = useState(tabsArr[activeTabIndex].status)
+    const [tabs] = useState(tabsArr)
 
-    useEffect(() => {
-        if(loading) return
-        console.log(data)
-        setOrders(data.orders)
-    }, [loading, orders])
+    const {loading, error, data, refetch} = useQuery(GET_ORDERS, {
+        variables: {
+            status: activeStatus
+        }
+    })
+    const [deligateOrder] = useMutation(DELIGATE_ORDER)
+
+    const handleTabChange = (idx) => {
+        setActiveTabIndex(idx)
+        setActiveStatus(tabs[idx].status)
+        refetch({
+            status: tabs[idx].status
+        })
+    }
+
+    const handleSubmitDeligateModal = (id, status) => {
+        deligateOrder({
+            variables: {
+                id,
+                status
+            },
+            refetchQueries: [{
+                query: GET_ORDERS,
+                variables: {
+                    status: tabs[activeTabIndex].status
+                }
+            }]
+        })
+        handleToggleDeligateModal(false, null)
+    }
+
+    const handleToggleDeligateModal = (boolean, id) => {
+        if(boolean) {
+            if(!id) return
+            setShowDeligateModal(boolean)
+            setselectedOrderID((id))
+            return
+        }
+        setShowDeligateModal(boolean)
+        setselectedOrderID(id)
+    }
 
     return (
         <ProductOrdersContainer>
-            <ProductsContainer>
+            {showDeligateModal && (
+                <DeligateOrderModal
+                    close={() => handleToggleDeligateModal(false, null)}
+                    update={handleSubmitDeligateModal}
+                    id={selectedOrderID}
+                />
+            )}
+
+            <Header>
+                <h1>Objednávky</h1>
+
+            </Header>
+
+            <TabsUl>
+                {tabs && tabs.map((tab, idx) => (
+                    <li key={idx}>
+                        <button onClick={() => handleTabChange(idx)}>{tab.name}</button>
+                    </li>
+                ))}
+            </TabsUl>
+            {loading && (
+                <CenterSpinner>
+                    <Spinner/>
+                </CenterSpinner>
+            )}
+
+            {!loading && <ProductsContainer>
                 {/* <EmptyContainer>
                     {"+"}
                 </EmptyContainer> */}
-                {loading && <Spinner/>}
 
-                {orders && orders.map(order => {
+
+                {data && data.orders.map(order => {
                     // console.log(order.orderData.product)
                     const productObj = order.orderData.product
                     // delete productObj["__typename"]
@@ -70,22 +142,20 @@ const ProductOrderPage = () => {
                                     }
                                 </ul>
                             </ContentContainer>
-                            <OptionsContainer>
-                                <UpdateButton
-                                    whileHover={{scale: 1.02}}
-                                    whileTap={{scale: .95}}
-                                >Zobrazit</UpdateButton>
-                                <DeligateButton
-                                    whileHover={{scale: 1.02}}
-                                    whileTap={{scale: .95}}
-                                >Spracovat</DeligateButton>
-                            </OptionsContainer>
+                            <ButtonOptions
+                                left={2}
+                                right={2}
+                                bottom={2}
+                                leftLabel="Zobrazit"
+                                rightLabel="Spracovat"
+                                handleRightClick={() => handleToggleDeligateModal(true, order.id)}
+                            />
                         </ProductOverviewContainer>
                     )
                 })}
 
             
-            </ProductsContainer>
+            </ProductsContainer>}
         </ProductOrdersContainer>
     )
 }

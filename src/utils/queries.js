@@ -16,8 +16,8 @@ export const GET_POSTS = gql`
 ` 
 
 export const GET_ORDERS = gql`
-    query {
-        orders {
+    query getOrders($status: STATUSCODES){
+        orders(status: $status) {
             id
             status
             productID

@@ -62,6 +62,27 @@ export const CustomScrollbarStyles = css`
     background: ${({ theme }) => theme.primary};
   }
 `
+export const CustomScrollbarWhiteStyles = css`
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+    display: none;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #ffffff;
+    border-radius: 999rem;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.primary};
+    border-radius: 999rem;
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.primary};
+  }
+`
 
 export const GlobalStyles = createGlobalStyle`
   *, *:before, *:after {
