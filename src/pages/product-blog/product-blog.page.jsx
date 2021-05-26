@@ -26,7 +26,12 @@ const ProductPage = () => {
 
     return (
         <div>
-            <PostsContainer isLight={true} posts={data.posts || []} createRoute={`${match.path}/new-post`} />
+            <PostsContainer 
+                isLight={true} 
+                posts={data?.posts || []} 
+                createRoute={`${match.path}/new-post`} 
+                loading={loading}    
+            />
         </div>
     )
 }

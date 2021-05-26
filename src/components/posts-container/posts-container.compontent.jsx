@@ -7,6 +7,7 @@ import {useMutation} from '@apollo/client'
 // import {DELETE_POST} from '../../utils/mutations'
 // import {GET_POSTS} from '../../utils/queries'
 
+import Spinner from '../../components/spinner/spinner.component'
 
 import News1 from '../../images/news/new1.png'
 
@@ -17,7 +18,7 @@ import {
 
 } from './posts-container.styles'
 
-const PostsContainer = ({ posts, createRoute, isLight }) => {
+const PostsContainer = ({ posts, createRoute, isLight, loading }) => {
     // const [deletePost, { data}] = useMutation(DELETE_POST)
 
     const handleDeletePost = (id) => {
@@ -33,8 +34,8 @@ const PostsContainer = ({ posts, createRoute, isLight }) => {
 
     return (
         <React.Fragment>
+                {loading && <Spinner />}
             <Container>
-
                 {posts && posts.map(({ id, title, description, content, slug, image }, idx) => (
                     <ArticleOverview
                         light={isLight}
