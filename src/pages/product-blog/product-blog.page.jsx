@@ -3,7 +3,9 @@ import { useRouteMatch } from 'react-router-dom'
 // import {useFetch} from '../../hooks/usefetch'
 
 import {useQuery} from '@apollo/client'
-import {GET_POSTS} from '../../utils/queries'
+import {
+    GET_POST_BY_TAG
+} from '../../graphql/queries/product.queries'
 
 import {useNewsContext} from '../../context/news/news.context'
 
@@ -15,24 +17,16 @@ import PostsContainer from '../../components/posts-container/posts-container.com
 
 const ProductPage = () => {
     const match = useRouteMatch()
-    const {posts, getPosts} = useNewsContext()
-    const {loading, error, data} = useQuery(GET_POSTS)
+    const {loading, error, data} = useQuery(GET_POST_BY_TAG)
 
     console.log(loading)
     console.log(error)
     console.log(data)
 
-    useEffect(() => {
-        if(loading) return
-        if(!data) return
-        getPosts(data.posts)
-
-    }, [loading, data])
 
     return (
         <div>
-            <PostsContainer isLight={true} posts={posts} createRoute={`${match.path}/new-post`} />
-
+            <PostsContainer isLight={true} posts={data.posts || []} createRoute={`${match.path}/new-post`} />
         </div>
     )
 }

@@ -12,10 +12,12 @@ import {
     OpenButton
 } from './article-overview.styles'
 
-const ArticleOverview = ({ id, title, description, content, image, path, deletePost, ...otherProps }) => {
+const ArticleOverview = ({ light, id, title, description, content, image, path, deletePost, ...otherProps }) => {
     return (
         <AnimatePresence initial={false} exitBeforeEnter>
             <ArticleContainer
+                isLight={light}
+
                 key={id}
 
                 initial={{
@@ -39,7 +41,9 @@ const ArticleOverview = ({ id, title, description, content, image, path, deleteP
                 {...otherProps}
 
             >
-                <ArticleHeader>
+                <ArticleHeader 
+                    isLight={light}
+                >
                     <ImageContainer
                         initial={{
                             opacity: 0,
@@ -64,7 +68,9 @@ const ArticleOverview = ({ id, title, description, content, image, path, deleteP
                             alt={image.alt}
                         />
                     </ImageContainer>
-                    <HeaderContainer>
+                    <HeaderContainer
+                        isLight={light}
+                    >
                         <h3>{title}</h3>
                     </HeaderContainer>
                 </ArticleHeader>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import {useMutation} from '@apollo/client'
 import {CREATE_POST} from '../../utils/mutations'
-import {GET_POSTS} from '../../utils/queries'
+// import {GET_POSTS} from '../../utils/queries'
 
 import CustomInput from '../../components/custom-input/custom-input.component'
 import CustomButton from '../../components/custom-button/custom-button.component'
@@ -45,14 +45,14 @@ const EjoinGoNewPost = () => {
     const handleSubmit = e => {
         e.preventDefault()
 
-        createPost({
-            variables: postData,
-            refetchQueries: [
-                {
-                    query: GET_POSTS
-                }
-            ]
-        })
+        // createPost({
+        //     variables: postData,
+        //     refetchQueries: [
+        //         {
+        //             query: GET_POSTS
+        //         }
+        //     ]
+        // })
     }
 
     return (

@@ -7,9 +7,12 @@ import CustomButton from '../custom-button/custom-button.component'
 export const ArticleContainer = styled(motion.article)`
     width: 28rem;
     border-radius: 2.5rem;
-    background-color: #272727;
-    box-shadow: 1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16);
+    /* background-color: #272727; */
+    background-color: ${({isLight}) => isLight ? "#fff" : "#272727"};
+    box-shadow: ${({isLight}) => isLight ? "0 .3rem .6rem 0 rgba(0, 0, 0, 0.16)" : "1rem 3rem 1.5rem 0 rgba(0,0,0, 0.16)"};
+    color: ${({isLight}) => isLight ? "#000" : "#fff"};
     margin-bottom: 3rem;
+
 `
 
 export const ArticleHeader = styled.header`
@@ -19,7 +22,9 @@ export const ArticleHeader = styled.header`
 `
 
 export const HeaderContainer = styled.div`
-    background-color: #323232;
+    /* background-color: #323232; */
+    background-color: ${({isLight}) => isLight ? "#eee" : "#323232"};
+
     padding: 1rem 2rem;
     height: 7rem;
     display: flex;
@@ -39,11 +44,12 @@ export const HeaderContainer = styled.div`
 
 export const ImageContainer = styled(motion.div)`
     /* overflow: hidden; */
+    height: 20rem;
 
     img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
     }
 `
 

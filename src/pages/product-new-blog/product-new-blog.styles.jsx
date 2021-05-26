@@ -34,11 +34,14 @@ export const UploadButton = styled(motion.button)`
 `
 
 export const ImageContainer = styled.div`
-    max-height: 60rem;
-    margin-bottom: 2rem;
+    cursor: pointer;
+    max-height: 20rem;
+    margin: 1.5rem;
+    border: ${({isSelected, theme}) => isSelected ? `3px solid ${theme.primary}`: "3px solid transparent"};
 
     img {
         width: 100%;
+        height: 100%;
         object-fit: contain;
     }
 `
@@ -72,4 +75,17 @@ export const CheckBoxContainer = styled.div`
             opacity: 1;
         }
     }
+`
+
+export const UploadedImages = styled.div`
+    display: grid;
+    grid-template-columns: repeat( auto-fill, minmax(auto, 16.75rem));
+    grid-template-rows: minmax(auto, 16.75rem);
+    box-shadow: 0 .3rem .6rem 0 rgba(0, 0, 0, 0.16);
+    margin-bottom: 2rem;
+    border-radius: 1.5rem;
+`
+
+export const Heading3 = styled.h3`
+    margin-bottom: 1rem;
 `

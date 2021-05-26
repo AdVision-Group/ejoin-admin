@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 // import {useFetch} from '../../hooks/usefetch'
 
-import {useQuery} from '@apollo/client'
-import {GET_POSTS} from '../../utils/queries'
+import {useMutation} from '@apollo/client'
+import {CREATE_BLOG_POST} from '../../graphql/mutations/blog.mutations'
 
-import {useNewsContext} from '../../context/news/news.context'
+// import {useNewsContext} from '../../context/news/news.context'
 
-import PostsContainer from '../../components/posts-container/posts-container.compontent'
+// import PostsContainer from '../../components/posts-container/posts-container.compontent'
 
 // import News2 from '../../images/news/new2.png'
 // import News3 from '../../images/news/new3.png'
@@ -23,64 +23,126 @@ import {
     UploadButton,
     ImageContainer,
     CheckBoxContainer,
-    CheckBoxHeader
+    CheckBoxHeader,
+    UploadedImages,
+    Heading3
 } from './product-new-blog.styles'
 
 
 const FORM_INITIAL_DATA = {
-    name: "",
-    description: "",
+    title: "",
     tags: [],
-    image: {
-        access_mode: '',
-        asset_id: '',
-        batchId: '',
-        bytes: 0,
-        created_at: '',
-        etag: '',
-        format: '',
-        height: 0,
-        id: '',
-        original_filename: '',
-        path: '',
-        placeholder: false,
-        public_id: "",
-        resource_type: '',
-        secure_url: '',
-        signature: '',
-        thumbnail_url: '',
-        type: '',
-        url: '',
-        version: 0,
-        version_id: '',
-        width: 0,
-    },
-    html: "",
+    description: "",
+    content: "",
     draft: false
 }
 
 
 const ProductPage = () => {
-    const match = useRouteMatch()
-    const [uploadedImage, setUploadedImage] = useState(null)
+    // const match = useRouteMatch()
+    const [uploadedImages, setUploadedImages] = useState([])
+    const [selectedIndex, setSelectedIndex] = useState(0)
+
+    const [createPost, {data, loading}] = useMutation(CREATE_BLOG_POST)
 
     const myWidget = window.cloudinary.createUploadWidget({
-        cloudName: 'coderkin', 
+        cloudName: process.env.REACT_APP_CLOUDINARY_NAME, 
         folder: "ejoin-product",
-        uploadPreset: 'ejoin-images'}, (error, result) => { 
+        uploadPreset: process.env.REACT_APP_CLOUDINAY_PRESET}, (error, result) => { 
             if (!error && result && result.event === "success") { 
-                console.log('Done! Here is the image info: ', result.info); 
-                console.log(result)
-                setUploadedImage(result.info)
+                // console.log('Done! Here is the image info: ', result.info); 
+                // console.log(result)
+                setUploadedImages(prevValue => [...prevValue, result.info])
             }
         },
-        
     )
 
     const showWidget = (e, widget) => {
         e.preventDefault()
         widget.open()
     }
+
+    const selectImage = (e, img, idx) => {
+        e.preventDefault()
+        setSelectedIndex(idx)
+    }
+
+    const handleOnSubmit = (values, { setSubmitting, resetForm  }) => {
+        const newBlogPostData = {
+            ...values,
+            image: {
+                access_mode: uploadedImages[selectedIndex]?.access_mode,
+                asset_id: uploadedImages[selectedIndex]?.asset_id,
+                batchId: uploadedImages[selectedIndex]?.batchId,
+                bytes: uploadedImages[selectedIndex]?.bytes,
+                created_at: uploadedImages[selectedIndex]?.created_at,
+                etag: uploadedImages[selectedIndex]?.etag,
+                format: uploadedImages[selectedIndex]?.format,
+                height: uploadedImages[selectedIndex]?.height,
+                id: uploadedImages[selectedIndex]?.id,
+                original_filename: uploadedImages[selectedIndex]?.original_filename,
+                path: uploadedImages[selectedIndex]?.path,
+                placeholder: uploadedImages[selectedIndex]?.placeholder,
+                public_id: uploadedImages[selectedIndex]?.public_id,
+                tags:  uploadedImages[selectedIndex]?.tags,
+                resource_type: uploadedImages[selectedIndex]?.resource_type,
+                secure_url: uploadedImages[selectedIndex]?.secure_url,
+                signature: uploadedImages[selectedIndex]?.signature,
+                thumbnail_url: uploadedImages[selectedIndex]?.thumbnail_url,
+                type: uploadedImages[selectedIndex]?.type,
+                url: uploadedImages[selectedIndex]?.url,
+                version: uploadedImages[selectedIndex]?.version,
+                version_id: uploadedImages[selectedIndex]?.version_id,
+                width: uploadedImages[selectedIndex]?.width,
+            },
+            images: uploadedImages.map(image => ({
+                access_mode: image?.access_mode,
+                asset_id: image?.asset_id,
+                batchId: image?.batchId,
+                bytes: image?.bytes,
+                created_at: image?.created_at,
+                etag: image?.etag,
+                format: image?.format,
+                height: image?.height,
+                id: image?.id,
+                original_filename: image?.original_filename,
+                path: image?.path,
+                placeholder: image?.placeholder,
+                public_id: image?.public_id,
+                tags:  image?.tags,
+                resource_type: image?.resource_type,
+                secure_url: image?.secure_url,
+                signature: image?.signature,
+                thumbnail_url: image?.thumbnail_url,
+                type: image?.type,
+                url: image?.url,
+                version: image?.version,
+                version_id: image?.version_id,
+                width: image?.width,
+            }))
+        }
+
+        console.log(newBlogPostData)
+
+        createPost({
+            variables: newBlogPostData
+        })
+
+        resetForm()
+        setUploadedImages([])
+        setSelectedIndex(0)
+
+        setSubmitting(false);
+
+    }
+
+    useEffect(() => {
+        return () => {
+            setUploadedImages([])
+            setSelectedIndex(0)
+        }
+    }, [])
+    console.log(data)
 
     return (
         <NewBlogContainer>
@@ -89,18 +151,7 @@ const ProductPage = () => {
             <Formik
                 initialValues={FORM_INITIAL_DATA}
                 // validate={}
-                onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                    // alert(JSON.stringify(values, null, 2));
-                    console.log({
-                        ...values,
-                        image: {
-                            ...uploadedImage
-                        }
-                    })
-                    setSubmitting(false);
-                    }, 400);
-                }}
+                onSubmit={handleOnSubmit}
                 >
                 {({
                     values,
@@ -117,10 +168,10 @@ const ProductPage = () => {
                             label="Nadpis"
                             light={true}
                             type="text"
-                            name="name"
+                            name="title"
                             handleChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.name}
+                            value={values.title}
                         />
                         {errors.email && touched.email && errors.email}
                         <CustomInput
@@ -136,16 +187,25 @@ const ProductPage = () => {
 
                         <UploadButton onClick={(e) => showWidget(e, myWidget)}>Upload Photo</UploadButton>
 
-                        <ImageContainer>
-                            {uploadedImage && <img src={uploadedImage.secure_url}/>}
-                        </ImageContainer>
+                        {uploadedImages.length > 0 && (
+                            <React.Fragment>
+                                <Heading3>Nahrané obrázky</Heading3>
+                                <UploadedImages>
+                                    {uploadedImages.map((image, idx) => (
+                                        <ImageContainer isSelected={selectedIndex === idx} onClick={(e) => selectImage(e, image, idx)}>
+                                            <img key={idx} src={image.secure_url}/>
+                                        </ImageContainer>
+                                    ))}
+                                </UploadedImages>
+                            </React.Fragment>
+                        )}
 
-                        <Field name="html" type="text">
+                        <Field name="content" type="text">
                             {({ field }) => (
                                 <React.Fragment>
                                     <QuillToolbar />
                                     <ContentTextare
-                                        name="html"
+                                        name="content"
                                         type="text"
                                         value={field.value}
                                         onChange={field.onChange(field.name)}
@@ -177,6 +237,15 @@ const ProductPage = () => {
                                 <Field type="checkbox" name="tags" value="GO_REALIZATION" />
                                 <span>
                                     Go realizacie
+                                </span>
+                            </label>
+                        </CheckBoxContainer>
+
+                        <CheckBoxContainer>
+                            <label>
+                                <Field type="checkbox" name="draft"  />
+                                <span>
+                                    Draft
                                 </span>
                             </label>
                         </CheckBoxContainer>
