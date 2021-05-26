@@ -11,13 +11,14 @@ export const InputGroup = styled.div`
     position: relative;
     margin: 2rem 0 2rem;
     .form-input {
-        background-color: #262626;
+        background-color: ${({isLight}) => isLight ? "#eee" : "#262626"} ;
         border: none;
         padding: 1.5rem 2rem;
         width: 100%;
         height: 5rem;
         border-radius: .8rem;
         color: ${({ theme }) => theme.white};
+        color: ${({isLight, theme}) => isLight ? theme.black : theme.white} ;
         &:focus {
             outline: none;
         }

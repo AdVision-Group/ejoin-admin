@@ -13,6 +13,8 @@ export const theme = {
   white: "#fff",
   red: "#ED4C67",
   black: "#000",
+  green: "#009432",
+  gray: "rgba(0,0,0,0.6)",
   ctaButtonColor: "#fff",
   ctaButtonBackground: "#BFD600",
 

@@ -14,6 +14,7 @@ export const HeaderContainer = styled.div`
 
     h2 {
         font-size: 1.6rem;
+        color: ${({statusColor, theme}) => statusColor ? theme[statusColor] : "#000"};
     }
 `
 

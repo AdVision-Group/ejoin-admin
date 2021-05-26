@@ -3,9 +3,9 @@ import React from 'react'
 
 import { InputGroup } from './custom-input.styles'
 
-const CustomInput = ({ handleChange, label, name, ...otherProps }) => {
+const CustomInput = ({ light, handleChange, label, name, ...otherProps }) => {
     return (
-        <InputGroup>
+        <InputGroup isLight={light}>
             <input
                 className='form-input'
                 name={name}

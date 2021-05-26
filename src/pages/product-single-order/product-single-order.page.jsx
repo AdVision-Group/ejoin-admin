@@ -7,6 +7,8 @@ import {
     GET_PRODUCT_PRICE
 } from '../../utils/queries'
 
+import {getStatusColor} from '../../utils/orders.utils'
+
 import Spinner from '../../components/spinner/spinner.component'
 
 import {
@@ -51,7 +53,7 @@ const ProductSingleOrderPage = () => {
             {loading && <Spinner/>}
 
             {data && (
-                <HeaderContainer>
+                <HeaderContainer statusColor={getStatusColor(data.order.status)}>
                     <h1>{data.order.productID}</h1>
                         <h2>{(totalPrice / 100 ).toFixed(2)}€</h2>
                     <h2>{data.order.status}</h2>

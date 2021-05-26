@@ -31,3 +31,12 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+// const myWidget = window.cloudinary.createUploadWidget({
+//   cloudName: 'coderkin', 
+//   uploadPreset: 'my_preset'}, (error, result) => { 
+//     if (!error && result && result.event === "success") { 
+//       console.log('Done! Here is the image info: ', result.info); 
+//     }
+//   }
+// )

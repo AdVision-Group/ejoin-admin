@@ -6,7 +6,10 @@ import {GET_ORDERS} from '../../utils/queries'
 import {
     DELIGATE_ORDER
 } from '../../utils/mutations'
-import {tabsArr} from '../../utils/orders.utils'
+import {
+    tabsArr,
+    getStatusColor
+} from '../../utils/orders.utils'
 
 import Spinner from '../../components/spinner/spinner.component'
 import DeligateOrderModal from '../../components/modal-deligate-order/modal-deligate-order.component'
@@ -134,7 +137,7 @@ const ProductOrderPage = () => {
                             {/* <ImageContainer>
                                 IMG
                             </ImageContainer> */}
-                            <ContentContainer>
+                            <ContentContainer statusColor={getStatusColor(order.status)}>
                                 <h2>{order.productID}</h2>
                                 <h3>{order.status}</h3>
                                 <ul>

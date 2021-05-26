@@ -69,6 +69,8 @@ export const ContentContainer = styled.div`
         text-align: end;
         font-size: 1.6rem;
         margin-top: .7rem;
+
+        color: ${({statusColor, theme}) => statusColor ? theme[statusColor] : "#000"};
     }
 
 
