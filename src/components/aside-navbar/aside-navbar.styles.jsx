@@ -69,7 +69,7 @@ export const MenuItem = styled.li`
     padding: 1.5rem 3rem;
     transition: all .2s ease-in-out;
     color: #fff;
-    background-color: ${({ theme, isActive }) => isActive ? theme.primary : "unset"};
+    background-color: ${({ theme, isActive, isLight }) => isActive ? isLight ? "hsl(66.44859813084113, 80%, 41.96078431372549%)" : theme.primary : "unset"};
 
     display: grid;
     grid-template-columns: auto 1fr;
@@ -77,14 +77,17 @@ export const MenuItem = styled.li`
     justify-items: center;
 
     &:hover {
-        background-color: ${({ theme }) => theme.primary};
+        background-color: ${({ theme, isLight }) => isLight ? "hsl(66.44859813084113, 80%, 41.96078431372549%)" : theme.primary};
     }
 `
 
 export const LogoutContainer = styled.div`
+    cursor: pointer;
     width:100%;
     position: absolute;
     bottom: 0;
+    background-color: ${({ theme, isActive, isLight }) => isActive ? isLight ? "hsl(66.44859813084113, 80%, 41.96078431372549%)" : theme.primary : "unset"};
+
 
     svg {
         font-size: 4rem;

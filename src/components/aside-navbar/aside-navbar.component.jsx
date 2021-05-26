@@ -38,7 +38,7 @@ const AsideNavbar = ({ navItems, light }) => {
         <AsideContainer isLight={light}>
             <Header isLight={light}>
                 <img
-                    src={EjoinLogo}
+                    src={light ? "https://res.cloudinary.com/coderkin/image/upload/v1622059602/ejoin-product/admin/logo_png_white_2x_vyqcog.png" : EjoinLogo}
                     alt="ejoin logo"
                 />
             </Header>
@@ -49,7 +49,7 @@ const AsideNavbar = ({ navItems, light }) => {
             <Navbar>
                 {navItems.map(({ slug, name, Icon }, idx) => (
                     <Link key={idx} to={slug}>
-                        <MenuItem isActive={checkIfIsActive(slug)}>
+                        <MenuItem isLight={light} isActive={checkIfIsActive(slug)}>
                             <Icon />
                             <p>
                                 {name}
@@ -58,7 +58,7 @@ const AsideNavbar = ({ navItems, light }) => {
                     </Link>
                 ))}
             </Navbar>
-            <LogoutContainer onClick={handleLogout}>
+            <LogoutContainer isLight={light} onClick={handleLogout}>
                 {/* <Link to='/'> */}
                     <MenuItem>
                         <RiLogoutCircleLine />
