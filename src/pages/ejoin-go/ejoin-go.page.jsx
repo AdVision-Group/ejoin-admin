@@ -32,12 +32,12 @@ const EjoinGoPage = () => {
     const navItems = [
         {
             Icon: NewIcon,
-            slug: `${match.path}/news`,
+            slug: `${match.path}/novinky`,
             name: "Novinky"
         },
         {
             Icon: RealisationIcon,
-            slug: `${match.path}/realisations`,
+            slug: `${match.path}/realizacie`,
             name: "Realizácie"
         },
     ]
@@ -62,11 +62,11 @@ const EjoinGoPage = () => {
                     <Switch>
                         <NewsProvider>
                             <ProtectedRoute exact path={`${match.path}/`} component={() => <Redirect to={`${match.path}/news`}/>} />
-                            <ProtectedRoute exact path={`${match.path}/news`} component={EjoinGoNewPage} />
-                            <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} />
+                            <ProtectedRoute exact path={`${match.path}/novinky`} component={EjoinGoNewPage} />
+                            <ProtectedRoute exact path={`${match.path}/novinky/:slug`} component={EjoinGoNewPost} />
+                            <ProtectedRoute exact path={`${match.path}/realizacie`} component={EjoinGoRealisationsPage} />
+                            <ProtectedRoute exact path={`${match.path}/realizacie/:slug`} component={EjoinGoNewRealisation} />
                         </NewsProvider>
-                        <ProtectedRoute exact path={`${match.path}/realisations`} component={EjoinGoRealisationsPage} />
-                        <ProtectedRoute exact path={`${match.path}/realisations/new-realisation`} component={EjoinGoNewRealisation} />
                     </Switch>
 
                 </Suspense>

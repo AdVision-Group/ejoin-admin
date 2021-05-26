@@ -1,37 +1,36 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useRouteMatch } from 'react-router-dom'
 // import {useFetch} from '../../hooks/usefetch'
 
 import {useQuery} from '@apollo/client'
-import {GET_POSTS} from '../../utils/queries'
+import {
+    GET_POST_BY_TAG
+} from '../../graphql/queries/product.queries'
 
-import {useNewsContext} from '../../context/news/news.context'
+// import {useNewsContext} from '../../context/news/news.context'
 
 import PostsContainer from '../../components/posts-container/posts-container.compontent'
-
-// import News2 from '../../images/news/new2.png'
-// import News3 from '../../images/news/new3.png'
 
 
 const EjoinGoNewPage = () => {
     const match = useRouteMatch()
-    const {posts, getPosts} = useNewsContext()
-    const {loading, error, data} = useQuery(GET_POSTS)
+    const {loading, error, data} = useQuery(GET_POST_BY_TAG, {
+        variables: {
+            tag: "GO_BLOG"
+        }
+    })
 
     console.log(loading)
     console.log(error)
     console.log(data)
 
-    useEffect(() => {
-        if(loading) return
-        if(!data) return
-        getPosts(data.posts)
-
-    }, [loading, data])
-
     return (
         <div>
-            <PostsContainer posts={posts} createRoute={`${match.path}/new-post`} />
+            <PostsContainer 
+                posts={data?.posts || []} 
+                createRoute={`${match.path}/new-post`} 
+                loading={loading}    
+            />
 
         </div>
     )

@@ -7,7 +7,7 @@ import {
     GET_POST_BY_TAG
 } from '../../graphql/queries/product.queries'
 
-import {useNewsContext} from '../../context/news/news.context'
+// import {useNewsContext} from '../../context/news/news.context'
 
 import PostsContainer from '../../components/posts-container/posts-container.compontent'
 
@@ -17,7 +17,11 @@ import PostsContainer from '../../components/posts-container/posts-container.com
 
 const ProductPage = () => {
     const match = useRouteMatch()
-    const {loading, error, data} = useQuery(GET_POST_BY_TAG)
+    const {loading, error, data} = useQuery(GET_POST_BY_TAG, {
+        variables: {
+            tag: "PRODUCT_BLOG"
+        }
+    })
 
     console.log(loading)
     console.log(error)

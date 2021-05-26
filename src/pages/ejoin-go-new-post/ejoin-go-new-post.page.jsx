@@ -1,108 +1,255 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {useMutation} from '@apollo/client'
-import {CREATE_POST} from '../../utils/mutations'
+import {CREATE_BLOG_POST} from '../../graphql/mutations/blog.mutations'
 // import {GET_POSTS} from '../../utils/queries'
 
 import CustomInput from '../../components/custom-input/custom-input.component'
 import CustomButton from '../../components/custom-button/custom-button.component'
 import { Quill } from 'react-quill'
 
+
+import { Formik, Field } from 'formik'
+
 import {
-    FormContainer,
-    Header,
-    RowContainer,
-    ColContainer,
+    CheckBoxContainer,
+    CheckBoxHeader,
     ContentTextare,
-    CustomImageButton,
-    AddButton
+    Heading3,
+    ImageContainer,
+    NewBlogContainer,
+    UploadButton,
+    UploadedImages,
+    Tipbox
 } from './ejoin-go-new-post.styles'
 
+const FORM_INITIAL_DATA = {
+    title: "",
+    tags: [],
+    description: "",
+    content: "",
+    draft: false
+}
+
+
 const EjoinGoNewPost = () => {
-    const [postData, setPostData] = useState({
-        name: "",
-        type: "news",
-        description: "",
-        html: "",
-        draft: true
-    })
+    // const match = useRouteMatch()
+    const [uploadedImages, setUploadedImages] = useState([])
+    const [selectedIndex, setSelectedIndex] = useState(0)
 
-    const [createPost, { data }] = useMutation(CREATE_POST)
+    const [createPost, {data, loading}] = useMutation(CREATE_BLOG_POST)
 
-    const handleInputChange = e => {
-        const {name, value} = e.target
+    const myWidget = window.cloudinary.createUploadWidget({
+        cloudName: process.env.REACT_APP_CLOUDINARY_NAME, 
+        folder: "ejoin-product",
+        uploadPreset: process.env.REACT_APP_CLOUDINAY_PRESET}, (error, result) => { 
+            if (!error && result && result.event === "success") { 
+                // console.log('Done! Here is the image info: ', result.info); 
+                // console.log(result)
+                setUploadedImages(prevValue => [...prevValue, result.info])
+            }
+        },
+    )
 
-        console.log(name)
-        console.log(value)
-
-        setPostData(prevValue => ({
-            ...prevValue,
-            [name]: value
-        }))
-
-    }
-
-    const handleSubmit = e => {
+    const showWidget = (e, widget) => {
         e.preventDefault()
-
-        // createPost({
-        //     variables: postData,
-        //     refetchQueries: [
-        //         {
-        //             query: GET_POSTS
-        //         }
-        //     ]
-        // })
+        widget.open()
     }
+
+    const selectImage = (e, img, idx) => {
+        e.preventDefault()
+        setSelectedIndex(idx)
+    }
+
+    const handleOnSubmit = (values, { setSubmitting, resetForm  }) => {
+        const newBlogPostData = {
+            ...values,
+            image: {
+                access_mode: uploadedImages[selectedIndex]?.access_mode,
+                asset_id: uploadedImages[selectedIndex]?.asset_id,
+                batchId: uploadedImages[selectedIndex]?.batchId,
+                bytes: uploadedImages[selectedIndex]?.bytes,
+                created_at: uploadedImages[selectedIndex]?.created_at,
+                etag: uploadedImages[selectedIndex]?.etag,
+                format: uploadedImages[selectedIndex]?.format,
+                height: uploadedImages[selectedIndex]?.height,
+                id: uploadedImages[selectedIndex]?.id,
+                original_filename: uploadedImages[selectedIndex]?.original_filename,
+                path: uploadedImages[selectedIndex]?.path,
+                placeholder: uploadedImages[selectedIndex]?.placeholder,
+                public_id: uploadedImages[selectedIndex]?.public_id,
+                tags:  uploadedImages[selectedIndex]?.tags,
+                resource_type: uploadedImages[selectedIndex]?.resource_type,
+                secure_url: uploadedImages[selectedIndex]?.secure_url,
+                signature: uploadedImages[selectedIndex]?.signature,
+                thumbnail_url: uploadedImages[selectedIndex]?.thumbnail_url,
+                type: uploadedImages[selectedIndex]?.type,
+                url: uploadedImages[selectedIndex]?.url,
+                version: uploadedImages[selectedIndex]?.version,
+                version_id: uploadedImages[selectedIndex]?.version_id,
+                width: uploadedImages[selectedIndex]?.width,
+            },
+            images: uploadedImages.map(image => ({
+                access_mode: image?.access_mode,
+                asset_id: image?.asset_id,
+                batchId: image?.batchId,
+                bytes: image?.bytes,
+                created_at: image?.created_at,
+                etag: image?.etag,
+                format: image?.format,
+                height: image?.height,
+                id: image?.id,
+                original_filename: image?.original_filename,
+                path: image?.path,
+                placeholder: image?.placeholder,
+                public_id: image?.public_id,
+                tags:  image?.tags,
+                resource_type: image?.resource_type,
+                secure_url: image?.secure_url,
+                signature: image?.signature,
+                thumbnail_url: image?.thumbnail_url,
+                type: image?.type,
+                url: image?.url,
+                version: image?.version,
+                version_id: image?.version_id,
+                width: image?.width,
+            }))
+        }
+
+        console.log(newBlogPostData)
+
+        createPost({
+            variables: newBlogPostData
+        })
+
+        resetForm()
+        setUploadedImages([])
+        setSelectedIndex(0)
+
+        setSubmitting(false);
+
+    }
+
+    useEffect(() => {
+        return () => {
+            setUploadedImages([])
+            setSelectedIndex(0)
+        }
+    }, [])
+    console.log(data)
+
 
     return (
-        <FormContainer onSubmit={handleSubmit}>
-            <Header>
-                <h1>Novinky</h1>
-                <AddButton pill>Pridať</AddButton>
-            </Header>
-            <RowContainer>
-                <ColContainer>
-                    <CustomInput
-                        label="Nadpis"
-                        type='text'
-                        name="name"
-                        value={postData.name}
-                        handleChange={handleInputChange}
+        <NewBlogContainer>
+            <h1>Vytvoriť nový článok</h1>
 
-                    />
-                    <CustomInput
-                        label="Popis"
-                        type='text'
-                        name="description"
-                        value={postData.description}
-                        handleChange={handleInputChange}
+            <Formik
+                initialValues={FORM_INITIAL_DATA}
+                // validate={}
+                onSubmit={handleOnSubmit}
+                >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                }) => (
+                    <form onSubmit={handleSubmit}>
+                        <CustomInput
+                            label="Nadpis"
+                            type="text"
+                            name="title"
+                            handleChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.title}
+                        />
+                        {errors.email && touched.email && errors.email}
+                        <CustomInput
+                            label="Popis"
+                            type="text"
+                            name="description"
+                            handleChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.description}
+                        />
+                        {errors.password && touched.password && errors.password}
 
-                    />
-                    <CustomImageButton>
-                        <label for="file-upload" class="custom-file-upload">
-                            Vybrať obrázok
-                        </label>
-                        <input id="file-upload" type="file" />
-                    </CustomImageButton>
-                </ColContainer>
-                <ColContainer>
-                    <QuillToolbar />
-                    <ContentTextare
-                        value={postData.html}
-                        onChange={(v) => handleInputChange({
-                            target: {
-                                name: "html",
-                                value: v
-                            }
-                        })}
-                        modules={modules}
-                        formats={formats}
-                    />
-                </ColContainer>
-            </RowContainer>
+                        <UploadButton onClick={(e) => showWidget(e, myWidget)}>Nahrať obrázky</UploadButton>
 
-        </FormContainer>
+                        {uploadedImages.length > 0 && (
+                            <React.Fragment>
+                                <Heading3>Nahrané obrázky <Tipbox>(Vyberte náhľadový obrázok)</Tipbox></Heading3>
+                                <UploadedImages>
+                                    {uploadedImages.map((image, idx) => (
+                                        <ImageContainer isSelected={selectedIndex === idx} onClick={(e) => selectImage(e, image, idx)}>
+                                            <img key={idx} src={image.secure_url}/>
+                                        </ImageContainer>
+                                    ))}
+                                </UploadedImages>
+                            </React.Fragment>
+                        )}
+
+                        <Field name="content" type="text">
+                            {({ field }) => (
+                                <React.Fragment>
+                                    <QuillToolbar />
+                                    <ContentTextare
+                                        name="content"
+                                        type="text"
+                                        value={field.value}
+                                        onChange={field.onChange(field.name)}
+                                        modules={modules}
+                                        formats={formats}
+                                    />
+                                </React.Fragment>
+                            )}
+                        </Field>
+
+
+                        <CheckBoxHeader id="checkbox-group">
+                            <h3>Uverejniť na: <Tipbox>(Vyberte aspoň 1 možnosť)</Tipbox></h3>
+                        </CheckBoxHeader>
+                        <CheckBoxContainer aria-labelledby="checkbox-group">
+                            <label>
+                                <Field type="checkbox" name="tags" value="PRODUCT_BLOG" />
+                                <span>
+                                    Product blog
+                                </span>
+                            </label>
+                            <label>
+                                <Field type="checkbox" name="tags" value="GO_BLOG" />
+                                <span>
+                                    Go novinky
+                                </span>
+                            </label>
+                            <label>
+                                <Field type="checkbox" name="tags" value="GO_REALIZATION" />
+                                <span>
+                                    Go realizacie
+                                </span>
+                            </label>
+                        </CheckBoxContainer>
+
+                        <CheckBoxContainer>
+                            <label>
+                                <Field type="checkbox" name="draft"  />
+                                <span>
+                                    Publikovať
+                                </span>
+                            </label>
+                        </CheckBoxContainer>
+
+                        <CustomButton type="submit" disabled={isSubmitting}>
+                            Vytvoriť
+                        </CustomButton>
+                    </form>
+                )}
+            </Formik>
+        </NewBlogContainer>
     )
 }
 
