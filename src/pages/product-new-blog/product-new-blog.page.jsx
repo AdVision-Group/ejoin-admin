@@ -45,6 +45,8 @@ const ProductPage = () => {
 
     const [createPost, {data, loading}] = useMutation(CREATE_BLOG_POST)
 
+    console.log(process.env.REACT_APP_CLOUDINARY_NAME)
+
     const myWidget = window.cloudinary.createUploadWidget({
         cloudName: process.env.REACT_APP_CLOUDINARY_NAME, 
         folder: "ejoin-product",
