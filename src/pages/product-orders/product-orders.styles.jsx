@@ -49,16 +49,6 @@ export const ProductsContainer = styled.div`
             padding: 2rem 1.5rem;
             text-align: center;
         }
-
-        tr:not(:first-child) {
-            cursor: pointer;
-            transition: all .2s ease-in-out;
-            border: 2px solid transparent;
-            :hover {
-                background-color: ${({theme}) => theme.primary};
-                font-weight: bolder;
-            }
-        }
     }
 
 `
@@ -66,6 +56,14 @@ export const TableRow = styled.tr`
     background-color: ${({isSelected}) => isSelected ? `hsl(66.44859813084113, 80%, 41.96078431372549%)` : "unset"};
     color: ${({isSelected}) => isSelected ? `#fff` : "#000"};
     font-weight: ${({isSelected}) => isSelected ? `bolder` : "400"};
+
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    border: 2px solid transparent;
+    :hover {
+        background-color: ${({theme}) => theme.primary};
+        font-weight: bolder;
+    }
 
 `
 

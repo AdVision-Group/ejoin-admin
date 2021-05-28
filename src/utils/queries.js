@@ -137,6 +137,7 @@ export const GET_ORDERS = gql`
                 deliveryCity
                 deliveryCountry
                 isBusiness
+                created_date
                 business {
                     name
                     ico

@@ -145,22 +145,18 @@ const ProductOrderPage = () => {
             )}
 
             {!loading && <ProductsContainer>
-                {/* <EmptyContainer>
-                    {"+"}
-                </EmptyContainer> */}
-
                 <table>
                     <thead>
                         <tr>
                             <th>Produkt</th>
                             <th>Meno a priezvisko</th>
                             <th>Status</th>
-                            {/* <th>Možnosti</th> */}
+                            <th>Dátum</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data && data.orders.map(order => {
-                            console.log(order.id === selectedOrder?.id)
+                            // console.log(order.id === selectedOrder?.id)
 
                             return (
                                 <TableRow 
@@ -172,6 +168,7 @@ const ProductOrderPage = () => {
                                     <td>{order.productID}</td>
                                     <td>{order.orderData.name}</td>
                                     <StatusTd statusColor={getStatusColor(order.status)}>{order.status}</StatusTd>
+                                    <td>{order.orderData.created_date}</td>
                                 </TableRow>
                             )
                         })}
