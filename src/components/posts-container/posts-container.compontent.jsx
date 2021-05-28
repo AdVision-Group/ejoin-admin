@@ -1,15 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 
 import ArticleOverview from '../article-overview/article-overview.component'
-// import CustomButton from '../custom-button/custom-button.component'
 import {useMutation} from '@apollo/client'
 // import {DELETE_POST} from '../../utils/mutations'
 // import {GET_POSTS} from '../../utils/queries'
 
 import Spinner from '../../components/spinner/spinner.component'
+import ConfirmModal from '../../components/modals/confirm-modal/confirm-modal.component'
 
-import News1 from '../../images/news/new1.png'
 
 
 import {
@@ -20,8 +19,12 @@ import {
 
 const PostsContainer = ({ posts, createRoute, isLight, loading }) => {
     // const [deletePost, { data}] = useMutation(DELETE_POST)
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [selectedPost, setSelectedPost] = useState(null)
 
     const handleDeletePost = (id) => {
+        console.log("CLICK")
+        setShowConfirmModal(true)
     //     deletePost({
     //         variables: {id},
     //         refetchQueries: [
@@ -32,9 +35,26 @@ const PostsContainer = ({ posts, createRoute, isLight, loading }) => {
     //     })
     }
 
+    const handleDeleteClick = (id) => {
+        console.log("CLICK")
+        console.log(id)
+        setShowConfirmModal(true)
+        setSelectedPost(id)
+    }
+
     return (
         <React.Fragment>
-                {loading && <Spinner />}
+            {showConfirmModal && (
+                <ConfirmModal
+                    close={() => setShowConfirmModal(false)}
+                    onCancel={() => setShowConfirmModal(false)}
+                    onConfirm={() => {
+                        console.log("DELETE POST")
+                        setShowConfirmModal(false)
+                    }}
+                />
+            )}
+            {loading && <Spinner />}
             <Container>
                 {posts && posts.map(({ id, title, description, content, slug, image }, idx) => (
                     <ArticleOverview
@@ -44,7 +64,7 @@ const PostsContainer = ({ posts, createRoute, isLight, loading }) => {
                         title={title}
                         description={description}
                         content={content}
-                        deletePost={handleDeletePost}
+                        deletePost={() => handleDeleteClick(id)}
                         image={{
                             src: image.secure_url,
                             alt: "Ejoin blog image",

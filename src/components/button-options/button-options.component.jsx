@@ -11,10 +11,11 @@ const ButtonOptions = ({
     left = 0,
     right = 0,
     bottom = 0,
+    rightRed = false,
     leftLabel = "Primary",
     rightLabel = "Secondary",
     handleLeftClick = () => {},
-    handleRightClick = () => {}
+    handleRightClick = () => {},
 }) => {
     return (
         <OptionsContainer 
@@ -34,6 +35,7 @@ const ButtonOptions = ({
                 whileHover={{scale: 1.02}}
                 whileTap={{scale: .95}}
                 onClick={handleRightClick}
+                isRed={rightRed}
             >
                 {rightLabel}
             </DeligateButton>

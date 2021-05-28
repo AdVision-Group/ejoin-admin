@@ -27,6 +27,7 @@ export const AsideContainer = styled(motion.section)`
 export const SectionContainer = styled(motion.section)`
     grid-column: 1/3;    
     padding: 5rem 1.5rem;
+    overflow: hidden;
 
     @media only screen and (min-width: ${({theme}) => theme['blog-sm']}) { 
         grid-column: 2/3;    

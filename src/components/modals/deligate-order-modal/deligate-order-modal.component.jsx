@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 
-import {tabsArr} from '../../utils/orders.utils'
-import ButtonOption from '../button-options/button-options.component'
+import {tabsArr} from '../../../utils/orders.utils'
+import ButtonOption from '../../button-options/button-options.component'
+import ModalContainer from '../modal-container.component'
 
 import {
-    ModalContainer,
     Modal,
     Title,
-} from './modal-deligate-order.styles'
+} from './deligate-order-modal.styles'
 
 const DeligateOrderModal = ({
     close = () => {},
@@ -18,7 +18,9 @@ const DeligateOrderModal = ({
     const [selectOption, setSelectOption] = useState(tabsArr[0].status)
 
     return ReactDOM.createPortal((
-        <ModalContainer>
+        <ModalContainer
+            close={close}
+        >
             <Modal>
                 <Title>Vyberte jednu z možností</Title>
                 <select value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
@@ -32,6 +34,7 @@ const DeligateOrderModal = ({
                     rightLabel="Zrušiť"
                     handleLeftClick={() => update(id, selectOption)}
                     handleRightClick={close}
+                    rightRed
                 />
             </Modal>
         </ModalContainer>

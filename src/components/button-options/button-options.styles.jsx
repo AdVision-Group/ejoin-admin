@@ -2,6 +2,7 @@ import styled, {css} from 'styled-components'
 import {motion} from 'framer-motion'
 
 export const OptionsContainer = styled.div`
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     /* margin: 0 2rem 2rem; */
@@ -19,13 +20,14 @@ const buttonStyles = css`
 export const DeligateButton = styled(motion.button)`
     ${buttonStyles};
     margin-left: .5rem;
-    border: 3px solid ${({theme}) => theme.primary};
-    color: ${({theme}) => theme.primary};
+    border: 3px solid ${({theme, isRed}) => isRed ? theme.red : theme.primary};
+    color: ${({theme, isRed}) => isRed ? theme.red : theme.primary};
     font-weight: bolder;
 `
 
 export const UpdateButton = styled(motion.button)`
     ${buttonStyles};
+
     margin-right: .5rem;
     border: 3px solid transparent;
     background-color: ${({theme}) => theme.primary};

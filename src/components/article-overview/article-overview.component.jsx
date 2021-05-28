@@ -1,15 +1,15 @@
 import React from 'react'
 import { AnimatePresence } from 'framer-motion'
 
+import ButtonOptions from '../button-options/button-options.component'
+
 import {
     ArticleContainer,
     ArticleHeader,
     HeaderContainer,
     ImageContainer,
     ArticleBody,
-    OptionsContainer,
-    DeleteButton,
-    OpenButton
+
 } from './article-overview.styles'
 
 const ArticleOverview = ({ light, id, title, description, content, image, path, deletePost, ...otherProps }) => {
@@ -76,14 +76,12 @@ const ArticleOverview = ({ light, id, title, description, content, image, path, 
                 </ArticleHeader>
                 <ArticleBody>
                     <p>{description}</p>
-                    <OptionsContainer>
-                        <OpenButton pill>
-                            Zobraziť
-                        </OpenButton>
-                        <DeleteButton pill onClick={() => deletePost(id)}>
-                            Odstrániť
-                        </DeleteButton>
-                    </OptionsContainer>
+                    <ButtonOptions
+                        handleRightClick={deletePost}
+                        leftLabel="Zobraziť"
+                        rightLabel="Odstrániť"
+                        rightRed
+                    />
                 </ArticleBody>
             </ArticleContainer>
         </AnimatePresence>

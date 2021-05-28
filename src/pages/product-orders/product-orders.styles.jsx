@@ -14,81 +14,64 @@ export const ProductOrdersContainer = styled.div`
 
 export const ProductsContainer = styled.div`
     /* padding: 1.5rem; */
-    background-color: ${({theme}) => theme.productPageContainerBackgroundColor};
+    /* background-color: ${({theme}) => theme.productPageContainerBackgroundColor}; */
+    box-shadow: 0 .3rem .6rem 0 rgba(0, 0, 0, 0.16);
     max-width: 97rem;
     margin: 0 auto;
     border-radius: 1.5rem;
-    display: grid;
-    grid-template-columns: repeat( auto-fill, minmax(auto, 32rem));
-
-`
-
-export const EmptyContainer = styled.button`
-    background-color: ${({theme}) => theme.productContainerBackgroundColor};
-    padding: 2rem;
-    font-size: 10rem;
-    text-align: center;
-    border-radius: 1.5rem;
-    display: block;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 2rem;
-`
-
-export const ProductOverviewContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    margin: 2rem;
-    background-color: ${({theme}) => theme.productContainerBackgroundColor};
-    box-shadow: 0 .3rem .6rem 0 rgba(0, 0, 0, 0.03);
-    border-radius: 1.5rem;
     overflow: hidden;
-    /* max-width: 32rem; */
-`
+    overflow-x: auto;
 
-export const ImageContainer = styled.div`
-    width: 100%;
-    height: 15rem;
-    /* background-color: #eee; */
-`
-
-export const ContentContainer = styled.div`
-    margin: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-
-
-    h2 {
-        align-self: start;
-        text-transform: uppercase;
+    ${CustomScrollbarWhiteStyles};
+    ::-webkit-scrollbar {
+        width: 8px;
+        display: initial;
     }
 
-    h3 {
-        align-self: start;
-        text-align: end;
-        font-size: 1.6rem;
-        margin-top: .7rem;
-
-        color: ${({statusColor, theme}) => statusColor ? theme[statusColor] : "#000"};
-    }
+    /* display: grid;
+    grid-template-columns: repeat( auto-fill, minmax(auto, 32rem)); */
 
 
-    ul {
-        grid-column: 1/3;
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        opacity: .83;
-        align-self: end;
+    table {
+        border-collapse: collapse;
+        width: 100%;
 
+        th, td {
+            min-width: 20rem;
+        }
 
-        li {
-            margin-bottom: .5rem;
+        th {
+            padding: 2rem 1.5rem;
+            border-bottom: 3px solid ${({theme}) => theme.primary};
+        }
+
+        td {
+            padding: 2rem 1.5rem;
             text-align: center;
         }
+
+        tr:not(:first-child) {
+            cursor: pointer;
+            transition: all .2s ease-in-out;
+            border: 2px solid transparent;
+            :hover {
+                background-color: ${({theme}) => theme.primary};
+                font-weight: bolder;
+            }
+        }
     }
+
+`
+export const TableRow = styled.tr`
+    background-color: ${({isSelected}) => isSelected ? `hsl(66.44859813084113, 80%, 41.96078431372549%)` : "unset"};
+    color: ${({isSelected}) => isSelected ? `#fff` : "#000"};
+    font-weight: ${({isSelected}) => isSelected ? `bolder` : "400"};
+
+`
+
+export const StatusTd = styled.td`
+    color: ${({statusColor, theme}) => statusColor ? theme[statusColor] : "#000"};
+
 `
 
 export const CenterSpinner = styled.div`
@@ -103,19 +86,20 @@ export const Header = styled.div`
 `
 
 export const TabsUl = styled.ul`
-    background-color: ${({theme}) => theme.productPageContainerBackgroundColor};
+    /* background-color: ${({theme}) => theme.productPageContainerBackgroundColor}; */
+    box-shadow: 0 .3rem .3rem 0 rgba(0, 0, 0, 0.06);
+
     /* border: 1px solid red; */
     border-radius: .5rem;
     display: flex;
     overflow: hidden;
     overflow-x: auto;
-    padding: 1rem;
     max-width: 97rem;
     margin: 0 auto 2rem;
 
     ${CustomScrollbarWhiteStyles};
     ::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
         display: initial;
     }
 
@@ -130,5 +114,27 @@ export const TabButton = styled.button`
     background-color: transparent;
     font-weight: bolder;
     color: ${({theme}) => theme.primary};
-    border-bottom: ${({isActive, theme}) => isActive ? `3px solid ${theme.primary}`: "3px solid transparent"};
+    border-bottom: ${({isActive, theme}) => isActive ? `4px solid ${theme.primary}`: "4px solid transparent"};
+    padding: 1rem;
+`
+
+export const OptionsContainer = styled(motion.div)`
+    box-shadow: 0 .3rem .6rem 0 rgba(0, 0, 0, 0.06);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    max-width: 97rem;
+    margin: 0 auto 2rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+
+    button {
+        cursor: pointer;
+        background-color: ${({theme}) => theme.primary};
+        padding: 1.5rem 2rem;
+        margin: 1rem;
+        border-radius: .5rem;
+        color: #fff;
+        font-weight: bolder;
+    }
 `
