@@ -33,5 +33,59 @@ export const getStatusColor = (status) => {
     if(status === "RECIEVED") {
         return "gray"
     }
+}
 
+export const getStatusTranslate = (statusStr) => {
+    if(!statusStr) return
+
+    if(statusStr === "APPROVED") {
+        return "Spracovaná"
+    }
+    if(statusStr === "CANCELED") {
+        return "Zrušená"
+    }
+    if(statusStr === "FINISHED") {
+        return "Dokončená"
+    }
+    if(statusStr === "RECIEVED") {
+        return "Nespracovaná"
+    }
+}
+
+export const getConfiguratorDataTranslate = (str) => {
+    if(!str) return
+
+    if(str === "chargingOptions") {
+        return "Nabíjanie"
+    }
+    if(str === "cabelOptions") {
+        return "Kábel"
+    }
+    if(str === "positionOptions") {
+        return "Poloha"
+    }
+    if(str === "buyOptions") {
+        return "Spôsob úhrady"
+    }
+    if(str === "authOptions") {
+        return "Authorizácie"
+    }
+    if(str === "wifiOptions") {
+        return "Wifi"
+    }
+    if(str === "eleOptions") {
+        return "Elektromer"
+    }
+    if(str === "servicesOptions") {
+        return "Doplnky"
+    }
+    if(str === "stationsOptions") {
+        return "Počet stojanov"
+    }
+    if(str === "smartSolutionsOptions") {
+        return "Smart riešenia"
+    }
+    if(str === "chargingNetworkOptions") {
+        return "Nabíjacia sieť"
+    }
 }

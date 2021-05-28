@@ -150,28 +150,32 @@ const ProductOrderPage = () => {
                 </EmptyContainer> */}
 
                 <table>
-                    <tr>
-                        <th>Produkt</th>
-                        <th>Meno a priezvisko</th>
-                        <th>Status</th>
-                        {/* <th>Možnosti</th> */}
-                    </tr>
-                    {data && data.orders.map(order => {
-                        console.log(order.id === selectedOrder?.id)
+                    <thead>
+                        <tr>
+                            <th>Produkt</th>
+                            <th>Meno a priezvisko</th>
+                            <th>Status</th>
+                            {/* <th>Možnosti</th> */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data && data.orders.map(order => {
+                            console.log(order.id === selectedOrder?.id)
 
-                        return (
-                            <TableRow 
-                                key={order.id} 
-                                onClick={() => handleClick(order)}
-                                onDoubleClick={() => handleDoubleClick(order)}
-                                isSelected={order.id === selectedOrder?.id}
-                            >
-                                <td>{order.productID}</td>
-                                <td>{order.orderData.name}</td>
-                                <StatusTd statusColor={getStatusColor(order.status)}>{order.status}</StatusTd>
-                            </TableRow>
-                        )
-                    })}
+                            return (
+                                <TableRow 
+                                    key={order.id} 
+                                    onClick={() => handleClick(order)}
+                                    onDoubleClick={() => handleDoubleClick(order)}
+                                    isSelected={order.id === selectedOrder?.id}
+                                >
+                                    <td>{order.productID}</td>
+                                    <td>{order.orderData.name}</td>
+                                    <StatusTd statusColor={getStatusColor(order.status)}>{order.status}</StatusTd>
+                                </TableRow>
+                            )
+                        })}
+                    </tbody>
                 </table>
 
 

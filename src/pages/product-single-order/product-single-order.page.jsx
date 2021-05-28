@@ -7,7 +7,11 @@ import {
     GET_PRODUCT_PRICE
 } from '../../utils/queries'
 
-import {getStatusColor} from '../../utils/orders.utils'
+import {
+    getStatusColor,
+    getStatusTranslate,
+    getConfiguratorDataTranslate
+} from '../../utils/orders.utils'
 
 import Spinner from '../../components/spinner/spinner.component'
 
@@ -15,7 +19,12 @@ import {
     ProductOrdersContainer,
     HeaderContainer,
     UserInfoContainer,
-    Container
+    Container,
+    ValueContainer,
+    ProductInfoContainer,
+    GridContainer,
+    GroupTitle,
+    BusinessInfoContainer
 } from './product-single-order.styles'
 
 const ProductSingleOrderPage = () => {
@@ -48,6 +57,8 @@ const ProductSingleOrderPage = () => {
 
     }, [productLoading])
 
+    console.log(data)
+
     return (
         <ProductOrdersContainer>
             {loading && <Spinner/>}
@@ -56,76 +67,132 @@ const ProductSingleOrderPage = () => {
                 <HeaderContainer statusColor={getStatusColor(data.order.status)}>
                     <h1>{data.order.productID}</h1>
                         <h2>{(totalPrice / 100 ).toFixed(2)}€</h2>
-                    <h2>{data.order.status}</h2>
+                    <h2>{getStatusTranslate(data.order.status)}</h2>
                 </HeaderContainer>
             )}
 
             {data && (
                 <UserInfoContainer>
-                    <div>
-                        <h2>Informácie o zákazníkovi</h2>
+                    <h2>Informácie o zákazníkovi</h2>
+                    <GridContainer>
                         <Container>
                             <p>Meno a Priezvisko</p>
-                            <p>{data.order.orderData.name}</p>
+                            <GroupTitle>{data.order.orderData.name}</GroupTitle>
                         </Container>
                         <Container>
                             <p>Tel.</p>
-                            <p>{data.order.orderData.phone}</p>
+                            <GroupTitle>{data.order.orderData.phone}</GroupTitle>
                         </Container>
                         <Container>
                             <p>E-mail</p>
-                            <p>{data.order.orderData.email}</p>
+                            <GroupTitle>{data.order.orderData.email}</GroupTitle>
                         </Container>
-                    </div>
-                    <div>
-                        <h2>Adresa</h2>
-                        <Container>
-                            <p>Ulica</p>
-                            <p>{data.order.orderData.street}</p>
-                        </Container>
-                        <Container>
-                            <p>Mesto.</p>
-                            <p>{data.order.orderData.city}</p>
-                        </Container>
-                        <Container>
-                            <p>PSČ</p>
-                            <p>{data.order.orderData.psc}</p>
-                        </Container>
-                        <Container>
-                            <p>Štát</p>
-                            <p>{data.order.orderData.country}</p>
-                        </Container>
-                    </div>
+                    </GridContainer>
                 </UserInfoContainer>
             )}
+
             {data && (
                 <UserInfoContainer>
-                    <div>
-                        <h2>Informacie o objednávke</h2>
-                        {
-                            Object.keys(data.order.orderData.product).map((val, idx) => {
-                                if(val === "__typename") return
-                                return (
-                                    <Container key={idx}>
-                                        <p>{val}</p>
-                                        {
-                                            Object.keys(data.order.orderData.product[val]).map((v, index) => {
-                                                if(v === "__typename") return
-                                                return (
-                                                    <React.Fragment key={index}>
-                                                        <p>{data.order.orderData.product[val][v].value}</p>
-                                                        {data.order.orderData.product[val][v].value && <p>{(data.order.orderData.product[val][v].price / 100).toFixed(2)}€</p>}
-                                                    </React.Fragment>
-                                                )
-                                            })
-                                        }
-                                    </Container>
-                                )
-                            })
-                        }
-
-                    </div>
+                        <h2>Adresa</h2>
+                        <GridContainer>
+                            <Container>
+                                <p>Ulica</p>
+                                <GroupTitle>{data.order.orderData.street}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>Mesto.</p>
+                                <GroupTitle>{data.order.orderData.city}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>PSČ</p>
+                                <GroupTitle>{data.order.orderData.psc}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>Štát</p>
+                                <GroupTitle>{data.order.orderData.country}</GroupTitle>
+                            </Container>
+                        </GridContainer>
                 </UserInfoContainer>
+            )}
+
+
+            {data && data.order.orderData.isDeliveryAddressDifferent && (
+                <BusinessInfoContainer>
+                        <h2>Doručovacia adresa</h2>
+                        <GridContainer>
+                            <Container>
+                                <p>Ulica</p>
+                                <GroupTitle>{data.order.orderData.deliveryStreet}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>Mesto.</p>
+                                <GroupTitle>{data.order.orderData.deliveryCity}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>PSČ</p>
+                                <GroupTitle>{data.order.orderData.deliverPsc}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>Štát</p>
+                                <GroupTitle>{data.order.orderData.deliveryCountry}</GroupTitle>
+                            </Container>
+                        </GridContainer>
+                </BusinessInfoContainer>
+            )}
+
+
+            {data && data.order.orderData.isBusiness && (
+                <BusinessInfoContainer>
+                        <h2>Informácie o spoločnosti</h2>
+                        <GridContainer>
+                            <Container>
+                                <p>Názov spoločnosti</p>
+                                <GroupTitle>{data.order.orderData.business.name || "-"}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>IČO</p>
+                                <GroupTitle>{data.order.orderData.business.ico || "-"}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>DIČ</p>
+                                <GroupTitle>{data.order.orderData.business.dic || "-"}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>IČDPH</p>
+                                <GroupTitle>{data.order.orderData.business.icdph || "-"}</GroupTitle>
+                            </Container>
+                        </GridContainer>
+                </BusinessInfoContainer>
+            )}
+
+
+            {data && (
+                <ProductInfoContainer>
+                    <h2>Informacie o objednávke</h2>
+                    <GridContainer>
+                        {Object.keys(data.order.orderData.product).map((val, idx) => {
+                            if(val === "__typename") return
+                            return (
+                                <Container key={idx}>
+                                    <p>{getConfiguratorDataTranslate(val)}</p>
+                                    {
+                                        Object.keys(data.order.orderData.product[val]).map((v, index) => {
+                                            if(v === "__typename") return
+                                            const value = data.order.orderData.product[val][v].value 
+                                            // getConfiguratorDataTranslate
+                                            return (
+                                                <ValueContainer key={index}>
+                                                    <p>{value}</p>
+                                                    {data.order.orderData.product[val][v].value && <p>{(data.order.orderData.product[val][v].price / 100).toFixed(2)}€</p>}
+                                                </ValueContainer>
+                                            )
+                                        })
+                                    }
+                                </Container>
+                            )
+                        })}
+                    </GridContainer>
+                </ProductInfoContainer>
             )}
         </ProductOrdersContainer>
     )
