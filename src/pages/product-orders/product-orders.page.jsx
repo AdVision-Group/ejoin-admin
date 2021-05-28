@@ -8,7 +8,8 @@ import {
 } from '../../utils/mutations'
 import {
     tabsArr,
-    getStatusColor
+    getStatusColor,
+    getStatusTranslate
 } from '../../utils/orders.utils'
 
 import Spinner from '../../components/spinner/spinner.component'
@@ -157,6 +158,20 @@ const ProductOrderPage = () => {
                     <tbody>
                         {data && data.orders.map(order => {
                             // console.log(order.id === selectedOrder?.id)
+                            // const date = new Date(order.created_date).toDateString()
+
+                            const date = new Date(order.created_date * 1).toDateString()
+                            // const datevalues = [
+                            //     date.getFullYear(),
+                            //     date.getMonth()+1,
+                            //     date.getDate(),
+                            //     date.getHours(),
+                            //     date.getMinutes(),
+                            //     date.getSeconds(),
+                            // ];
+                            console.log(date)
+
+                            
 
                             return (
                                 <TableRow 
@@ -167,8 +182,8 @@ const ProductOrderPage = () => {
                                 >
                                     <td>{order.productID}</td>
                                     <td>{order.orderData.name}</td>
-                                    <StatusTd statusColor={getStatusColor(order.status)}>{order.status}</StatusTd>
-                                    <td>{order.orderData.created_date}</td>
+                                    <StatusTd statusColor={getStatusColor(order.status)}>{getStatusTranslate(order.status)}</StatusTd>
+                                    <td>{date}</td>
                                 </TableRow>
                             )
                         })}

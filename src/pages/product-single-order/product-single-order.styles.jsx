@@ -62,6 +62,7 @@ export const GridContainer = styled.div`
 
 export const Container = styled.div`
     /* border: 1px solid red; */
+
     max-width: 25rem;
     padding: 1rem 1.5rem;
     margin-bottom: 1.5rem;
@@ -70,6 +71,7 @@ export const Container = styled.div`
 
     p {
         :nth-of-type(1) {
+
             font-size: 1.4rem;
             /* opacity: 0.63; */
         }
@@ -78,11 +80,12 @@ export const Container = styled.div`
 
 export const ValueContainer = styled.div`
     text-align: end;
-    background-color: #fff;
+    /* background-color: #fff; */
     padding: 1.5rem;
     margin-top: .5rem;
     border-radius: .5rem;
     p {
+        font-weight: bolder;
         :nth-of-type(1) {
             opacity: 0.83;
         }
@@ -91,4 +94,6 @@ export const ValueContainer = styled.div`
 
 export const GroupTitle = styled.p`
     font-weight: bolder;
+    text-align: end;
+    padding: 1.5rem;
 `

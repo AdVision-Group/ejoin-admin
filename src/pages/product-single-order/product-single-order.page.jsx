@@ -130,7 +130,7 @@ const ProductSingleOrderPage = () => {
                             </Container>
                             <Container>
                                 <p>PSČ</p>
-                                <GroupTitle>{data.order.orderData.deliverPsc}</GroupTitle>
+                                <GroupTitle>{data.order.orderData.deliveryPsc}</GroupTitle>
                             </Container>
                             <Container>
                                 <p>Štát</p>
@@ -148,6 +148,10 @@ const ProductSingleOrderPage = () => {
                             <Container>
                                 <p>Názov spoločnosti</p>
                                 <GroupTitle>{data.order.orderData.business.name || "-"}</GroupTitle>
+                            </Container>
+                            <Container>
+                                <p>Adresa spoločnosti</p>
+                                <GroupTitle>{data.order.orderData.business.residence || "-"}</GroupTitle>
                             </Container>
                             <Container>
                                 <p>IČO</p>

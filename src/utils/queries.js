@@ -23,6 +23,7 @@ export const GET_ORDER = gql`
             id
             status
             productID
+            created_date
             orderData {
                 name
                 email
@@ -42,6 +43,7 @@ export const GET_ORDER = gql`
                     ico
                     dic
                     icdph
+                    residence
                 }
                 product {
                     chargingOptions {
@@ -123,6 +125,7 @@ export const GET_ORDERS = gql`
             id
             status
             productID
+            created_date
             orderData {
                 name
                 email
@@ -137,7 +140,6 @@ export const GET_ORDERS = gql`
                 deliveryCity
                 deliveryCountry
                 isBusiness
-                created_date
                 business {
                     name
                     ico
