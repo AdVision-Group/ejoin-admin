@@ -6,7 +6,7 @@ import PostsContainer from '../../components/posts-container/posts-container.com
 import {useQuery} from '@apollo/client'
 import {
     GET_POST_BY_TAG
-} from '../../graphql/queries/product.queries'
+} from '../../graphql/queries/blog.queries'
 
 // import News1 from '../../images/realizations/realization1.png'
 // import News2 from '../../images/realizations/realization2.png'
@@ -20,15 +20,12 @@ const EjoinGoRealisationsPage = () => {
         }
     })
 
-    console.log(loading)
-    console.log(error)
-    console.log(data)
-
     return (
         <div>
             <PostsContainer 
                 posts={data?.posts || []} 
                 createRoute={`${match.path}/new-realisation`} 
+                blogTag="GO_REALIZATION"
                 loading={loading}    
             />
 

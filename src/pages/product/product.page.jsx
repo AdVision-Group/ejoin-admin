@@ -20,7 +20,7 @@ const ProductBlogPage = lazy(() => import('../product-blog/product-blog.page'))
 const ProductOrdersPage = lazy(() => import('../product-orders/product-orders.page'))
 const ProductSingleOrderPage = lazy(() => import("../product-single-order/product-single-order.page"))
 const ProductNewBlogPage = lazy(() => import("../product-new-blog/product-new-blog.page"))
-
+const PostPage = lazy(() => import("../post/post.page"))
 
 
 const ProductPage = () => {
@@ -60,7 +60,9 @@ const ProductPage = () => {
                     <Switch>
                         <ProtectedRoute exact path={`${match.path}/`} component={() => <Redirect to={`${match.path}/blog`}/>} />
                         <ProtectedRoute exact path={`${match.path}/blog`} component={ProductBlogPage} />
-                        <ProtectedRoute exact path={`${match.path}/blog/:id`} component={ProductNewBlogPage} />
+                        <ProtectedRoute exact path={`${match.path}/blog/novy-prispevok`} component={ProductNewBlogPage} />
+                        <ProtectedRoute exact path={`${match.path}/blog/:id`} component={PostPage} />
+
                         {/* <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} /> */}
 
                         <ProtectedRoute exact path={`${match.path}/orders`} component={ProductOrdersPage} />

@@ -17,6 +17,16 @@ export const tabsArr = [
     },
 ]
 
+export const FORM_INITIAL_DATA = {
+    title: "",
+    tags: [],
+    description: "",
+    content: "",
+    draft: false,
+    image: {},
+    images: []
+}
+
 export const getStatusColor = (status) => {
     console.log(status)
     if(!status) return

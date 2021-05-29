@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 import ArticleOverview from '../article-overview/article-overview.component'
 import {useMutation} from '@apollo/client'
-// import {DELETE_POST} from '../../utils/mutations'
-// import {GET_POSTS} from '../../utils/queries'
+import {DELETE_POST} from '../../utils/mutations'
+import {GET_POST_BY_TAG} from '../../graphql/queries/blog.queries'
 
 import Spinner from '../../components/spinner/spinner.component'
 import ConfirmModal from '../../components/modals/confirm-modal/confirm-modal.component'
@@ -17,22 +18,24 @@ import {
 
 } from './posts-container.styles'
 
-const PostsContainer = ({ posts, createRoute, isLight, loading }) => {
-    // const [deletePost, { data}] = useMutation(DELETE_POST)
+const PostsContainer = ({ posts, createRoute, isLight, loading, blogTag }) => {
+    const history = useHistory()
+    const [deletePost] = useMutation(DELETE_POST)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [selectedPost, setSelectedPost] = useState(null)
 
     const handleDeletePost = (id) => {
-        console.log("CLICK")
-        setShowConfirmModal(true)
-    //     deletePost({
-    //         variables: {id},
-    //         refetchQueries: [
-    //             {
-    //                 query: GET_POSTS
-    //             }
-    //         ]
-    //     })
+        deletePost({
+            variables: {id},
+            refetchQueries: [
+                {
+                    query: GET_POST_BY_TAG,
+                    variables: {
+                        tag: blogTag
+                    }
+                }
+            ]
+        })
     }
 
     const handleDeleteClick = (id) => {
@@ -51,6 +54,7 @@ const PostsContainer = ({ posts, createRoute, isLight, loading }) => {
                     onConfirm={() => {
                         console.log("DELETE POST")
                         setShowConfirmModal(false)
+                        handleDeletePost(selectedPost)
                     }}
                 />
             )}
@@ -64,6 +68,7 @@ const PostsContainer = ({ posts, createRoute, isLight, loading }) => {
                         title={title}
                         description={description}
                         content={content}
+                        handleClick={() => history.push(`${history.location.pathname}/${id}`)}
                         deletePost={() => handleDeleteClick(id)}
                         image={{
                             src: image.secure_url,

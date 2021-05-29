@@ -1,13 +1,11 @@
 import React from 'react'
 import { useRouteMatch } from 'react-router-dom'
-// import {useFetch} from '../../hooks/usefetch'
 
 import {useQuery} from '@apollo/client'
 import {
     GET_POST_BY_TAG
-} from '../../graphql/queries/product.queries'
+} from '../../graphql/queries/blog.queries'
 
-// import {useNewsContext} from '../../context/news/news.context'
 
 import PostsContainer from '../../components/posts-container/posts-container.compontent'
 
@@ -20,16 +18,13 @@ const EjoinGoNewPage = () => {
         }
     })
 
-    console.log(loading)
-    console.log(error)
-    console.log(data)
-
     return (
         <div>
             <PostsContainer 
                 posts={data?.posts || []} 
                 createRoute={`${match.path}/new-post`} 
                 loading={loading}    
+                blogTag="GO_BLOG"
             />
 
         </div>

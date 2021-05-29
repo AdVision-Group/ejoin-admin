@@ -4,12 +4,14 @@ import {useMutation} from '@apollo/client'
 import {CREATE_BLOG_POST} from '../../graphql/mutations/blog.mutations'
 // import {GET_POSTS} from '../../utils/queries'
 
+import Tipbox from '../../components/tipbox/tipbox.component'
 import CustomInput from '../../components/custom-input/custom-input.component'
 import CustomButton from '../../components/custom-button/custom-button.component'
 import { Quill } from 'react-quill'
 
 
 import { Formik, Field } from 'formik'
+import {FORM_INITIAL_DATA} from '../../utils/orders.utils'
 
 import {
     CheckBoxContainer,
@@ -20,16 +22,7 @@ import {
     NewBlogContainer,
     UploadButton,
     UploadedImages,
-    Tipbox
 } from './ejoin-go-new-post.styles'
-
-const FORM_INITIAL_DATA = {
-    title: "",
-    tags: [],
-    description: "",
-    content: "",
-    draft: false
-}
 
 
 const EjoinGoNewPost = () => {
@@ -116,8 +109,6 @@ const EjoinGoNewPost = () => {
             }))
         }
 
-        console.log(newBlogPostData)
-
         createPost({
             variables: newBlogPostData
         })
@@ -136,8 +127,6 @@ const EjoinGoNewPost = () => {
             setSelectedIndex(0)
         }
     }, [])
-    console.log(data)
-
 
     return (
         <NewBlogContainer>
@@ -167,7 +156,7 @@ const EjoinGoNewPost = () => {
                             onBlur={handleBlur}
                             value={values.title}
                         />
-                        {errors.email && touched.email && errors.email}
+                        {errors.title && touched.title && errors.title}
                         <CustomInput
                             label="Popis"
                             type="text"
@@ -176,13 +165,13 @@ const EjoinGoNewPost = () => {
                             onBlur={handleBlur}
                             value={values.description}
                         />
-                        {errors.password && touched.password && errors.password}
+                        {errors.description && touched.description && errors.description}
 
                         <UploadButton onClick={(e) => showWidget(e, myWidget)}>Nahrať obrázky</UploadButton>
 
                         {uploadedImages.length > 0 && (
                             <React.Fragment>
-                                <Heading3>Nahrané obrázky <Tipbox>(Vyberte náhľadový obrázok)</Tipbox></Heading3>
+                                <Heading3>Nahrané obrázky <Tipbox>Vyberte náhľadový obrázok</Tipbox></Heading3>
                                 <UploadedImages>
                                     {uploadedImages.map((image, idx) => (
                                         <ImageContainer isSelected={selectedIndex === idx} onClick={(e) => selectImage(e, image, idx)}>
@@ -211,7 +200,7 @@ const EjoinGoNewPost = () => {
 
 
                         <CheckBoxHeader id="checkbox-group">
-                            <h3>Uverejniť na: <Tipbox>(Vyberte aspoň 1 možnosť)</Tipbox></h3>
+                            <h3>Uverejniť na: <Tipbox>Vyberte aspoň 1 možnosť</Tipbox></h3>
                         </CheckBoxHeader>
                         <CheckBoxContainer aria-labelledby="checkbox-group">
                             <label>

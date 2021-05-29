@@ -12,7 +12,7 @@ import {
 
 } from './article-overview.styles'
 
-const ArticleOverview = ({ light, id, title, description, content, image, path, deletePost, ...otherProps }) => {
+const ArticleOverview = ({ light, id, title, description, content, image, path, handleClick, deletePost, ...otherProps }) => {
     return (
         <AnimatePresence initial={false} exitBeforeEnter>
             <ArticleContainer
@@ -77,6 +77,7 @@ const ArticleOverview = ({ light, id, title, description, content, image, path, 
                 <ArticleBody>
                     <p>{description}</p>
                     <ButtonOptions
+                        handleLeftClick={handleClick}
                         handleRightClick={deletePost}
                         leftLabel="Zobraziť"
                         rightLabel="Odstrániť"

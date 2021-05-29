@@ -4,7 +4,7 @@ import { useRouteMatch } from 'react-router-dom'
 import {useQuery} from '@apollo/client'
 import {
     GET_POST_BY_TAG
-} from '../../graphql/queries/product.queries'
+} from '../../graphql/queries/blog.queries'
 
 
 import PostsContainer from '../../components/posts-container/posts-container.compontent'
@@ -25,7 +25,8 @@ const ProductPage = () => {
             <PostsContainer 
                 isLight={true} 
                 posts={data?.posts || []} 
-                createRoute={`${match.path}/new-post`} 
+                createRoute={`${match.path}/novy-prispevok`} 
+                blogTag="PRODUCT_BLOG"
                 loading={loading}    
             />
         </div>

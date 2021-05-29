@@ -1,22 +1,5 @@
 import {gql} from '@apollo/client'
 
-export const GET_POSTS = gql`
-    query {
-            posts {
-                id
-                title
-                date
-                slug
-                pageViews
-                    content
-                draft
-                image {
-                secure_url
-                }
-        }
-    }
-` 
-
 export const GET_ORDER = gql`
     query getOrder($id: ID!){
         order(id: $id) {

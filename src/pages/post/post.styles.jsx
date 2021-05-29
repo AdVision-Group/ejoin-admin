@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import {motion} from 'framer-motion'
 
 export const NewBlogContainer = styled.div`
-    /* color: #000; */
+    color: #000;
     max-width: 67rem;
     margin: 0 auto;
 `
@@ -12,7 +12,7 @@ export const ContentTextare = styled(ReactQuill)`
     height: 50rem;
     /* color: #fff; */
     /* background-color: ${({ theme }) => theme.backgroundSecondary}; */
-    background-color: #262626 ;
+    background-color: #eee ;
     margin-bottom: 2rem;
     border-radius: 0 0 1.5rem 1.5rem;
 
@@ -89,4 +89,3 @@ export const UploadedImages = styled.div`
 export const Heading3 = styled.h3`
     margin-bottom: 1rem;
 `
-

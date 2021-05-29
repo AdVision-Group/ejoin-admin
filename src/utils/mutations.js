@@ -38,13 +38,6 @@ export const DELETE_POST = gql`
             id: $id
         ) {
             id
-            name
-            date
-            description
-            slug
-            pageViews
-            html
-            draft
         }
     }
 `
