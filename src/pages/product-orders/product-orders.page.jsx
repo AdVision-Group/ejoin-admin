@@ -1,6 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useQuery, useMutation} from '@apollo/client'
+
+import {
+    useLoadingModal
+} from '../../hooks/useLoadingModal'
 
 import {GET_ORDERS} from '../../utils/queries'
 import {
@@ -14,6 +18,7 @@ import {
 
 import Spinner from '../../components/spinner/spinner.component'
 import DeligateOrderModal from '../../components/modals/deligate-order-modal/deligate-order-modal.component'
+import LoadingModal from '../../components/modals/loading-modal/loading-modal.component'
 
 import {
     ProductOrdersContainer,
@@ -36,12 +41,44 @@ const ProductOrderPage = () => {
     const [activeStatus, setActiveStatus] = useState(tabsArr[activeTabIndex].status)
     const [tabs] = useState(tabsArr)
 
+    const {
+        isLoading,
+        status,
+        message,
+        toggleLoading,
+        setStatus,
+        setMessage,
+        resetModal
+    } = useLoadingModal()
+
     const {loading, data, refetch} = useQuery(GET_ORDERS, {
         variables: {
             status: activeStatus
         }
     })
-    const [deligateOrder] = useMutation(DELIGATE_ORDER)
+    const [deligateOrder, {loading: deligateLoading}] = useMutation(DELIGATE_ORDER, {
+        onCompleted: (data) => {
+            console.log("Order success change")
+            console.log(data)
+
+            setStatus("SUCCESS")
+            setMessage("Objednávka bola úspešne presunutá")
+
+            setTimeout(() => {
+                resetModal()
+            }, 1000);
+        },
+        onError: () => {
+            console.log(data)
+
+            setStatus("ERROR")
+            setMessage("Niečo sa pokazilo")
+
+            setTimeout(() => {
+                resetModal()
+            }, 1000);
+        }
+    })
 
     const handleTabChange = (idx) => {
         setActiveTabIndex(idx)
@@ -53,6 +90,7 @@ const ProductOrderPage = () => {
     }
 
     const handleSubmitDeligateModal = (id, status) => {
+        toggleLoading(true)
         deligateOrder({
             variables: {
                 id,
@@ -117,7 +155,13 @@ const ProductOrderPage = () => {
                 />
             )}
 
-
+            {isLoading && (
+                <LoadingModal
+                    loading={deligateLoading}
+                    status={status}
+                    message={message}
+                />
+            )}
 
             <Header>
                 <h1>Objednávky</h1>
@@ -199,49 +243,3 @@ const ProductOrderPage = () => {
 }
 
 export default ProductOrderPage
-
-// {data && data.orders.map(order => {
-//     // console.log(order.orderData.product)
-//     const productObj = order.orderData.product
-//     // delete productObj["__typename"]
-
-//     const items = Object.keys(productObj).map(val => {
-//         return Object.keys(productObj[val]).map(v => {
-//             // console.log(productObj[val][v])
-//             return productObj[val][v].value
-//         }) 
-//     })
-//     // console.log(items)
-
-//     const filteredAllItems = items.map(val => val.filter(v => typeof v === "string"))
-//     const filteredItems = filteredAllItems.filter(val => val.length > 0)
-//     // console.log(filteredItems)
-
-//     return (
-//         <ProductOverviewContainer key={order.id}>
-//             {/* <ImageContainer>
-//                 IMG
-//             </ImageContainer> */}
-//             <ContentContainer statusColor={getStatusColor(order.status)}>
-//                 <h2>{order.productID}</h2>
-//                 <h3>{order.status}</h3>
-//                 <ul>
-//                     {
-//                         filteredItems.map((item, idx) => (
-//                             <li key={idx}>{item[0]}</li>
-//                         ))
-//                     }
-//                 </ul>
-//             </ContentContainer>
-//             <ButtonOptions
-//                 left={2}
-//                 right={2}
-//                 bottom={2}
-//                 leftLabel="Zobrazit"
-//                 rightLabel="Spracovat"
-//                 handleLeftClick={() => history.push(`/dashboard/product/orders/${order.id}`)}
-//                 handleRightClick={() => handleToggleDeligateModal(true, order.id)}
-//             />
-//         </ProductOverviewContainer>
-//     )
-// })}

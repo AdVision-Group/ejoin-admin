@@ -14,7 +14,7 @@ import {
 
 const EjoinGoRealisationsPage = () => {
     const match = useRouteMatch()
-    const {loading, error, data} = useQuery(GET_POST_BY_TAG, {
+    const {loading, data} = useQuery(GET_POST_BY_TAG, {
         variables: {
             tag: "GO_REALIZATION"
         }
@@ -24,7 +24,7 @@ const EjoinGoRealisationsPage = () => {
         <div>
             <PostsContainer 
                 posts={data?.posts || []} 
-                createRoute={`${match.path}/new-realisation`} 
+                createRoute={`${match.path}/novy-prispevok`} 
                 blogTag="GO_REALIZATION"
                 loading={loading}    
             />

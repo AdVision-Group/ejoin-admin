@@ -61,7 +61,7 @@ const ProductPage = () => {
                         <ProtectedRoute exact path={`${match.path}/`} component={() => <Redirect to={`${match.path}/blog`}/>} />
                         <ProtectedRoute exact path={`${match.path}/blog`} component={ProductBlogPage} />
                         <ProtectedRoute exact path={`${match.path}/blog/novy-prispevok`} component={ProductNewBlogPage} />
-                        <ProtectedRoute exact path={`${match.path}/blog/:id`} component={PostPage} />
+                        <ProtectedRoute exact path={`${match.path}/blog/:id`} component={(props) => <PostPage tag="PRODUCT_BLOG" isLight {...props}/>} />
 
                         {/* <ProtectedRoute exact path={`${match.path}/news/new-post`} component={EjoinGoNewPost} /> */}
 

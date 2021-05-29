@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams, useHistory} from 'react-router-dom'
 import lodash from 'lodash'
+
+import {useLoadingModal} from '../../hooks/useLoadingModal'
 
 import Tipbox from '../../components/tipbox/tipbox.component'
 import CustomInput from '../../components/custom-input/custom-input.component'
@@ -44,21 +46,52 @@ const getChangedValues = (values, initialValues) => {
   }
 
 
-const PostPage = () => {
+const PostPage = ({tag, isLight}) => {
+
     const {id} = useParams()
+    const history = useHistory()
     const [uploadedImages, setUploadedImages] = useState([])
     const [selectedIndex, setSelectedIndex] = useState(0)
 
     const {data: postData, loading: postLoading} = useQuery(GET_POST_DATA, {
         variables: {
             id: id
-        }
+        },
+        fetchPolicy: "no-cache"
     })
     
+    const {
+        isLoading,
+        status,
+        message,
+        toggleLoading,
+        setMessage,
+        setStatus,
+        resetModal
+    } = useLoadingModal()
+
     const [updatePost, {loading: loadingPostUpdate}] = useMutation(UPDATE_BLOG_POST, {
         onCompleted: (data) => {
             console.log("Post UPDATED")
             console.log(data)
+            setStatus("SUCCESS")
+            setMessage("Príspevok bol úspešne upravený")
+            setTimeout(() => {
+                resetModal()
+                if(tag === "PRODUCT_BLOG") return history.push("/dashboard/product/blog")
+                if(tag === "GO_BLOG") return history.push("/dashboard/ejoin-go/novinky")
+                if(tag === "GO_REALIZATION") return history.push("/dashboard/ejoin-go/realizacie")
+                
+            }, 1000);
+        },
+        onError: (data) => {
+            console.log("Error")
+            console.log(data)
+            setStatus("ERROR")
+            setMessage("Niečo sa pokazilo...")
+            setTimeout(() => {
+                resetModal()
+            }, 1000);
         }
     })
 
@@ -109,6 +142,8 @@ const PostPage = () => {
 
 
     const handleOnSubmit = (values, { setSubmitting, resetForm  }) => {
+        toggleLoading(true)
+        setStatus("LOADING")
         const obj = getChangedValues(values, postData.post)
 
         console.log("changed values")
@@ -140,12 +175,12 @@ const PostPage = () => {
 
         updatePost({
             variables: newBlogPostData,
-            // refetchQueries: [{
-            //     query: GET_POST_BY_TAG,
-            //     variables: {
-            //         tag: tag
-            //     }
-            // }]
+            refetchQueries: [{
+                query: GET_POST_BY_TAG,
+                variables: {
+                    tag: tag
+                }
+            }]
         })
 
         setSubmitting(false);
@@ -157,7 +192,7 @@ const PostPage = () => {
         
         const imageIndex = postData?.post?.images?.findIndex(img => img.public_id === postData.post.image.public_id)
 
-        setUploadedImages(postData.post.images)
+        setUploadedImages(postData?.post?.images || [])
         setSelectedIndex(imageIndex || 0)
     }, [postData, postLoading])
 
@@ -169,18 +204,22 @@ const PostPage = () => {
     }, [])
 
     return (
-        <NewBlogContainer>
+        <NewBlogContainer isLight={isLight}>
             <h1>Upraviť príspevok</h1>
 
             {postLoading && (
                 <Spinner/>
             )}
 
-            {loadingPostUpdate && (
-                <LoadingModal/>
+            {isLoading && (
+                <LoadingModal
+                    loading={loadingPostUpdate}
+                    message={message}
+                    status={status}
+                />
             )}
 
-            {!postLoading && postData && (
+            {!postLoading && postData?.post && (
                     <Formik
                         initialValues={postData.post}
                         // validate={}
@@ -200,7 +239,7 @@ const PostPage = () => {
                                 <form onSubmit={handleSubmit}>
                                     <CustomInput
                                         label="Nadpis"
-                                        light={true}
+                                        light={isLight}
                                         type="text"
                                         name="title"
                                         handleChange={handleChange}
@@ -210,7 +249,7 @@ const PostPage = () => {
                                     {errors.title && touched.title && errors.title}
                                     <CustomInput
                                         label="Popis"
-                                        light={true}
+                                        light={isLight}
                                         type="text"
                                         name="description"
                                         handleChange={handleChange}
@@ -249,6 +288,7 @@ const PostPage = () => {
                                             <React.Fragment>
                                                 <QuillToolbar />
                                                 <ContentTextare
+                                                    isLight
                                                     name="content"
                                                     type="text"
                                                     value={field.value}

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react'
+import {useHistory} from 'react-router-dom'
+import {useLoadingModal} from '../../hooks/useLoadingModal'
+
 import {useMutation} from '@apollo/client'
 import {CREATE_BLOG_POST} from '../../graphql/mutations/blog.mutations'
+import {GET_POST_BY_TAG} from '../../graphql/queries/blog.queries'
 
 import Tipbox from '../../components/tipbox/tipbox.component'
 import CustomInput from '../../components/custom-input/custom-input.component'
 import CustomButton from '../../components/custom-button/custom-button.component'
+import LoadingModal from '../../components/modals/loading-modal/loading-modal.component'
 import { Quill } from 'react-quill'
 
 
@@ -24,19 +29,80 @@ import {
 
 
 const EjoinGoNewRealisation = () => {
+    const history = useHistory()
     const [uploadedImages, setUploadedImages] = useState([])
     const [selectedIndex, setSelectedIndex] = useState(0)
 
-    const [createPost, {data, loading}] = useMutation(CREATE_BLOG_POST)
+    const [createPost, {loading}] = useMutation(CREATE_BLOG_POST, {
+        onCompleted: (data) => {
+            console.log("Post CREATED")
+            console.log(data)
+
+            setStatus("SUCCESS")
+            setMessage("Príspevok bol úspešne vytvorený")
+
+            setTimeout(() => {
+                resetModal()
+                history.push('/dashboard/product/blog')
+            }, 1000);
+        },
+        onError: (data) => {
+            console.log("Error")
+            console.log(data)
+            setStatus("ERROR")
+            setMessage("Niečo sa pokazilo...")
+            setTimeout(() => {
+                resetModal()
+            }, 1000);
+        },
+        refetchQueries: [{
+            query: GET_POST_BY_TAG,
+            variables: {
+                tag: "GO_REALIZATION"
+            }
+        }]
+    })
+
+    const {
+        isLoading,
+        status,
+        message,
+        toggleLoading,
+        setMessage,
+        setStatus,
+        resetModal
+    } = useLoadingModal()
 
     const myWidget = window.cloudinary.createUploadWidget({
         cloudName: process.env.REACT_APP_CLOUDINARY_NAME, 
-        folder: "ejoin-product",
+        folder: process.env.NODE_ENV === 'production' ? "ejoin-product" : "ejoin-product-dev",
         uploadPreset: process.env.REACT_APP_CLOUDINAY_PRESET}, (error, result) => { 
             if (!error && result && result.event === "success") { 
-                // console.log('Done! Here is the image info: ', result.info); 
-                // console.log(result)
-                setUploadedImages(prevValue => [...prevValue, result.info])
+                setUploadedImages(prevValue => [...prevValue, {
+                    access_mode: result.info?.access_mode,
+                    asset_id: result.info?.asset_id,
+                    batchId: result.info?.batchId,
+                    bytes: result.info?.bytes,
+                    created_at: result.info?.created_at,
+                    etag: result.info?.etag,
+                    format: result.info?.format,
+                    height: result.info?.height,
+                    id: result.info?.id,
+                    original_filename: result.info?.original_filename,
+                    path: result.info?.path,
+                    placeholder: result.info?.placeholder,
+                    public_id: result.info?.public_id,
+                    tags:  result.info?.tags,
+                    resource_type: result.info?.resource_type,
+                    secure_url: result.info?.secure_url,
+                    signature: result.info?.signature,
+                    thumbnail_url: result.info?.thumbnail_url,
+                    type: result.info?.type,
+                    url: result.info?.url,
+                    version: result.info?.version,
+                    version_id: result.info?.version_id,
+                    width: result.info?.width,
+                }])
             }
         },
     )
@@ -52,58 +118,9 @@ const EjoinGoNewRealisation = () => {
     }
 
     const handleOnSubmit = (values, { setSubmitting, resetForm  }) => {
+        toggleLoading(true)
         const newBlogPostData = {
             ...values,
-            image: {
-                access_mode: uploadedImages[selectedIndex]?.access_mode,
-                asset_id: uploadedImages[selectedIndex]?.asset_id,
-                batchId: uploadedImages[selectedIndex]?.batchId,
-                bytes: uploadedImages[selectedIndex]?.bytes,
-                created_at: uploadedImages[selectedIndex]?.created_at,
-                etag: uploadedImages[selectedIndex]?.etag,
-                format: uploadedImages[selectedIndex]?.format,
-                height: uploadedImages[selectedIndex]?.height,
-                id: uploadedImages[selectedIndex]?.id,
-                original_filename: uploadedImages[selectedIndex]?.original_filename,
-                path: uploadedImages[selectedIndex]?.path,
-                placeholder: uploadedImages[selectedIndex]?.placeholder,
-                public_id: uploadedImages[selectedIndex]?.public_id,
-                tags:  uploadedImages[selectedIndex]?.tags,
-                resource_type: uploadedImages[selectedIndex]?.resource_type,
-                secure_url: uploadedImages[selectedIndex]?.secure_url,
-                signature: uploadedImages[selectedIndex]?.signature,
-                thumbnail_url: uploadedImages[selectedIndex]?.thumbnail_url,
-                type: uploadedImages[selectedIndex]?.type,
-                url: uploadedImages[selectedIndex]?.url,
-                version: uploadedImages[selectedIndex]?.version,
-                version_id: uploadedImages[selectedIndex]?.version_id,
-                width: uploadedImages[selectedIndex]?.width,
-            },
-            images: uploadedImages.map(image => ({
-                access_mode: image?.access_mode,
-                asset_id: image?.asset_id,
-                batchId: image?.batchId,
-                bytes: image?.bytes,
-                created_at: image?.created_at,
-                etag: image?.etag,
-                format: image?.format,
-                height: image?.height,
-                id: image?.id,
-                original_filename: image?.original_filename,
-                path: image?.path,
-                placeholder: image?.placeholder,
-                public_id: image?.public_id,
-                tags:  image?.tags,
-                resource_type: image?.resource_type,
-                secure_url: image?.secure_url,
-                signature: image?.signature,
-                thumbnail_url: image?.thumbnail_url,
-                type: image?.type,
-                url: image?.url,
-                version: image?.version,
-                version_id: image?.version_id,
-                width: image?.width,
-            }))
         }
 
         createPost({
@@ -129,6 +146,14 @@ const EjoinGoNewRealisation = () => {
         <NewBlogContainer>
             <h1>Vytvoriť nový článok</h1>
 
+            {isLoading && (
+                <LoadingModal
+                    loading={loading}
+                    message={message}
+                    status={status}
+                />
+            )}
+
             <Formik
                 initialValues={FORM_INITIAL_DATA}
                 // validate={}
@@ -153,7 +178,7 @@ const EjoinGoNewRealisation = () => {
                             onBlur={handleBlur}
                             value={values.title}
                         />
-                        {errors.email && touched.email && errors.email}
+                        {errors.title && touched.title && errors.title}
                         <CustomInput
                             label="Popis"
                             type="text"
@@ -162,7 +187,7 @@ const EjoinGoNewRealisation = () => {
                             onBlur={handleBlur}
                             value={values.description}
                         />
-                        {errors.password && touched.password && errors.password}
+                        {errors.description && touched.description && errors.description}
 
                         <UploadButton onClick={(e) => showWidget(e, myWidget)}>Nahrať obrázky</UploadButton>
 

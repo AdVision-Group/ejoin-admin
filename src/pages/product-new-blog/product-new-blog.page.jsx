@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import {useHistory} from 'react-router-dom'
 
+import {useLoadingModal} from '../../hooks/useLoadingModal'
+
 import {useMutation} from '@apollo/client'
 import {CREATE_BLOG_POST} from '../../graphql/mutations/blog.mutations'
 import {GET_POST_BY_TAG} from '../../graphql/queries/blog.queries'
 
 import CustomInput from '../../components/custom-input/custom-input.component'
 import CustomButton from '../../components/custom-button/custom-button.component'
+import Tipbox from '../../components/tipbox/tipbox.component'
 import LoadingModal from '../../components/modals/loading-modal/loading-modal.component'
 import { Quill } from 'react-quill'
 
@@ -34,7 +37,23 @@ const ProductPage = () => {
         onCompleted: (data) => {
             console.log("Post CREATED")
             console.log(data)
-            history.push('/dashboard/product/blog')
+
+            setStatus("SUCCESS")
+            setMessage("Príspevok bol úspešne vytvorený")
+
+            setTimeout(() => {
+                resetModal()
+                history.push('/dashboard/product/blog')
+            }, 1000);
+        },
+        onError: (data) => {
+            console.log("Error")
+            console.log(data)
+            setStatus("ERROR")
+            setMessage("Niečo sa pokazilo...")
+            setTimeout(() => {
+                resetModal()
+            }, 1000);
         },
         refetchQueries: [{
             query: GET_POST_BY_TAG,
@@ -44,24 +63,16 @@ const ProductPage = () => {
         }]
     })
 
-    const handleOnSubmit = (values, { setSubmitting, resetForm  }) => {
-        const newBlogPostData = {
-            ...values,
-            images: uploadedImages,
-            image: uploadedImages[selectedIndex]
-        }
+    const {
+        isLoading,
+        status,
+        message,
+        toggleLoading,
+        setMessage,
+        setStatus,
+        resetModal
+    } = useLoadingModal()
 
-        createPost({
-            variables: newBlogPostData
-        })
-
-        resetForm()
-        setUploadedImages([])
-        setSelectedIndex(0)
-
-        setSubmitting(false);
-
-    }
 
     const myWidget = window.cloudinary.createUploadWidget({
         cloudName: process.env.REACT_APP_CLOUDINARY_NAME, 
@@ -107,6 +118,27 @@ const ProductPage = () => {
         setSelectedIndex(idx)
     }
 
+    const handleOnSubmit = (values, { setSubmitting, resetForm  }) => {
+        toggleLoading(true)
+        const newBlogPostData = {
+            ...values,
+            images: uploadedImages,
+            image: uploadedImages[selectedIndex]
+        }
+
+        createPost({
+            variables: newBlogPostData
+        })
+
+        resetForm()
+        setUploadedImages([])
+        setSelectedIndex(0)
+
+        setSubmitting(false);
+
+    }
+
+
 
     useEffect(() => {
         return () => {
@@ -119,8 +151,12 @@ const ProductPage = () => {
         <NewBlogContainer>
             <h1>Vytvoriť nový príspevok</h1>
 
-            {loading && (
-                <LoadingModal/>
+            {isLoading && (
+                <LoadingModal
+                    loading={loading}
+                    message={message}
+                    status={status}
+                />
             )}
 
             <Formik
@@ -139,11 +175,6 @@ const ProductPage = () => {
 
                     /* and other goodies */
                 }) => {
-                    console.log(values)
-                    console.log(uploadedImages)
-
-
-
                     return (
                         <form onSubmit={handleSubmit}>
                             <CustomInput
@@ -155,7 +186,7 @@ const ProductPage = () => {
                                 onBlur={handleBlur}
                                 value={values.title}
                             />
-                            {errors.email && touched.email && errors.email}
+                            {errors.title && touched.title && errors.title}
                             <CustomInput
                                 label="Popis"
                                 light={true}
@@ -165,13 +196,13 @@ const ProductPage = () => {
                                 onBlur={handleBlur}
                                 value={values.description}
                             />
-                            {errors.password && touched.password && errors.password}
+                            {errors.description && touched.description && errors.description}
     
-                            <UploadButton onClick={(e) => showWidget(e, myWidget)}>Upload Photo</UploadButton>
+                            <UploadButton onClick={(e) => showWidget(e, myWidget)}>Nahrať obrázky</UploadButton>
     
                             {uploadedImages.length > 0 && (
                                 <React.Fragment>
-                                    <Heading3>Nahrané obrázky</Heading3>
+                                    <Heading3>Nahrané obrázky <Tipbox>Vyberte náhľadový obrázok</Tipbox></Heading3>
                                     <UploadedImages>
                                         {uploadedImages.map((image, idx) => (
                                             <ImageContainer isSelected={selectedIndex === idx} onClick={(e) => {
@@ -210,7 +241,7 @@ const ProductPage = () => {
     
     
                             <CheckBoxHeader id="checkbox-group">
-                                <h3>Uverejniť na:</h3>
+                                <h3>Uverejniť na: <Tipbox>Vyberte aspoň 1 možnosť</Tipbox></h3>
                             </CheckBoxHeader>
                             <CheckBoxContainer aria-labelledby="checkbox-group">
                                 <label>

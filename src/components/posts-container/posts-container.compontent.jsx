@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
+import {useLoadingModal} from '../../hooks/useLoadingModal'
+
 import ArticleOverview from '../article-overview/article-overview.component'
 import {useMutation} from '@apollo/client'
 import {DELETE_POST} from '../../utils/mutations'
@@ -9,7 +11,7 @@ import {GET_POST_BY_TAG} from '../../graphql/queries/blog.queries'
 
 import Spinner from '../../components/spinner/spinner.component'
 import ConfirmModal from '../../components/modals/confirm-modal/confirm-modal.component'
-
+import LoadingModal from '../../components/modals/loading-modal/loading-modal.component'
 
 
 import {
@@ -20,11 +22,44 @@ import {
 
 const PostsContainer = ({ posts, createRoute, isLight, loading, blogTag }) => {
     const history = useHistory()
-    const [deletePost] = useMutation(DELETE_POST)
+
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [selectedPost, setSelectedPost] = useState(null)
 
+    const {
+        isLoading,
+        message,
+        status,
+        toggleLoading,
+        setStatus,
+        setMessage,
+        resetModal
+    } = useLoadingModal()
+
+    const [deletePost, {loading: deletePostLoading}] = useMutation(DELETE_POST,{
+        onCompleted: (data) => {
+            console.log("Post DELETED")
+            console.log(data)
+            setStatus("SUCCESS")
+            setMessage("Príspevok bol úspešne odstránení")
+            setTimeout(() => {
+                resetModal()
+            }, 1000);
+        },
+        onError: (data) => {
+            console.log("Post DELETED")
+            console.log(data)
+            setStatus("ERROR")
+            setMessage("Niečo sa pokazilo...")
+            setTimeout(() => {
+                resetModal()
+            }, 1000);
+        }
+    })
+
     const handleDeletePost = (id) => {
+        toggleLoading(true)
+
         deletePost({
             variables: {id},
             refetchQueries: [
@@ -59,6 +94,13 @@ const PostsContainer = ({ posts, createRoute, isLight, loading, blogTag }) => {
                 />
             )}
             {loading && <Spinner />}
+            {isLoading && (
+                <LoadingModal
+                    loading={deletePostLoading}
+                    status={status}
+                    message={message}
+                />
+            )}
             <Container>
                 {posts && posts.map(({ id, title, description, content, slug, image }, idx) => (
                     <ArticleOverview

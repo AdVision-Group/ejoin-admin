@@ -22,7 +22,7 @@ const EjoinGoNewPage = () => {
         <div>
             <PostsContainer 
                 posts={data?.posts || []} 
-                createRoute={`${match.path}/new-post`} 
+                createRoute={`${match.path}/novy-prispevok`} 
                 loading={loading}    
                 blogTag="GO_BLOG"
             />

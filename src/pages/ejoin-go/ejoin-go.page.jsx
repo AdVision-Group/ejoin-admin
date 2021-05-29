@@ -22,6 +22,7 @@ const EjoinGoNewPage = lazy(() => import('../ejoin-go-news/ejoin-go-news.page'))
 const EjoinGoRealisationsPage = lazy(() => import('../ejoin-go-realisations/ejoin-go-realisations.page'))
 const EjoinGoNewPost = lazy(() => import('../ejoin-go-new-post/ejoin-go-new-post.page'))
 const EjoinGoNewRealisation = lazy(() => import('../ejoin-go-new-realisation/ejoin-go-new-realisation.page'))
+const PostPage = lazy(() => import("../post/post.page"))
 
 
 
@@ -60,13 +61,15 @@ const EjoinGoPage = () => {
             <SectionContainer>
                 <Suspense fallback={<LoadingFallback />}>
                     <Switch>
-                        <NewsProvider>
-                            <ProtectedRoute exact path={`${match.path}/`} component={() => <Redirect to={`${match.path}/news`}/>} />
-                            <ProtectedRoute exact path={`${match.path}/novinky`} component={EjoinGoNewPage} />
-                            <ProtectedRoute exact path={`${match.path}/novinky/:slug`} component={EjoinGoNewPost} />
-                            <ProtectedRoute exact path={`${match.path}/realizacie`} component={EjoinGoRealisationsPage} />
-                            <ProtectedRoute exact path={`${match.path}/realizacie/:slug`} component={EjoinGoNewRealisation} />
-                        </NewsProvider>
+                        <ProtectedRoute exact path={`${match.path}/`} component={() => <Redirect to={`${match.path}/news`}/>} />
+                        <ProtectedRoute exact path={`${match.path}/novinky`} component={EjoinGoNewPage} />
+                        <ProtectedRoute exact path={`${match.path}/novinky/novy-prispevok`} component={EjoinGoNewPost} />
+                        <ProtectedRoute exact path={`${match.path}/novinky/:id`} component={(props) => <PostPage tag="GO_BLOG" {...props} />} />
+
+
+                        <ProtectedRoute exact path={`${match.path}/realizacie`} component={EjoinGoRealisationsPage} />
+                        <ProtectedRoute exact path={`${match.path}/realizacie/novy-prispevok`} component={EjoinGoNewRealisation} />
+                        <ProtectedRoute exact path={`${match.path}/realizacie/:id`} component={(props) => <PostPage tag="GO_REALIZATION" {...props} />} />
                     </Switch>
 
                 </Suspense>
