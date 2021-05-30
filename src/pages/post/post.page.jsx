@@ -288,7 +288,7 @@ const PostPage = ({tag, isLight}) => {
                                             <React.Fragment>
                                                 <QuillToolbar />
                                                 <ContentTextare
-                                                    isLight
+                                                    isLight={isLight}
                                                     name="content"
                                                     type="text"
                                                     value={field.value}

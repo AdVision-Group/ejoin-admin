@@ -234,6 +234,8 @@ const ProductPage = () => {
                                             onChange={field.onChange(field.name)}
                                             modules={modules}
                                             formats={formats}
+                                            light={true}
+
                                         />
                                     </React.Fragment>
                                 )}
