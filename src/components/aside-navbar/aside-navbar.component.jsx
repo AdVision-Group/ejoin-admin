@@ -9,6 +9,9 @@ import EjoinLogo from '../../images/logo/ejoin-logo.png'
 import { FaUserAlt } from 'react-icons/fa'
 import { RiLogoutCircleLine } from 'react-icons/ri'
 
+import {useQuery} from '@apollo/client'
+import {GET_USER_NAME} from '../../graphql/queries/user.queries'
+
 import {
     AsideContainer,
     Header,
@@ -20,8 +23,14 @@ import {
 
 const AsideNavbar = ({ navItems, light }) => {
     const history = useHistory()
-    const {logout} = useAuthContext()
+    const {logout, userID} = useAuthContext()
     const { pathname } = useLocation()
+
+    const {data, loading} = useQuery(GET_USER_NAME, {
+        variables: {
+            id: userID
+        }
+    })
 
     const checkIfIsActive = slug => {
         if (pathname === slug) return true
@@ -34,6 +43,8 @@ const AsideNavbar = ({ navItems, light }) => {
         })
     }
 
+    console.log(data)
+
     return (
         <AsideContainer isLight={light}>
             <Header isLight={light}>
@@ -43,7 +54,9 @@ const AsideNavbar = ({ navItems, light }) => {
                 />
             </Header>
             <LoginContainer>
-                <p><span>Prihlásený:</span><FaUserAlt /> Meno Priezvisko</p>
+                <p><span>Prihlásený:</span>
+                    <FaUserAlt /> {data?.account && data.account.name}
+                </p>
             </LoginContainer>
 
             <Navbar>
