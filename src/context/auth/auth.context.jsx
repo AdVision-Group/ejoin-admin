@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-
+import {client} from '../../index'
 
 export const AuthContext = createContext({
     token: null,
@@ -22,6 +22,7 @@ const AuthProvider = ({ children }) => {
         setToken(token)
         localStorage.setItem("accessToken", token)
         setIsAuthenticated(true)
+        client.resetStore()
     }
 
     const logout = (callback = () => {}) => {
@@ -29,10 +30,11 @@ const AuthProvider = ({ children }) => {
         setCurrentUser(null)
         setIsAuthenticated(false)
         callback()
+        client.resetStore()
     }
 
-    console.log(token)
-    console.log(isAuthenticated)
+    // console.log(token)
+    // console.log(isAuthenticated)
 
     return (
         <AuthContext.Provider
