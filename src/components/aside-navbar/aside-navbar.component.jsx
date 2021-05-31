@@ -47,12 +47,14 @@ const AsideNavbar = ({ navItems, light }) => {
 
     return (
         <AsideContainer isLight={light}>
-            <Header isLight={light}>
-                <img
-                    src={light ? "https://res.cloudinary.com/coderkin/image/upload/v1622059602/ejoin-product/admin/logo_png_white_2x_vyqcog.png" : EjoinLogo}
-                    alt="ejoin logo"
-                />
-            </Header>
+            <Link to='/'>
+                <Header isLight={light}>
+                    <img
+                        src={light ? "https://res.cloudinary.com/coderkin/image/upload/v1622059602/ejoin-product/admin/logo_png_white_2x_vyqcog.png" : EjoinLogo}
+                        alt="ejoin logo"
+                    />
+                </Header>
+            </Link>
             <LoginContainer>
                 <p><span>Prihlásený:</span>
                     <FaUserAlt /> {data?.account && data.account.name}
