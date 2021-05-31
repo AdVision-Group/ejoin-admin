@@ -13,7 +13,7 @@ export const ContentTextare = styled(ReactQuill)`
     /* color: #fff; */
     /* background-color: ${({ theme }) => theme.backgroundSecondary}; */
     background-color: #262626 ;
-    background-color: ${({isLight}) => isLight ? "#262626" : "#eee"};
+    background-color: ${({isLight}) => isLight ?  "#eee" : "#262626"};
 
     margin-bottom: 2rem;
     border-radius: 0 0 1.5rem 1.5rem;
