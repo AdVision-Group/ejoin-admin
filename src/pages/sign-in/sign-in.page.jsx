@@ -26,8 +26,8 @@ const SignInPage = (props) => {
 	const [login, { loading }] = useMutation(LOGIN_USER, {
 		errorPolicy: "all",
 		onCompleted: (data) => {
-			if (data.login) {
-				getToken(data.login.accessToken)
+			if (data.loginAccount) {
+				getToken(data.loginAccount.accessToken)
 
 				setStatus("SUCCESS")
 				setMessage("Úspesne prihlásenie")
@@ -39,7 +39,7 @@ const SignInPage = (props) => {
 				return
 			}
 
-			if (!data.login) {
+			if (!data.loginAccount) {
 				setStatus("ERROR")
 				setMessage("Nesprávné prihlasovacie údaje")
 
