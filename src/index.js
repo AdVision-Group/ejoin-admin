@@ -15,7 +15,7 @@ import { setContext } from "@apollo/client/link/context"
 
 const httpLink = createHttpLink({
 	uri:
-		process.env.NODE_ENV === "production"
+		process.env.NODE_ENV !== "production"
 			? "https://ejoin-gateway-jbuievsjdq-ew.a.run.app/graphql"
 			: "http://localhost:4000/graphql",
 })

@@ -48,21 +48,19 @@ const ProductSingleOrderPage = () => {
 		skip: data ? false : true,
 	})
 
-	useEffect(() => {
-		if (productLoading) return
-		if (!productData) return
-		productData?.product.data.en.configurator.forEach((item) => {
-			// console.log(item.checkBoxes)
-			item.checkBoxes.forEach((val) => {
-				if (val?.tPrice) {
-					setTotalPrice((prevValue) => prevValue + val.tPrice)
-				}
-				setTotalPrice((prevValue) => prevValue + val.price)
-			})
-		})
-	}, [productLoading, productData])
-
-	console.log(data)
+	// useEffect(() => {
+	// 	if (productLoading) return
+	// 	if (!productData) return
+	// 	productData?.product.data.en.configurator.forEach((item) => {
+	// 		// console.log(item.checkBoxes)
+	// 		item.checkBoxes.forEach((val) => {
+	// 			if (val?.tPrice) {
+	// 				setTotalPrice((prevValue) => prevValue + val.tPrice)
+	// 			}
+	// 			setTotalPrice((prevValue) => prevValue + val.price)
+	// 		})
+	// 	})
+	// }, [productLoading, productData])
 
 	return (
 		<ProductOrdersContainer>
@@ -71,7 +69,7 @@ const ProductSingleOrderPage = () => {
 			{data && (
 				<HeaderContainer statusColor={getStatusColor(data.order.status)}>
 					<h1>{data.order.productID}</h1>
-					<h2>{(totalPrice / 100).toFixed(2)}€</h2>
+					{/* <h2>{(totalPrice / 100).toFixed(2)}€</h2> */}
 					<h2>{getStatusTranslate(data.order.status)}</h2>
 				</HeaderContainer>
 			)}
@@ -187,13 +185,17 @@ const ProductSingleOrderPage = () => {
 					<h2>Informacie o objednávke</h2>
 					<GridContainer>
 						{Object.keys(data.order.orderData.product).map((val, idx) => {
-							if (val === "__typename") return
+							if (val === "__typename") return null
+							if (!data.order.orderData.product[val]) return null
+
+							console.log(data.order.orderData.product[val])
+
 							return (
 								<Container key={idx}>
 									<p>{getConfiguratorDataTranslate(val)}</p>
 									{Object.keys(data.order.orderData.product[val]).map(
 										(v, index) => {
-											if (v === "__typename") return
+											if (v === "__typename") return null
 											const value = data.order.orderData.product[val][v].value
 											// getConfiguratorDataTranslate
 											return (
