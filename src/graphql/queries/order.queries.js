@@ -54,6 +54,10 @@ export const GET_ORDER = gql`
 						}
 					}
 					authOptions {
+						reader {
+							value
+							price
+						}
 						qr {
 							value
 							price

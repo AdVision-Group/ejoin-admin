@@ -13,6 +13,7 @@ export const GET_PRODUCT_PRICE = gql`
 					configurator {
 						checkBoxes {
 							price
+							tPrice
 						}
 					}
 				}

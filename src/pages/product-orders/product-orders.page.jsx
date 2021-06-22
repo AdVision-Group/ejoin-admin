@@ -148,6 +148,13 @@ const ProductOrderPage = () => {
 		doDoubleClickAction(obj)
 	}
 
+	const options = {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	}
+
 	return (
 		<ProductOrdersContainer>
 			{showDeligateModal && (
@@ -218,37 +225,29 @@ const ProductOrderPage = () => {
 						</thead>
 						<tbody>
 							{data &&
-								data.orders.map((order) => {
-									// console.log(order.id === selectedOrder?.id)
-									// const date = new Date(order.created_date).toDateString()
+								data.orders
+									.map((order) => {
+										const date = new Date(
+											order.created_date * 1
+										).toLocaleDateString("sk-SK", options)
 
-									const date = new Date(order.created_date * 1).toDateString()
-									// const datevalues = [
-									//     date.getFullYear(),
-									//     date.getMonth()+1,
-									//     date.getDate(),
-									//     date.getHours(),
-									//     date.getMinutes(),
-									//     date.getSeconds(),
-									// ];
-									console.log(date)
-
-									return (
-										<TableRow
-											key={order.id}
-											onClick={() => handleClick(order)}
-											onDoubleClick={() => handleDoubleClick(order)}
-											isSelected={order.id === selectedOrder?.id}
-										>
-											<td>{order.productID}</td>
-											<td>{order.orderData.name}</td>
-											<StatusTd statusColor={getStatusColor(order.status)}>
-												{getStatusTranslate(order.status)}
-											</StatusTd>
-											<td>{date}</td>
-										</TableRow>
-									)
-								})}
+										return (
+											<TableRow
+												key={order.id}
+												onClick={() => handleClick(order)}
+												onDoubleClick={() => handleDoubleClick(order)}
+												isSelected={order.id === selectedOrder?.id}
+											>
+												<td>{order.productID}</td>
+												<td>{order.orderData.name}</td>
+												<StatusTd statusColor={getStatusColor(order.status)}>
+													{getStatusTranslate(order.status)}
+												</StatusTd>
+												<td>{date}</td>
+											</TableRow>
+										)
+									})
+									.reverse()}
 						</tbody>
 					</table>
 				</ProductsContainer>

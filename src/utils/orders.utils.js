@@ -28,7 +28,6 @@ export const FORM_INITIAL_DATA = {
 }
 
 export const getStatusColor = (status) => {
-	console.log(status)
 	if (!status) return
 
 	if (status === "APPROVED") {
@@ -43,6 +42,12 @@ export const getStatusColor = (status) => {
 	if (status === "RECIEVED") {
 		return "gray"
 	}
+}
+
+export const formatPrice = (number) => {
+	if (number === 1001) return "v cene"
+	const result = (number / 100).toFixed(2).toString()
+	return `+${result}€`
 }
 
 export const getStatusTranslate = (statusStr) => {

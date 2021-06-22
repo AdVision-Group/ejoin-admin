@@ -4,9 +4,8 @@ import { useParams } from "react-router-dom"
 import { useQuery } from "@apollo/client"
 import { GET_ORDER } from "../../graphql/queries/order.queries"
 
-import { GET_PRODUCT_PRICE } from "../../utils/queries"
-
 import {
+	formatPrice,
 	getStatusColor,
 	getStatusTranslate,
 	getConfiguratorDataTranslate,
@@ -36,31 +35,24 @@ const ProductSingleOrderPage = () => {
 		},
 	})
 
-	const {
-		data: productData,
-		loading: productLoading,
-		// refetch,
-	} = useQuery(GET_PRODUCT_PRICE, {
-		variables: {
-			title: data?.order?.productID,
-			locale: "en",
-		},
-		skip: data ? false : true,
-	})
+	useEffect(() => {
+		if (loading) return
+		if (!data) return
 
-	// useEffect(() => {
-	// 	if (productLoading) return
-	// 	if (!productData) return
-	// 	productData?.product.data.en.configurator.forEach((item) => {
-	// 		// console.log(item.checkBoxes)
-	// 		item.checkBoxes.forEach((val) => {
-	// 			if (val?.tPrice) {
-	// 				setTotalPrice((prevValue) => prevValue + val.tPrice)
-	// 			}
-	// 			setTotalPrice((prevValue) => prevValue + val.price)
-	// 		})
-	// 	})
-	// }, [productLoading, productData])
+		const productData = Object.keys(data.order.orderData.product).map(
+			(val) => data.order.orderData.product[val]
+		)
+
+		productData.forEach((val) => {
+			const productNestedData = Object.keys(val).map((v) => val[v])
+			// console.log(productNestedData)
+
+			productNestedData.forEach((item) => {
+				if (item.price === 1001) return
+				setTotalPrice((prevValue) => prevValue + item.price)
+			})
+		})
+	}, [loading, data])
 
 	return (
 		<ProductOrdersContainer>
@@ -69,7 +61,7 @@ const ProductSingleOrderPage = () => {
 			{data && (
 				<HeaderContainer statusColor={getStatusColor(data.order.status)}>
 					<h1>{data.order.productID}</h1>
-					{/* <h2>{(totalPrice / 100).toFixed(2)}€</h2> */}
+					<h2>{(totalPrice / 100).toFixed(2)}€</h2>
 					<h2>{getStatusTranslate(data.order.status)}</h2>
 				</HeaderContainer>
 			)}
@@ -185,34 +177,30 @@ const ProductSingleOrderPage = () => {
 					<h2>Informacie o objednávke</h2>
 					<GridContainer>
 						{Object.keys(data.order.orderData.product).map((val, idx) => {
-							if (val === "__typename") return null
 							if (!data.order.orderData.product[val]) return null
 
-							console.log(data.order.orderData.product[val])
+							const nestedValues = data.order.orderData.product[val]
+							// console.log(data.order.orderData.product[val])
 
 							return (
 								<Container key={idx}>
 									<p>{getConfiguratorDataTranslate(val)}</p>
-									{Object.keys(data.order.orderData.product[val]).map(
-										(v, index) => {
-											if (v === "__typename") return null
-											const value = data.order.orderData.product[val][v].value
-											// getConfiguratorDataTranslate
-											return (
-												<ValueContainer key={index}>
-													<p>{value}</p>
-													{data.order.orderData.product[val][v].value && (
-														<p>
-															{(
-																data.order.orderData.product[val][v].price / 100
-															).toFixed(2)}
-															€
-														</p>
-													)}
-												</ValueContainer>
-											)
-										}
-									)}
+									{Object.keys(nestedValues).map((v, index) => {
+										const value = nestedValues[v].value
+										const type = nestedValues[v]?.type
+										// getConfiguratorDataTranslate
+										return (
+											<ValueContainer key={index}>
+												<p>
+													{value}
+													{type && type}
+												</p>
+												{nestedValues[v].value && (
+													<p>{formatPrice(nestedValues[v].price)}</p>
+												)}
+											</ValueContainer>
+										)
+									})}
 								</Container>
 							)
 						})}
