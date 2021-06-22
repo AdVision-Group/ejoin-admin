@@ -28,6 +28,10 @@ import {
 const ProductSingleOrderPage = () => {
 	const { id } = useParams()
 	const [totalPrice, setTotalPrice] = useState(0)
+	const [productParameters, setProductParameters] = useState(null)
+	const [buyOption, setBuyOption] = useState(null)
+
+	console.log(totalPrice)
 
 	const { data, loading } = useQuery(GET_ORDER, {
 		variables: {
@@ -39,19 +43,48 @@ const ProductSingleOrderPage = () => {
 		if (loading) return
 		if (!data) return
 
+		const productParametersArr = Object.keys(data.order.orderData.product)
 		const productData = Object.keys(data.order.orderData.product).map(
 			(val) => data.order.orderData.product[val]
 		)
 
-		productData.forEach((val) => {
+		let total = 0
+
+		productData.forEach((val, i) => {
 			const productNestedData = Object.keys(val).map((v) => val[v])
-			// console.log(productNestedData)
 
 			productNestedData.forEach((item) => {
-				if (item.price === 1001) return
-				setTotalPrice((prevValue) => prevValue + item.price)
+				if (item.value === null) return null
+				total = total + (item.price === 1001 ? 0 : item.price)
 			})
 		})
+
+		setTotalPrice(total)
+
+		const newArr = productData
+			.map((val, i) => {
+				const productNestedData = Object.keys(val).map((v) => val[v])
+
+				const arr = productNestedData
+					.map((item, idx) => {
+						if (item.value === null) return null
+						if (item.value === "Nákup") {
+							setBuyOption({
+								...item,
+								name: getConfiguratorDataTranslate("buyOptions"),
+							})
+						}
+						return {
+							...item,
+							name: getConfiguratorDataTranslate(productParametersArr[i]),
+						}
+					})
+					.filter((i) => i !== null && i.value !== "Nákup")
+
+				return arr
+			})
+			.filter((i) => i.length > 0)
+		setProductParameters(newArr)
 	}, [loading, data])
 
 	return (
@@ -172,38 +205,38 @@ const ProductSingleOrderPage = () => {
 				</BusinessInfoContainer>
 			)}
 
-			{data && (
+			{productParameters && (
 				<ProductInfoContainer>
 					<h2>Informacie o objednávke</h2>
 					<GridContainer>
-						{Object.keys(data.order.orderData.product).map((val, idx) => {
-							if (!data.order.orderData.product[val]) return null
-
-							const nestedValues = data.order.orderData.product[val]
-							// console.log(data.order.orderData.product[val])
-
-							return (
-								<Container key={idx}>
-									<p>{getConfiguratorDataTranslate(val)}</p>
-									{Object.keys(nestedValues).map((v, index) => {
-										const value = nestedValues[v].value
-										const type = nestedValues[v]?.type
-										// getConfiguratorDataTranslate
-										return (
-											<ValueContainer key={index}>
-												<p>
-													{value}
-													{type && type}
-												</p>
-												{nestedValues[v].value && (
-													<p>{formatPrice(nestedValues[v].price)}</p>
-												)}
-											</ValueContainer>
-										)
-									})}
-								</Container>
-							)
+						{productParameters.map((val, idx) => {
+							return val.map((v, i) => {
+								return (
+									<Container key={i}>
+										<p>{v.name}</p>
+										<ValueContainer>
+											<p>
+												{v.value}
+												{v?.type && v.type}
+											</p>
+											{v.value && <p>{formatPrice(v.price)}</p>}
+										</ValueContainer>
+									</Container>
+								)
+							})
 						})}
+						{buyOption && (
+							<Container>
+								<p>{buyOption.name}</p>
+								<ValueContainer>
+									<p>
+										{buyOption.value}
+										{buyOption?.type && buyOption.type}
+									</p>
+									{buyOption.value && <p>{formatPrice(buyOption.price)}</p>}
+								</ValueContainer>
+							</Container>
+						)}
 					</GridContainer>
 				</ProductInfoContainer>
 			)}
