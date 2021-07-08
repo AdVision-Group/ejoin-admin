@@ -50,20 +50,22 @@ export const formatPrice = (number) => {
 	return `+${result}€`
 }
 
-export const getStatusTranslate = (statusStr) => {
-	if (!statusStr) return
+export const getStatusTranslate = (order) => {
+	const { status } = order
+	if (!status) return
 
-	if (statusStr === "APPROVED") {
+	if (status === "APPROVED") {
 		return "Spracovaná"
 	}
-	if (statusStr === "CANCELED") {
+	if (status === "CANCELED") {
 		return "Zrušená"
 	}
-	if (statusStr === "FINISHED") {
+	if (status === "FINISHED") {
 		return "Dokončená"
 	}
-	if (statusStr === "RECIEVED") {
-		return "Nespracovaná"
+	if (status === "RECIEVED") {
+		if (order.paymentData.state === "PAID") return "Zaplatená"
+		return "Nová"
 	}
 }
 

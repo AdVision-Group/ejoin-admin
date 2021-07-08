@@ -17,7 +17,7 @@ const httpLink = createHttpLink({
 	uri:
 		process.env.NODE_ENV === "production"
 			? "https://ejoin-gateway-jbuievsjdq-ew.a.run.app/graphql"
-			: "http://localhost:4000/graphql",
+			: "https://ejoin-gateway-jbuievsjdq-ew.a.run.app/graphql", //"http://localhost:4000/graphql",
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -37,6 +37,7 @@ export const client = new ApolloClient({
 	cache: new InMemoryCache({
 		addTypename: false,
 	}),
+	connectToDevTools: true,
 })
 
 ReactDOM.render(

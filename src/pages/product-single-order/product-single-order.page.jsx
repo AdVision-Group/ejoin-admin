@@ -95,8 +95,47 @@ const ProductSingleOrderPage = () => {
 				<HeaderContainer statusColor={getStatusColor(data.order.status)}>
 					<h1>{data.order.productID}</h1>
 					<h2>{(totalPrice / 100).toFixed(2)}€</h2>
-					<h2>{getStatusTranslate(data.order.status)}</h2>
+					<h2>{getStatusTranslate(data.order)}</h2>
 				</HeaderContainer>
+			)}
+
+			{data && (
+				<UserInfoContainer>
+					<h2>Informácie o platbe</h2>
+					<GridContainer>
+						<Container>
+							<p>ID objednávky</p>
+							<GroupTitle>{data.order.paymentData.id}</GroupTitle>
+						</Container>
+						<Container>
+							<p>Číslo objednávky</p>
+							<GroupTitle>{data.order.paymentData.order_number}</GroupTitle>
+						</Container>
+						<Container>
+							<p>Status</p>
+							<GroupTitle>{data.order.paymentData.state}</GroupTitle>
+						</Container>
+						<Container>
+							<p>Odkaz na platobnú bránu</p>
+							<GroupTitle
+								style={{
+									overflow: "hidden",
+								}}
+							>
+								<a
+									href={data.order.paymentData.gw_url}
+									target="_blank"
+									rel="noreferrer noopener"
+									style={{
+										color: "#000",
+									}}
+								>
+									{data.order.paymentData.gw_url}
+								</a>
+							</GroupTitle>
+						</Container>
+					</GridContainer>
+				</UserInfoContainer>
 			)}
 
 			{data && (
@@ -105,7 +144,10 @@ const ProductSingleOrderPage = () => {
 					<GridContainer>
 						<Container>
 							<p>Meno a Priezvisko</p>
-							<GroupTitle>{data.order.orderData.name}</GroupTitle>
+							<GroupTitle>
+								{data.order.orderData.first_name}{" "}
+								{data.order.orderData.last_name}
+							</GroupTitle>
 						</Container>
 						<Container>
 							<p>Tel.</p>

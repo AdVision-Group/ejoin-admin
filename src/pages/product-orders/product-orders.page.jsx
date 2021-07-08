@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@apollo/client"
 
 import { useLoadingModal } from "../../hooks/useLoadingModal"
 
-import { GET_ORDERS } from "../../graphql/queries/order.queries"
+import { GET_ORDERS_OVERVIEW } from "../../graphql/queries/order.queries"
 import { DELIGATE_ORDER } from "../../utils/mutations"
 import {
 	tabsArr,
@@ -49,7 +49,7 @@ const ProductOrderPage = () => {
 		resetModal,
 	} = useLoadingModal()
 
-	const { loading, data, refetch } = useQuery(GET_ORDERS, {
+	const { loading, data, refetch } = useQuery(GET_ORDERS_OVERVIEW, {
 		variables: {
 			status: activeStatus,
 		},
@@ -99,7 +99,7 @@ const ProductOrderPage = () => {
 			},
 			refetchQueries: [
 				{
-					query: GET_ORDERS,
+					query: GET_ORDERS_OVERVIEW,
 					variables: {
 						status: tabs[activeTabIndex].status,
 					},
@@ -239,9 +239,12 @@ const ProductOrderPage = () => {
 												isSelected={order.id === selectedOrder?.id}
 											>
 												<td>{order.productID}</td>
-												<td>{order.orderData.name}</td>
+												<td>
+													{order.orderData.first_name}{" "}
+													{order.orderData.last_name}
+												</td>
 												<StatusTd statusColor={getStatusColor(order.status)}>
-													{getStatusTranslate(order.status)}
+													{getStatusTranslate(order)}
 												</StatusTd>
 												<td>{date}</td>
 											</TableRow>

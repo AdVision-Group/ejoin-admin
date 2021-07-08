@@ -1,111 +1,129 @@
 import { gql } from "@apollo/client"
 
 export const GET_ORDER = gql`
-	query getOrder($id: ID!) {
+	query GetOrderData($id: ID!) {
 		order(id: $id) {
 			id
-			status
-			productID
 			created_date
+			productID
+			status
 			orderData {
-				name
-				email
-				phone
-				street
-				psc
 				city
 				country
-				isDeliveryAddressDifferent
-				deliveryStreet
-				deliveryPsc
-				deliveryCity
 				deliveryCountry
+				deliveryCity
+				deliveryPsc
+				deliveryStreet
+				email
+				first_name
+				gdpr
 				isBusiness
-				business {
-					name
-					ico
-					dic
-					icdph
-					residence
-				}
+				isDeliveryAddressDifferent
+				last_name
+				name
+				phone
+				psc
+				street
+				terms
 				product {
-					chargingOptions {
-						charging {
-							value
+					authOptions {
+						qr {
 							price
+							value
 						}
-					}
-					cabelOptions {
-						cabel {
-							value
+						reader {
 							price
-						}
-					}
-					positionOptions {
-						position {
 							value
-							price
 						}
 					}
 					buyOptions {
 						buy {
-							value
 							price
+							value
 						}
 					}
-					authOptions {
-						reader {
-							value
+					cabelOptions {
+						cabel {
 							price
-						}
-						qr {
 							value
-							price
-						}
-					}
-					wifiOptions {
-						online {
-							value
-							price
-							type
-						}
-					}
-					eleOptions {
-						ele {
-							value
-							price
-						}
-					}
-					servicesOptions {
-						service {
-							value
-							price
-						}
-					}
-					stationsOptions {
-						stations {
-							value
-							price
-						}
-					}
-					smartSolutionsOptions {
-						smartSolutions {
-							value
-							price
 						}
 					}
 					chargingNetworkOptions {
 						charginNetwork {
-							value
 							price
+							value
+						}
+					}
+					chargingOptions {
+						charging {
+							price
+							value
+						}
+					}
+					eleOptions {
+						ele {
+							price
+							value
 						}
 					}
 					enteringVoltageOptions {
 						enteringVoltage {
-							value
 							price
+							value
 						}
 					}
+					positionOptions {
+						position {
+							price
+							value
+						}
+					}
+					servicesOptions {
+						service {
+							price
+							value
+						}
+					}
+					smartSolutionsOptions {
+						smartSolutions {
+							price
+							value
+						}
+					}
+					stationsOptions {
+						stations {
+							price
+							value
+						}
+					}
+					wifiOptions {
+						online {
+							price
+							tPrice
+							type
+							value
+						}
+					}
+				}
+				business {
+					dic
+					icdph
+					ico
+					name
+					residence
+				}
+			}
+			paymentData {
+				amount
+				gw_url
+				id
+				order_number
+				state
+				tokenData {
+					access_token
+					expires_in
+					refresh_token
+					token_type
 				}
 			}
 		}
@@ -219,6 +237,24 @@ export const GET_ORDERS = gql`
 						}
 					}
 				}
+			}
+		}
+	}
+`
+
+export const GET_ORDERS_OVERVIEW = gql`
+	query GetOrdersOverview($status: STATUSCODES) {
+		orders(status: $status) {
+			paymentData {
+				state
+			}
+			id
+			created_date
+			status
+			productID
+			orderData {
+				first_name
+				last_name
 			}
 		}
 	}
