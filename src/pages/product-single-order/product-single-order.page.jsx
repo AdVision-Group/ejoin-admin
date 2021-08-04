@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
+import { PDFDownloadLink } from "@react-pdf/renderer"
 
 import { useQuery } from "@apollo/client"
 import { GET_ORDER } from "../../graphql/queries/order.queries"
@@ -12,6 +13,7 @@ import {
 } from "../../utils/orders.utils"
 
 import Spinner from "../../components/spinner/spinner.component"
+import InvoicePDF from "../../components/pdf-document/pdf-document.component"
 
 import {
 	ProductOrdersContainer,
@@ -30,8 +32,6 @@ const ProductSingleOrderPage = () => {
 	const [totalPrice, setTotalPrice] = useState(0)
 	const [productParameters, setProductParameters] = useState(null)
 	const [buyOption, setBuyOption] = useState(null)
-
-	console.log(totalPrice)
 
 	const { data, loading } = useQuery(GET_ORDER, {
 		variables: {
@@ -95,6 +95,59 @@ const ProductSingleOrderPage = () => {
 				<HeaderContainer statusColor={getStatusColor(data.order.status)}>
 					<h1>{data.order.productID}</h1>
 					<h2>{(totalPrice / 100).toFixed(2)}€</h2>
+					{buyOption && productParameters && (
+						<PDFDownloadLink
+							document={
+								<InvoicePDF
+									orderID={data.order.paymentData.id}
+									orderNumber={data.order.paymentData.order_number}
+									totalPrice={totalPrice}
+									receiver={{
+										firstName: data.order.orderData.first_name,
+										lastName: data.order.orderData.last_name,
+										address: {
+											street: data.order.orderData.street,
+											city: data.order.orderData.city,
+											psc: data.order.orderData.psc,
+											country: data.order.orderData.country,
+										},
+										...(data.order.orderData.isDeliveryAddressDifferent && {
+											deliveryAddress: {
+												street: data.order.orderData.deliveryStreet,
+												city: data.order.orderData.deliveryCity,
+												psc: data.order.orderData.deliveryPsc,
+												country: data.order.orderData.deliveryCountry,
+											},
+										}),
+										...(data.order.orderData.isBusiness && {
+											business: {
+												name: data.order.orderData.name,
+												residence: data.order.orderData.residence,
+												ico: data.order.orderData.ico,
+												dic: data.order.orderData.dic,
+												icdph: data.order.orderData.icdph,
+											},
+										}),
+									}}
+									items={[
+										[
+											{
+												name: data.order.productID,
+												value: data.order.productID,
+												price: buyOption.price,
+											},
+										],
+										...productParameters,
+									]}
+								/>
+							}
+							fileName={`${data.order.paymentData.order_number}.pdf`}
+						>
+							{({ blob, url, loading, error }) =>
+								loading ? "Načítavam" : "Faktúra"
+							}
+						</PDFDownloadLink>
+					)}
 					<h2>{getStatusTranslate(data.order)}</h2>
 				</HeaderContainer>
 			)}
@@ -102,6 +155,7 @@ const ProductSingleOrderPage = () => {
 			{data && (
 				<UserInfoContainer>
 					<h2>Informácie o platbe</h2>
+
 					<GridContainer>
 						<Container>
 							<p>ID objednávky</p>
