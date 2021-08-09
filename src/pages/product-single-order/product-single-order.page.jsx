@@ -87,6 +87,8 @@ const ProductSingleOrderPage = () => {
 		setProductParameters(newArr)
 	}, [loading, data])
 
+	console.log(data)
+
 	return (
 		<ProductOrdersContainer>
 			{loading && <Spinner />}
@@ -121,11 +123,11 @@ const ProductSingleOrderPage = () => {
 										}),
 										...(data.order.orderData.isBusiness && {
 											business: {
-												name: data.order.orderData.name,
-												residence: data.order.orderData.residence,
-												ico: data.order.orderData.ico,
-												dic: data.order.orderData.dic,
-												icdph: data.order.orderData.icdph,
+												name: data.order.orderData.business.name,
+												residence: data.order.orderData.business.residence,
+												ico: data.order.orderData.business.ico,
+												dic: data.order.orderData.business.dic,
+												icdph: data.order.orderData.business.icdph,
 											},
 										}),
 									}}

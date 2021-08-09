@@ -50,6 +50,12 @@ export const formatPrice = (number) => {
 	return `+${result}€`
 }
 
+export const formatPDFPrice = (number) => {
+	if (number === 1001) return 0
+	const result = (number / 100).toFixed(2)
+	return result
+}
+
 export const getStatusTranslate = (order) => {
 	const { status } = order
 	if (!status) return

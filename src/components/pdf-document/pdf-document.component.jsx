@@ -10,6 +10,8 @@ import {
 
 import robotoFont from "./font/Roboto-Regular.ttf"
 
+import { formatPDFPrice } from "../../utils/orders.utils"
+
 // Register font
 Font.register({
 	family: "Roboto",
@@ -173,15 +175,18 @@ const PDFDocument = ({ orderID, orderNumber, receiver, items, totalPrice }) => (
 			</View>
 			<View style={styles.headContent}>
 				<View style={styles.senderContainer}>
-					<Text style={styles.senderParagraph}>ejoin, s.r.o.</Text>
-					<Text style={styles.senderParagraph}>Štúrova 1529</Text>
-					<Text style={styles.senderParagraph}>018 41 Dubnica nad Váhom</Text>
-					<Text style={styles.senderParagraph}>Slovenská republika</Text>
+					<Text style={{ marginBottom: 2 }}>Dodavatel:</Text>
+					<View style={styles.contactContainer}>
+						<Text style={styles.senderParagraph}>ejoin, s.r.o.</Text>
+						<Text style={styles.senderParagraph}>Štúrova 1529</Text>
+						<Text style={styles.senderParagraph}>018 41 Dubnica nad Váhom</Text>
+						<Text style={styles.senderParagraph}>Slovenská republika</Text>
+					</View>
 				</View>
 				<View style={styles.infoContainer}>
 					<View style={styles.infoCol}>
 						<Text>Forma úhrady:</Text>
-						{/* <Text>peňažný prevod</Text> */}
+						<Text>peňažný prevod</Text>
 					</View>
 					<View style={[styles.infoCol, { borderLeft: "1px solid #000" }]}>
 						<View style={styles.infoColTable}>
@@ -249,7 +254,7 @@ const PDFDocument = ({ orderID, orderNumber, receiver, items, totalPrice }) => (
 			<View style={styles.dateContainer}>
 				<View style={styles.dateCol}>
 					<Text>Dátum vystavenia:</Text>
-					<Text>16.7.2021</Text>
+					<Text style={{ textAlign: "right" }}>16.7.2021</Text>
 				</View>
 				<View
 					style={[
@@ -258,35 +263,45 @@ const PDFDocument = ({ orderID, orderNumber, receiver, items, totalPrice }) => (
 					]}
 				>
 					<Text>Dátum dodania:</Text>
-					<Text>16.7.2021</Text>
+					<Text style={{ textAlign: "right" }}>16.7.2021</Text>
 				</View>
 				<View style={styles.dateCol}>
 					<Text>Dátum splatnosti:</Text>
-					<Text>16.7.2021</Text>
+					<Text style={{ textAlign: "right" }}>16.7.2021</Text>
 				</View>
 			</View>
 
 			<View style={styles.itemsContainer}>
 				<View style={styles.itemsTableHead}>
-					<Text style={{ width: "20%" }}>Popis položky</Text>
-					<Text style={{ width: "10%" }}>Množstvo</Text>
-					<Text style={{ width: "15%" }}>MJ</Text>
-					<Text style={{ width: "15%" }}>Cena za MJ</Text>
-					<Text style={{ width: "15%" }}>Celkom bez DPH</Text>
-					<Text style={{ width: "10%" }}>DPH</Text>
-					<Text style={{ width: "15%" }}>Celkom s DPH</Text>
+					<Text style={{ width: "25%" }}>Popis položky</Text>
+					<Text style={{ width: "10%", textAlign: "right" }}>Množstvo</Text>
+					<Text style={{ width: "10%", textAlign: "right" }}>MJ</Text>
+					<Text style={{ width: "15%", textAlign: "right" }}>Cena za MJ</Text>
+					<Text style={{ width: "15%", textAlign: "right" }}>
+						Celkom bez DPH
+					</Text>
+					<Text style={{ width: "10%", textAlign: "right" }}>DPH</Text>
+					<Text style={{ width: "15%", textAlign: "right" }}>Celkom s DPH</Text>
 				</View>
 
 				{items.map((item, idx) => {
 					return item.map((i, index) => (
 						<View key={index} style={styles.itemsTableItem}>
-							<Text style={{ width: "20%" }}>{i.value}</Text>
-							<Text style={{ width: "10%" }}>1</Text>
-							<Text style={{ width: "15%" }}>{i.price}</Text>
-							<Text style={{ width: "15%" }}>{i.price}</Text>
-							<Text style={{ width: "15%" }}>{i.price}</Text>
-							<Text style={{ width: "10%" }}>20%</Text>
-							<Text style={{ width: "15%" }}>{i.price}</Text>
+							<Text style={{ width: "25%" }}>{i.value}</Text>
+							<Text style={{ width: "10%", textAlign: "right" }}>1</Text>
+							<Text style={{ width: "10%", textAlign: "right" }}>
+								{formatPDFPrice(i.price)}
+							</Text>
+							<Text style={{ width: "15%", textAlign: "right" }}>
+								{formatPDFPrice(i.price)}
+							</Text>
+							<Text style={{ width: "15%", textAlign: "right" }}>
+								{priceWithoutDPH(i.price)}
+							</Text>
+							<Text style={{ width: "10%", textAlign: "right" }}>20%</Text>
+							<Text style={{ width: "15%", textAlign: "right" }}>
+								{formatPDFPrice(i.price)}
+							</Text>
 						</View>
 					))
 				})}
@@ -302,23 +317,23 @@ const PDFDocument = ({ orderID, orderNumber, receiver, items, totalPrice }) => (
 				<View style={styles.footerSummaryCol}>
 					<View style={styles.footerSummaryRow}>
 						<Text>Celkova suma bez DPH:</Text>
-						<Text>{totalPrice} EUR</Text>
+						<Text>{priceWithoutDPH(totalPrice)} EUR</Text>
 					</View>
 					<View style={styles.footerSummaryRow}>
 						<Text>DPH:</Text>
-						<Text>{totalPrice} EUR</Text>
+						<Text>{priceDPH(totalPrice)} EUR</Text>
 					</View>
 					<View style={styles.footerSummaryRow}>
 						<Text>Celkova suma s DPH:</Text>
-						<Text>{totalPrice} EUR</Text>
+						<Text>{formatPDFPrice(totalPrice)} EUR</Text>
 					</View>
-					<View style={styles.footerSummaryRow}>
+					{/* <View style={styles.footerSummaryRow}>
 						<Text>Uhradené zálohami:</Text>
 						<Text>{totalPrice} EUR</Text>
-					</View>
+					</View> */}
 					<View style={styles.footerSummaryRow}>
 						<Text>K úhrade:</Text>
-						<Text>{totalPrice} EUR</Text>
+						<Text>{formatPDFPrice(totalPrice)} EUR</Text>
 					</View>
 				</View>
 			</View>
@@ -327,3 +342,11 @@ const PDFDocument = ({ orderID, orderNumber, receiver, items, totalPrice }) => (
 )
 
 export default PDFDocument
+
+const priceWithoutDPH = (priceTotal) => {
+	return (((priceTotal / 100) * 80) / 100).toFixed(2)
+}
+
+const priceDPH = (priceTotal) => {
+	return (((priceTotal / 100) * 20) / 100).toFixed(2)
+}
