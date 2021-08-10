@@ -214,7 +214,8 @@ const PostPage = ({ tag, isLight }) => {
 
 		setUploadedImages(postData?.post?.images || [])
 		setSelectedIndex(imageIndex || 0)
-	}, [postData, postLoading])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [postLoading])
 
 	useEffect(() => {
 		return () => {
