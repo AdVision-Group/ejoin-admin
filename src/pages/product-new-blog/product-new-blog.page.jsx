@@ -211,22 +211,24 @@ const ProductPage = () => {
 									</Heading3>
 									<UploadedImages>
 										{uploadedImages.map((image, idx) => (
-											<ImageContainer
-												isSelected={selectedIndex === idx}
-												onClick={(e) => {
-													handleChange({
-														...e,
-														target: {
-															...e.target,
-															name: "image",
-															value: image,
-														},
-													})
-													selectImage(e, image, idx)
-												}}
-											>
-												<img alt={idx} key={idx} src={image.secure_url} />
-											</ImageContainer>
+											<React.Fragment>
+												<ImageContainer
+													isSelected={selectedIndex === idx}
+													onClick={(e) => {
+														handleChange({
+															...e,
+															target: {
+																...e.target,
+																name: "image",
+																value: image,
+															},
+														})
+														selectImage(e, image, idx)
+													}}
+												>
+													<img alt={idx} key={idx} src={image.secure_url} />
+												</ImageContainer>
+											</React.Fragment>
 										))}
 									</UploadedImages>
 								</React.Fragment>

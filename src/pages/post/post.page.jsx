@@ -29,6 +29,7 @@ import {
 	CheckBoxHeader,
 	UploadedImages,
 	Heading3,
+	DeleteButton,
 } from "./post.styles"
 
 const getChangedValues = (values, initialValues) => {
@@ -147,6 +148,13 @@ const PostPage = ({ tag, isLight }) => {
 	const selectImage = (e, img, idx) => {
 		e.preventDefault()
 		setSelectedIndex(idx)
+	}
+
+	const handleDeleteImage = (e, imgIdx) => {
+		e.preventDefault()
+
+		const arr = uploadedImages.filter((img, idx) => idx !== imgIdx)
+		setUploadedImages(arr)
 	}
 
 	const handleOnSubmit = (values, { setSubmitting, resetForm }) => {
@@ -296,13 +304,17 @@ const PostPage = ({ tag, isLight }) => {
 														selectImage(e, image, idx)
 													}}
 												>
+													<DeleteButton
+														onClick={(e) => handleDeleteImage(e, idx)}
+													>
+														X
+													</DeleteButton>
 													<img alt={idx} key={idx} src={image.secure_url} />
 												</ImageContainer>
 											))}
 										</UploadedImages>
 									</React.Fragment>
 								)}
-
 								<Field name="content" type="text">
 									{({ field }) => (
 										<React.Fragment>
