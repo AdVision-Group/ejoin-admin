@@ -166,180 +166,225 @@ const styles = StyleSheet.create({
 })
 
 // Create Document Component
-const PDFDocument = ({ orderID, orderNumber, receiver, items, totalPrice }) => (
-	<Document language="SK">
-		<Page size="A4" style={styles.page}>
-			<View style={styles.head}>
-				<Text style={styles.headHeading}>Faktúra</Text>
-				<Text style={styles.headHeading}>{orderNumber}</Text>
-			</View>
-			<View style={styles.headContent}>
-				<View style={styles.senderContainer}>
-					<Text style={{ marginBottom: 2 }}>Dodavatel:</Text>
-					<View style={styles.contactContainer}>
-						<Text style={styles.senderParagraph}>ejoin, s.r.o.</Text>
-						<Text style={styles.senderParagraph}>Štúrova 1529</Text>
-						<Text style={styles.senderParagraph}>018 41 Dubnica nad Váhom</Text>
-						<Text style={styles.senderParagraph}>Slovenská republika</Text>
-					</View>
-				</View>
-				<View style={styles.infoContainer}>
-					<View style={styles.infoCol}>
-						<Text>Forma úhrady:</Text>
-						<Text>peňažný prevod</Text>
-					</View>
-					<View style={[styles.infoCol, { borderLeft: "1px solid #000" }]}>
-						<View style={styles.infoColTable}>
-							<Text>Variabilný symbol</Text>
-							<Text>{orderID}</Text>
-						</View>
-						<View style={styles.infoColTable}>
-							<Text>Konštantný symbol</Text>
-							<Text>9999</Text>
-						</View>
-					</View>
-					<View style={styles.receiverContainer}>
-						<View>
-							<Text style={{ marginBottom: 1 }}>Odberateľ:</Text>
-							<View style={styles.contactContainer}>
-								<Text>
-									{receiver.firstName} {receiver.lastName}
-								</Text>
-								<Text>{receiver.address.street}</Text>
-								<Text>
-									{receiver.address.psc} {receiver.address.city}
-								</Text>
-								<Text>{receiver.address.country}</Text>
-							</View>
-						</View>
-						{receiver.business && (
-							<View style={styles.contactContainer}>
-								<Text>{receiver.business.name}</Text>
-								<Text>{receiver.business.residence}</Text>
-								<View style={styles.receiverRow}>
-									<Text>IČO</Text>
-									<Text>{receiver.business.ico}</Text>
-								</View>
-								<View style={styles.receiverRow}>
-									<Text>DIČ</Text>
-									<Text>{receiver.business.dic}</Text>
-								</View>
-								<View style={styles.receiverRow}>
-									<Text>IČDPH</Text>
-									<Text>{receiver.business.icdph}</Text>
-								</View>
-							</View>
-						)}
+const PDFDocument = ({
+	orderID,
+	orderNumber,
+	receiver,
+	items,
+	totalPrice,
+	created_date,
+}) => {
+	const startDate = new Date(created_date * 1)
+	const payDate = startDate.setDate(startDate.getDate() + 2 * 7)
 
-						{receiver.deliveryAddress && (
+	return (
+		<Document language="SK">
+			<Page size="A4" style={styles.page}>
+				<View style={styles.head}>
+					<Text style={styles.headHeading}>Faktúra</Text>
+					<Text style={styles.headHeading}>{orderNumber}</Text>
+				</View>
+				<View style={styles.headContent}>
+					<View style={styles.senderContainer}>
+						<Text style={{ marginBottom: 2 }}>Dodavatel:</Text>
+						<View style={styles.contactContainer}>
+							<Text style={styles.senderParagraph}>ejoin, s.r.o.</Text>
+							<Text style={styles.senderParagraph}>Štúrova 1529</Text>
+							<Text style={styles.senderParagraph}>
+								018 41 Dubnica nad Váhom
+							</Text>
+							<Text style={styles.senderParagraph}>Slovenská republika</Text>
+						</View>
+					</View>
+					<View style={styles.infoContainer}>
+						<View style={styles.infoCol}>
+							<Text>Forma úhrady:</Text>
+							<Text>peňažný prevod</Text>
+						</View>
+						<View style={[styles.infoCol, { borderLeft: "1px solid #000" }]}>
+							<View style={styles.infoColTable}>
+								<Text>Variabilný symbol</Text>
+								<Text>{orderID}</Text>
+							</View>
+							<View style={styles.infoColTable}>
+								<Text>Konštantný symbol</Text>
+								<Text>9999</Text>
+							</View>
+						</View>
+						<View style={styles.receiverContainer}>
 							<View>
-								<Text style={{ marginBottom: 1 }}>Dodacia adresa:</Text>
+								<Text style={{ marginBottom: 1 }}>Odberateľ:</Text>
 								<View style={styles.contactContainer}>
 									<Text>
 										{receiver.firstName} {receiver.lastName}
 									</Text>
-									<Text>{receiver.deliveryAddress.street}</Text>
+									<Text>{receiver.address.street}</Text>
 									<Text>
-										{receiver.deliveryAddress.psc}{" "}
-										{receiver.deliveryAddress.city}
+										{receiver.address.psc} {receiver.address.city}
 									</Text>
-									<Text>{receiver.deliveryAddress.country}</Text>
+									<Text>{receiver.address.country}</Text>
 								</View>
 							</View>
-						)}
-					</View>
-				</View>
-			</View>
+							{receiver.business && (
+								<View style={styles.contactContainer}>
+									<Text>{receiver.business.name}</Text>
+									<Text>{receiver.business.residence}</Text>
+									<View style={styles.receiverRow}>
+										<Text>IČO</Text>
+										<Text>{receiver.business.ico}</Text>
+									</View>
+									<View style={styles.receiverRow}>
+										<Text>DIČ</Text>
+										<Text>{receiver.business.dic}</Text>
+									</View>
+									<View style={styles.receiverRow}>
+										<Text>IČDPH</Text>
+										<Text>{receiver.business.icdph}</Text>
+									</View>
+								</View>
+							)}
 
-			<View style={styles.dateContainer}>
-				<View style={styles.dateCol}>
-					<Text>Dátum vystavenia:</Text>
-					<Text style={{ textAlign: "right" }}>16.7.2021</Text>
-				</View>
-				<View
-					style={[
-						styles.dateCol,
-						{ borderLeft: "1px solid #000", borderRight: "1px solid #000" },
-					]}
-				>
-					<Text>Dátum dodania:</Text>
-					<Text style={{ textAlign: "right" }}>16.7.2021</Text>
-				</View>
-				<View style={styles.dateCol}>
-					<Text>Dátum splatnosti:</Text>
-					<Text style={{ textAlign: "right" }}>16.7.2021</Text>
-				</View>
-			</View>
-
-			<View style={styles.itemsContainer}>
-				<View style={styles.itemsTableHead}>
-					<Text style={{ width: "25%" }}>Popis položky</Text>
-					<Text style={{ width: "10%", textAlign: "right" }}>Množstvo</Text>
-					<Text style={{ width: "10%", textAlign: "right" }}>MJ</Text>
-					<Text style={{ width: "15%", textAlign: "right" }}>Cena za MJ</Text>
-					<Text style={{ width: "15%", textAlign: "right" }}>
-						Celkom bez DPH
-					</Text>
-					<Text style={{ width: "10%", textAlign: "right" }}>DPH</Text>
-					<Text style={{ width: "15%", textAlign: "right" }}>Celkom s DPH</Text>
-				</View>
-
-				{items.map((item, idx) => {
-					return item.map((i, index) => (
-						<View key={index} style={styles.itemsTableItem}>
-							<Text style={{ width: "25%" }}>{i.value}</Text>
-							<Text style={{ width: "10%", textAlign: "right" }}>1</Text>
-							<Text style={{ width: "10%", textAlign: "right" }}>
-								{formatPDFPrice(i.price)}
-							</Text>
-							<Text style={{ width: "15%", textAlign: "right" }}>
-								{formatPDFPrice(i.price)}
-							</Text>
-							<Text style={{ width: "15%", textAlign: "right" }}>
-								{priceWithoutDPH(i.price)}
-							</Text>
-							<Text style={{ width: "10%", textAlign: "right" }}>20%</Text>
-							<Text style={{ width: "15%", textAlign: "right" }}>
-								{formatPDFPrice(i.price)}
-							</Text>
+							{receiver.deliveryAddress && (
+								<View>
+									<Text style={{ marginBottom: 1 }}>Dodacia adresa:</Text>
+									<View style={styles.contactContainer}>
+										<Text>
+											{receiver.firstName} {receiver.lastName}
+										</Text>
+										<Text>{receiver.deliveryAddress.street}</Text>
+										<Text>
+											{receiver.deliveryAddress.psc}{" "}
+											{receiver.deliveryAddress.city}
+										</Text>
+										<Text>{receiver.deliveryAddress.country}</Text>
+									</View>
+								</View>
+							)}
 						</View>
-					))
-				})}
-			</View>
+					</View>
+				</View>
 
-			<View style={styles.footerContainer}>
-				<View style={styles.footerCol}>
-					<Text>Vyhotovil:</Text>
+				<View style={styles.dateContainer}>
+					<View style={styles.dateCol}>
+						<Text>Dátum vystavenia:</Text>
+						<Text style={{ textAlign: "right" }}>
+							{new Date(created_date * 1).toLocaleDateString("sk-SK")}
+						</Text>
+					</View>
+					<View
+						style={[
+							styles.dateCol,
+							{ borderLeft: "1px solid #000", borderRight: "1px solid #000" },
+						]}
+					>
+						<Text>Dátum dodania:</Text>
+						<Text style={{ textAlign: "right" }}>
+							{/* {new Date(created_date * 1).toLocaleDateString("sk-SK")} */}
+						</Text>
+					</View>
+					<View style={styles.dateCol}>
+						<Text>Dátum splatnosti:</Text>
+						<Text style={{ textAlign: "right" }}>
+							{new Date(payDate * 1).toLocaleDateString("sk-SK")}
+						</Text>
+					</View>
 				</View>
-				<View style={styles.footerCol}>
-					<Text>Prevzal:</Text>
+
+				<View style={styles.itemsContainer}>
+					<View style={styles.itemsTableHead}>
+						<Text style={{ width: "25%" }}>Popis položky</Text>
+						<Text style={{ width: "10%", textAlign: "right" }}>Množstvo</Text>
+						<Text style={{ width: "10%", textAlign: "right" }}>MJ</Text>
+						<Text style={{ width: "15%", textAlign: "right" }}>Cena za MJ</Text>
+						<Text style={{ width: "15%", textAlign: "right" }}>
+							Celkom bez DPH
+						</Text>
+						<Text style={{ width: "10%", textAlign: "right" }}>DPH</Text>
+						<Text style={{ width: "15%", textAlign: "right" }}>
+							Celkom s DPH
+						</Text>
+					</View>
+
+					{items.map((item, idx) => {
+						return item.map((i, index) => (
+							<React.Fragment>
+								<View key={index} style={styles.itemsTableItem}>
+									<Text style={{ width: "25%" }}>{i.value}</Text>
+									<Text style={{ width: "10%", textAlign: "right" }}>1</Text>
+									<Text style={{ width: "10%", textAlign: "right" }}>
+										{formatPDFPrice(i.price)}
+									</Text>
+									<Text style={{ width: "15%", textAlign: "right" }}>
+										{formatPDFPrice(i.price)}
+									</Text>
+									<Text style={{ width: "15%", textAlign: "right" }}>
+										{priceWithoutDPH(i.price)}
+									</Text>
+									<Text style={{ width: "10%", textAlign: "right" }}>20%</Text>
+									<Text style={{ width: "15%", textAlign: "right" }}>
+										{formatPDFPrice(i.price)}
+									</Text>
+								</View>
+								{i?.type && (
+									<View key={`${index}${idx}`} style={styles.itemsTableItem}>
+										<Text style={{ width: "25%" }}>{i.type}</Text>
+										<Text style={{ width: "10%", textAlign: "right" }}>1</Text>
+										<Text style={{ width: "10%", textAlign: "right" }}>
+											{formatPDFPrice(i.tPrice)}
+										</Text>
+										<Text style={{ width: "15%", textAlign: "right" }}>
+											{formatPDFPrice(i.tPrice)}
+										</Text>
+										<Text style={{ width: "15%", textAlign: "right" }}>
+											{priceWithoutDPH(i.tPrice)}
+										</Text>
+										<Text style={{ width: "10%", textAlign: "right" }}>
+											20%
+										</Text>
+										<Text style={{ width: "15%", textAlign: "right" }}>
+											{formatPDFPrice(i.tPrice)}
+										</Text>
+									</View>
+								)}
+							</React.Fragment>
+						))
+					})}
 				</View>
-				<View style={styles.footerSummaryCol}>
-					<View style={styles.footerSummaryRow}>
-						<Text>Celkova suma bez DPH:</Text>
-						<Text>{priceWithoutDPH(totalPrice)} EUR</Text>
+
+				<View style={styles.footerContainer}>
+					<View style={styles.footerCol}>
+						<Text>Vyhotovil:</Text>
 					</View>
-					<View style={styles.footerSummaryRow}>
-						<Text>DPH:</Text>
-						<Text>{priceDPH(totalPrice)} EUR</Text>
+					<View style={styles.footerCol}>
+						<Text>Prevzal:</Text>
 					</View>
-					<View style={styles.footerSummaryRow}>
-						<Text>Celkova suma s DPH:</Text>
-						<Text>{formatPDFPrice(totalPrice)} EUR</Text>
-					</View>
-					{/* <View style={styles.footerSummaryRow}>
+					<View style={styles.footerSummaryCol}>
+						<View style={styles.footerSummaryRow}>
+							<Text>Celkova suma bez DPH:</Text>
+							<Text>{priceWithoutDPH(totalPrice)} EUR</Text>
+						</View>
+						<View style={styles.footerSummaryRow}>
+							<Text>DPH:</Text>
+							<Text>{priceDPH(totalPrice)} EUR</Text>
+						</View>
+						<View style={styles.footerSummaryRow}>
+							<Text>Celkova suma s DPH:</Text>
+							<Text>{formatPDFPrice(totalPrice)} EUR</Text>
+						</View>
+						{/* <View style={styles.footerSummaryRow}>
 						<Text>Uhradené zálohami:</Text>
 						<Text>{totalPrice} EUR</Text>
 					</View> */}
-					<View style={styles.footerSummaryRow}>
-						<Text>K úhrade:</Text>
-						<Text>{formatPDFPrice(totalPrice)} EUR</Text>
+						<View style={styles.footerSummaryRow}>
+							<Text>K úhrade:</Text>
+							<Text>{formatPDFPrice(totalPrice)} EUR</Text>
+						</View>
 					</View>
 				</View>
-			</View>
-		</Page>
-	</Document>
-)
+			</Page>
+		</Document>
+	)
+}
 
 export default PDFDocument
 

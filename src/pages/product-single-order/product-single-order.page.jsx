@@ -55,7 +55,13 @@ const ProductSingleOrderPage = () => {
 
 			productNestedData.forEach((item) => {
 				if (item.value === null) return null
-				total = total + (item.price === 1001 ? 0 : item.price)
+				const wifiPrice = item?.tPrice
+					? item?.tPrice === 1001
+						? 0
+						: item.tPrice
+					: 0
+
+				total = total + (item.price === 1001 ? 0 : item.price) + wifiPrice
 			})
 		})
 
@@ -103,6 +109,7 @@ const ProductSingleOrderPage = () => {
 								<InvoicePDF
 									orderID={data.order.paymentData.id}
 									orderNumber={data.order.paymentData.order_number}
+									created_date={data.order.created_date}
 									totalPrice={totalPrice}
 									receiver={{
 										firstName: data.order.orderData.first_name,
@@ -313,11 +320,10 @@ const ProductSingleOrderPage = () => {
 									<Container key={i}>
 										<p>{v.name}</p>
 										<ValueContainer>
-											<p>
-												{v.value}
-												{v?.type && v.type}
-											</p>
+											<p>{v.value}</p>
 											{v.value && <p>{formatPrice(v.price)}</p>}
+											<p>{v?.type && v.type}</p>
+											<p>{v?.tPrice && formatPrice(v.tPrice)}</p>
 										</ValueContainer>
 									</Container>
 								)
